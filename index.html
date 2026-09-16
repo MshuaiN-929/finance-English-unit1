@@ -1,0 +1,1881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Milk Tea Worker — Unit 1 Economics · Interactive Day (V0.2)</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%2314142b'/%3E%3Crect x='4' y='7' width='8' height='6' fill='%23ff5d8f'/%3E%3Crect x='2' y='5' width='12' height='3' fill='%23ffd166'/%3E%3Crect x='12' y='8' width='3' height='3' fill='%234cc9f0'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://miaoda.feishu.cn">
+<link href="https://miaoda.feishu.cn/fonts/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   Milk Tea Worker — Finance English Interactive Day (V0.1)
+   Retro Pixel Game + Cartoon Character + Mechanical UI
+   ============================================================ */
+:root{
+  --bg:#14152b; --panel:#1e2038; --panel2:#272a4d; --panel3:#31355f;
+  --line:#0b0c1a; --line2:#454a80;
+  --ink:#eef0ff; --dim:#9aa0c9; --faint:#6a7099;
+  --pink:#ff5d8f; --cyan:#4cc9f0; --yellow:#ffd166; --green:#4ade80; --red:#ff5d5d; --orange:#ff9f43;
+  --font-px:'Press Start 2P','Courier New',monospace;
+  --font-term:'VT323','Consolas','Courier New',monospace;
+  --font-cn:'Microsoft YaHei','PingFang SC','Noto Sans SC',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html,body{height:100%;}
+body{
+  background:var(--bg); color:var(--ink);
+  font-family:var(--font-term);
+  overflow:hidden;
+  -webkit-font-smoothing:none;
+}
+.hidden{display:none !important;}
+
+/* ---------- CRT overlay ---------- */
+#crt{
+  position:fixed; inset:0; z-index:900; pointer-events:none;
+  background:repeating-linear-gradient(0deg, rgba(0,0,0,.14) 0 1px, transparent 1px 3px);
+  mix-blend-mode:multiply;
+}
+#crt::after{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(ellipse at center, transparent 58%, rgba(8,8,20,.42) 100%);
+}
+
+/* ---------- generic pixel button ---------- */
+.px-btn{
+  font-family:var(--font-px); font-size:11px; color:var(--ink);
+  background:var(--panel2); border:3px solid var(--line);
+  box-shadow:0 0 0 3px var(--line2), inset 0 -5px 0 rgba(0,0,0,.35);
+  padding:12px 18px; cursor:pointer; text-transform:uppercase;
+  letter-spacing:.5px; transition:transform .06s, filter .12s, box-shadow .12s;
+  user-select:none; line-height:1.4;
+}
+.px-btn:hover{filter:brightness(1.18); transform:translateY(-1px);}
+.px-btn:active{transform:translateY(2px); box-shadow:0 0 0 3px var(--line2), inset 0 3px 0 rgba(0,0,0,.35);}
+.px-btn.primary{background:var(--yellow); color:#241f12; box-shadow:0 0 0 3px #b78a2e, inset 0 -5px 0 rgba(0,0,0,.28);}
+.px-btn.cyan{background:var(--cyan); color:#0e2733; box-shadow:0 0 0 3px #2b7f9e, inset 0 -5px 0 rgba(0,0,0,.28);}
+.px-btn.pink{background:var(--pink); color:#2b0f1a; box-shadow:0 0 0 3px #a83a5c, inset 0 -5px 0 rgba(0,0,0,.28);}
+.px-btn:disabled{filter:grayscale(.7) brightness(.7); cursor:not-allowed; transform:none;}
+
+/* ---------- pixel panel ---------- */
+.px-panel{
+  background:var(--panel); border:3px solid var(--line);
+  box-shadow:0 0 0 3px var(--line2), inset 0 0 0 2px rgba(255,255,255,.04);
+}
+
+/* ---------- app layout ---------- */
+#app{height:100vh; display:flex; flex-direction:column;}
+
+/* ============ TITLE SCREEN ============ */
+#view-title{
+  position:fixed; inset:0; z-index:60;
+  display:flex; align-items:center; justify-content:center;
+  background:
+    linear-gradient(rgba(20,21,43,.88), rgba(20,21,43,.94)),
+    url('assets/scene_shop.png') center/cover;
+  image-rendering:pixelated;
+}
+.title-wrap{display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center; padding:30px;}
+.title-logo{font-family:var(--font-px); font-size:30px; line-height:1.35; color:var(--yellow);
+  text-shadow:4px 4px 0 #0b0c1a, 0 0 18px rgba(255,209,102,.35); letter-spacing:1px;}
+.title-logo .sub{display:block; font-size:11px; color:var(--cyan); margin-top:10px; text-shadow:2px 2px 0 #0b0c1a;}
+.title-card{display:flex; gap:22px; align-items:center; background:var(--panel); border:3px solid var(--line);
+  box-shadow:0 0 0 3px var(--line2), 0 10px 0 rgba(0,0,0,.25); padding:18px 22px; max-width:680px; text-align:left;}
+.title-card img{width:170px; height:170px; image-rendering:pixelated; border:3px solid var(--line); box-shadow:0 0 0 2px var(--line2);}
+.title-info{font-family:var(--font-term); font-size:22px; line-height:1.5; color:var(--ink);}
+.title-info h2{font-family:var(--font-px); font-size:13px; color:var(--pink); margin-bottom:10px; line-height:1.6;}
+.title-info .row{display:flex; gap:8px; align-items:baseline;}
+.title-info .row b{color:var(--yellow); font-weight:normal;}
+.title-intro{margin-top:10px; color:var(--dim); font-size:21px; font-style:italic;}
+.start-btn{animation:blinkBtn 1.4s steps(2) infinite;}
+@keyframes blinkBtn{0%,100%{box-shadow:0 0 0 3px var(--line2), inset 0 -5px 0 rgba(0,0,0,.28), 0 0 0 4px transparent;}50%{box-shadow:0 0 0 3px var(--line2), inset 0 -5px 0 rgba(0,0,0,.28), 0 0 0 4px rgba(255,209,102,.85);}}
+.title-hint{font-family:var(--font-px); font-size:9px; color:var(--faint); letter-spacing:1px;}
+
+/* ============ GAME SCREEN ============ */
+#view-game{flex:1; display:flex; flex-direction:column; min-height:0;}
+
+#topbar{
+  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  padding:10px 14px; background:var(--panel); border-bottom:3px solid var(--line);
+  box-shadow:0 4px 0 rgba(0,0,0,.18); z-index:5;
+}
+.tb-left{display:flex; gap:8px; flex-wrap:wrap;}
+.tb-chip{
+  font-family:var(--font-px); font-size:9px; color:var(--ink);
+  background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2);
+  padding:7px 10px; letter-spacing:.5px; white-space:nowrap;
+}
+.tb-chip.hl{color:#241f12; background:var(--yellow); box-shadow:0 0 0 2px #b78a2e;}
+#hud{display:flex; gap:10px; align-items:stretch;}
+.stat{
+  background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2);
+  padding:6px 9px; min-width:118px; position:relative;
+}
+.s-top{display:flex; justify-content:space-between; align-items:baseline; gap:6px;}
+.s-name{font-family:var(--font-px); font-size:7px; color:var(--dim); letter-spacing:.5px;}
+.s-short{display:none;}
+.cn-line{font-family:var(--font-cn); font-size:16px; color:var(--dim); margin-top:2px; line-height:1.45;}
+.choice-cn{display:block; font-family:var(--font-cn); font-size:15px; color:var(--dim); margin-top:2px;}
+.cn-toggle{cursor:pointer; border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); transition:filter .12s;}
+.cn-toggle:hover{filter:brightness(1.25);}
+.cn-toggle.on{color:#0e2733; background:var(--cyan); box-shadow:0 0 0 2px #2b7f9e;}
+.s-num{font-family:var(--font-px); font-size:10px; color:var(--ink);}
+.s-num.money{color:var(--yellow);}
+.s-bar{height:7px; background:#0d0e1d; border:1px solid var(--line); margin-top:5px; position:relative; overflow:hidden;}
+.s-fill{position:absolute; inset:0 auto 0 0; width:0%; transition:width .7s ease-out;}
+.stat.energy .s-fill{background:linear-gradient(90deg,#8a4dff,#4cc9f0);}
+.stat.health .s-fill{background:linear-gradient(90deg,#ff5d5d,#ff9f43);}
+.stat.mood .s-fill{background:linear-gradient(90deg,#ff5d8f,#ffd166);}
+.stat.cr .s-fill{background:linear-gradient(90deg,#ffd166,#4ade80);}
+.stat.money .s-fill{background:linear-gradient(90deg,#ffb347,#ffd166);}
+.s-delta{
+  position:absolute; right:-6px; top:-14px; font-family:var(--font-px); font-size:9px;
+  padding:4px 6px; border:2px solid var(--line); z-index:6;
+  animation:popDelta .18s ease-out; opacity:0; pointer-events:none;
+}
+.s-delta.up{background:var(--green); color:#0c2415;}
+.s-delta.down{background:var(--red); color:#2b0f0f;}
+@keyframes popDelta{0%{transform:scale(.4); opacity:0;}60%{transform:scale(1.25); opacity:1;}100%{transform:scale(1); opacity:1;}}
+
+#stage{flex:1; display:grid; grid-template-columns:1fr 264px; min-height:0;}
+
+#sceneBox{position:relative; overflow:hidden; min-width:0;}
+.scene-img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  image-rendering:pixelated; opacity:0; transition:opacity .45s ease;}
+.scene-img.on{opacity:1;}
+#sceneBox::before{content:""; position:absolute; inset:0; z-index:2; pointer-events:none;
+  background:linear-gradient(180deg, rgba(11,12,26,0) 52%, rgba(11,12,26,.72) 100%);}
+
+#charBox{
+  position:absolute; left:22px; bottom:268px; width:260px; z-index:3;
+  filter:drop-shadow(6px 8px 0 rgba(0,0,0,.35));
+}
+#charBox .char-frame{background:var(--panel); border:3px solid var(--line); box-shadow:0 0 0 3px var(--line2), 0 8px 0 rgba(0,0,0,.3); padding:8px;}
+#charBox .char-img{position:relative; width:100%; aspect-ratio:1/1; overflow:hidden;}
+#charBox img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  image-rendering:pixelated; opacity:0; transition:opacity .25s ease;}
+#charBox img.on{opacity:1;}
+.char-plate{
+  font-family:var(--font-px); font-size:9px; text-align:center; color:var(--ink);
+  background:var(--panel2); border:3px solid var(--line); box-shadow:0 0 0 2px var(--line2);
+  padding:9px; margin-top:10px; letter-spacing:1px;
+}
+.char-plate b{color:var(--yellow); font-weight:normal;}
+
+/* dialogue */
+#dialog{
+  position:absolute; left:16px; right:16px; bottom:14px; z-index:4;
+  background:var(--panel); border:3px solid var(--line);
+  box-shadow:0 0 0 3px var(--line2), 0 8px 0 rgba(0,0,0,.32);
+  padding:16px 20px 14px; min-height:196px; display:flex; flex-direction:column;
+}
+#speaker{
+  position:absolute; top:-18px; left:14px; font-family:var(--font-px); font-size:9px;
+  background:var(--cyan); color:#0e2733; border:3px solid var(--line); box-shadow:0 0 0 2px #2b7f9e;
+  padding:6px 12px; letter-spacing:1px;
+}
+#speaker.bad{background:var(--red); color:#2b0f0f; box-shadow:0 0 0 2px #a83a3a;}
+#storyText{
+  font-family:var(--font-term); font-size:23px; line-height:1.35; color:var(--ink);
+  min-height:96px; cursor:pointer; position:relative;
+}
+#storyText .caret{color:var(--yellow); animation:blink .9s steps(2) infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.cont-hint{position:absolute; right:4px; bottom:0; font-family:var(--font-px); font-size:9px; color:var(--cyan); letter-spacing:1px; animation:blink 1.1s steps(2) infinite;}
+.vw{
+  color:var(--yellow); text-decoration:underline dotted rgba(255,209,102,.8);
+  cursor:pointer; padding:0 1px; transition:background .12s, color .12s;
+}
+.vw:hover{background:var(--yellow); color:#241f12;}
+.vw.locked{color:var(--cyan); text-decoration:underline dotted rgba(76,201,240,.8);}
+.vw.locked:hover{background:var(--cyan); color:#0e2733;}
+
+#deltas{display:flex; gap:8px; flex-wrap:wrap; margin-top:6px; min-height:26px;}
+.delta-chip{
+  font-family:var(--font-px); font-size:10px; padding:6px 10px; border:2px solid var(--line);
+  animation:popDelta .2s ease-out;
+}
+.delta-chip.up{background:var(--green); color:#0c2415;}
+.delta-chip.down{background:var(--red); color:#2b0f0f;}
+.delta-chip.zero{background:var(--panel3); color:var(--dim);}
+
+#choices{display:flex; flex-direction:column; gap:10px; margin-top:10px;}
+.choice{
+  font-family:var(--font-term); font-size:21px; text-align:left; color:var(--ink);
+  background:var(--panel2); border:3px solid var(--line); box-shadow:0 0 0 2px var(--line2), inset 4px 0 0 var(--cyan);
+  padding:9px 14px; cursor:pointer; transition:transform .08s, background .12s, filter .12s;
+  position:relative;
+}
+.choice:hover{background:var(--panel3); transform:translateX(5px);}
+.choice:active{transform:translateX(5px) translateY(2px);}
+.choice .idx{font-family:var(--font-px); font-size:9px; color:var(--cyan); margin-right:10px;}
+.choice:disabled{filter:grayscale(.75) brightness(.7); cursor:not-allowed; transform:none;}
+.choice .result-hint{position:absolute; right:10px; top:50%; transform:translateY(-50%);
+  font-family:var(--font-px); font-size:8px; color:var(--faint); letter-spacing:1px;}
+
+#resultArea{display:flex; flex-direction:column; gap:10px; margin-top:8px;}
+
+/* insight card */
+#insightCard{
+  position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); z-index:75;
+  width:min(640px, 88%); background:#1b1d36; border:3px solid var(--line);
+  box-shadow:0 0 0 3px var(--yellow), 0 0 0 6px var(--line), 0 14px 0 rgba(0,0,0,.35);
+  padding:22px 26px; animation:cardIn .25s ease-out;
+}
+@keyframes cardIn{0%{transform:translate(-50%,-44%) scale(.9); opacity:0;}100%{transform:translate(-50%,-50%) scale(1); opacity:1;}}
+.ins-head{font-family:var(--font-px); font-size:10px; color:#241f12; background:var(--yellow);
+  border:2px solid var(--line); box-shadow:0 0 0 2px #b78a2e; display:inline-block; padding:7px 12px; letter-spacing:1px; margin-bottom:14px;}
+.ins-title{font-family:var(--font-px); font-size:14px; color:var(--cyan); margin-bottom:10px; line-height:1.6;}
+.ins-body{font-family:var(--font-term); font-size:23px; color:var(--ink); line-height:1.4;}
+.ins-learn{margin-top:12px; border-top:2px dashed var(--line2); padding-top:12px;}
+.ins-learn .ll{font-family:var(--font-px); font-size:8px; color:var(--yellow); letter-spacing:1px; margin-bottom:8px;}
+.ins-learn .ly{font-family:var(--font-term); font-size:20px; color:var(--dim); line-height:1.45; margin-bottom:8px;}
+.ins-learn .ly b{color:var(--ink); font-weight:normal;}
+.ins-actions{display:flex; gap:10px; margin-top:16px;}
+
+/* ============ SIDE PANEL ============ */
+#side{
+  background:var(--panel); border-left:3px solid var(--line); box-shadow:0 0 0 2px var(--line2);
+  display:flex; flex-direction:column; overflow:hidden;
+}
+.side-title{
+  font-family:var(--font-px); font-size:12px; text-align:center; color:var(--ink);
+  background:linear-gradient(180deg, var(--pink), #c03a6b); border-bottom:3px solid var(--line);
+  padding:16px 8px; letter-spacing:1px; line-height:1.6; text-shadow:2px 2px 0 rgba(0,0,0,.4);
+}
+#vocabList{flex:1; overflow-y:auto; padding:12px 10px; display:flex; flex-direction:column; gap:8px;}
+.vocab-item{
+  font-family:var(--font-term); font-size:19px; color:var(--ink);
+  background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2);
+  padding:7px 10px; cursor:pointer; text-align:left; transition:background .12s, transform .08s;
+  display:flex; align-items:center; justify-content:space-between; gap:6px;
+}
+.vocab-item:hover{background:var(--panel3); transform:translateX(3px);}
+.vocab-item .tag{font-family:var(--font-px); font-size:7px; color:var(--green); letter-spacing:1px; white-space:nowrap;}
+.vocab-item.new{animation:newWord .8s ease-out;}
+@keyframes newWord{0%{background:var(--yellow); color:#241f12; transform:scale(1.06);}100%{}}
+.side-foot{font-family:var(--font-px); font-size:7px; color:var(--faint); text-align:center;
+  border-top:2px solid var(--line); padding:12px 8px; line-height:1.8;}
+
+/* ============ BOTTOM BAR ============ */
+#botbar{
+  display:flex; align-items:center; gap:12px; padding:10px 14px;
+  background:var(--panel); border-top:3px solid var(--line); box-shadow:0 -4px 0 rgba(0,0,0,.18);
+  z-index:5;
+}
+#botbar .spacer{flex:1;}
+#btn-continue{padding:13px 30px;}
+#btn-continue.pulse{animation:contPulse 1.1s steps(2) infinite;}
+@keyframes contPulse{0%,100%{box-shadow:0 0 0 3px var(--line2), inset 0 -5px 0 rgba(0,0,0,.28);}50%{box-shadow:0 0 0 3px var(--line2), inset 0 -5px 0 rgba(0,0,0,.28), 0 0 0 4px rgba(255,255,255,.4);}}
+
+/* ============ SUMMARY ============ */
+#view-summary{
+  position:fixed; inset:0; z-index:70; overflow-y:auto;
+  background:linear-gradient(rgba(13,14,30,.94), rgba(13,14,30,.97)), url('assets/scene_closing.png') center/cover;
+  image-rendering:pixelated;
+  padding:36px 20px;
+}
+.sum-wrap{max-width:760px; margin:0 auto; background:var(--panel); border:3px solid var(--line);
+  box-shadow:0 0 0 3px var(--line2), 0 16px 0 rgba(0,0,0,.35); padding:28px 30px;}
+.sum-head{text-align:center; margin-bottom:20px;}
+.sum-head h1{font-family:var(--font-px); font-size:22px; color:var(--yellow); text-shadow:3px 3px 0 #0b0c1a; line-height:1.6;}
+.sum-head .day{font-family:var(--font-px); font-size:10px; color:var(--cyan); letter-spacing:2px; margin-top:8px;}
+.sum-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px 22px; margin-bottom:18px;}
+.sum-row{display:flex; align-items:center; justify-content:space-between; gap:10px;
+  font-family:var(--font-term); font-size:21px; background:var(--panel2);
+  border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); padding:9px 12px;}
+.sum-row .k{font-family:var(--font-px); font-size:9px; color:var(--dim);}
+.sum-row .v{color:var(--ink);}
+.sum-row .arrow{color:var(--faint);}
+.sum-row .d{font-family:var(--font-px); font-size:10px;}
+.sum-row .d.up{color:var(--green);} .sum-row .d.down{color:var(--red);}
+.sum-sec{margin-bottom:16px;}
+.sum-sec h3{font-family:var(--font-px); font-size:10px; color:var(--pink); margin-bottom:10px; letter-spacing:1px;}
+.hidden-card{background:#2a1c30; border:2px solid var(--line); box-shadow:0 0 0 2px #5a3550;
+  padding:10px 12px; margin-bottom:8px; font-family:var(--font-term); font-size:20px; color:var(--ink); line-height:1.4;}
+.hidden-card .hb{display:inline-block; font-family:var(--font-px); font-size:7px; color:var(--pink);
+  border:1px solid var(--pink); padding:3px 6px; margin-right:8px; letter-spacing:1px; vertical-align:2px;}
+.hidden-card .he{font-family:var(--font-px); font-size:9px; color:var(--red); margin-top:5px;}
+.chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+.chip{font-family:var(--font-term); font-size:19px; color:var(--ink); background:var(--panel2);
+  border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); padding:6px 10px; cursor:pointer; transition:background .12s;}
+.chip:hover{background:var(--panel3);}
+.chip.concept{color:var(--yellow);}
+.chip.outcome{color:var(--cyan); cursor:default;}
+.sum-actions{display:flex; gap:12px; flex-wrap:wrap; justify-content:center; margin-top:22px;}
+.sum-actions .px-btn{flex:1; min-width:170px;}
+
+/* ============ MODALS ============ */
+.modal-veil{position:fixed; inset:0; z-index:80; background:rgba(8,8,20,.72); display:flex; align-items:center; justify-content:center; padding:20px;}
+.modal-box{width:min(540px,94%); background:var(--panel); border:3px solid var(--line);
+  box-shadow:0 0 0 3px var(--line2), 0 14px 0 rgba(0,0,0,.35); padding:22px 24px; position:relative; max-height:82vh; overflow-y:auto;}
+.modal-x{position:absolute; top:10px; right:10px; width:34px; height:34px; font-family:var(--font-px); font-size:12px;
+  background:var(--panel3); color:var(--ink); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2);
+  cursor:pointer; line-height:30px; text-align:center;}
+.modal-x:hover{background:var(--red); color:#fff;}
+.modal-box h3{font-family:var(--font-px); font-size:12px; color:var(--cyan); margin-bottom:16px; letter-spacing:1px; padding-right:34px;}
+.modal-box h3 .cn{font-family:var(--font-cn); font-size:13px; color:var(--pink); margin-left:8px; letter-spacing:0;}
+.vocab-en{font-family:var(--font-term); font-size:24px; color:var(--yellow); margin-bottom:6px; line-height:1.3;}
+.vocab-zh{font-family:var(--font-cn); font-size:16px; color:var(--ink); margin-bottom:12px;}
+.vocab-def{font-family:var(--font-term); font-size:21px; color:var(--dim); line-height:1.45; margin-bottom:12px;}
+.vocab-ex{font-family:var(--font-term); font-size:19px; color:var(--faint); font-style:italic; border-top:2px dashed var(--line2); padding-top:10px; line-height:1.4;}
+.vocab-ex b{color:var(--cyan); font-weight:normal;}
+
+#reviewList{display:flex; flex-direction:column; gap:12px;}
+#reviewList .rv{background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); padding:10px 12px;}
+
+/* story map */
+#mapNodes{display:flex; flex-direction:column; gap:0; padding:4px 0 6px;}
+.map-node{display:flex; align-items:center; gap:12px; padding:10px 8px; position:relative; cursor:pointer; border:2px solid transparent; transition:background .12s;}
+.map-node:not(:last-child)::after{content:""; position:absolute; left:22px; top:100%; width:2px; height:14px; background:var(--line2);}
+.map-node:hover{background:var(--panel2);}
+.map-node .icon{width:26px; height:26px; flex:none; display:flex; align-items:center; justify-content:center;
+  font-family:var(--font-px); font-size:10px; border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2);}
+.map-node.visited .icon{background:var(--green); color:#0c2415;}
+.map-node.current .icon{background:var(--yellow); color:#241f12; animation:blink 1s steps(2) infinite;}
+.map-node.unknown .icon{background:var(--panel3); color:var(--faint);}
+.map-node .mt{font-family:var(--font-term); font-size:21px; color:var(--ink); line-height:1.2;}
+.map-node .ms{font-family:var(--font-px); font-size:8px; color:var(--faint); letter-spacing:1px;}
+.map-node.unknown .mt{color:var(--faint);}
+.map-node.dim{cursor:default;} .map-node.dim:hover{background:transparent;}
+#mapCount{margin-top:12px; font-family:var(--font-px); font-size:9px; color:var(--cyan); text-align:center; border-top:2px dashed var(--line2); padding-top:14px; letter-spacing:1px;}
+
+/* toast */
+#toast{
+  position:fixed; top:74px; left:50%; transform:translateX(-50%); z-index:100;
+  font-family:var(--font-px); font-size:9px; color:#241f12; background:var(--yellow);
+  border:3px solid var(--line); box-shadow:0 0 0 3px #b78a2e, 0 6px 0 rgba(0,0,0,.3);
+  padding:10px 16px; letter-spacing:1px; opacity:0; pointer-events:none;
+  transition:opacity .2s, transform .2s; transform:translateX(-50%) translateY(-8px);
+  max-width:86%; text-align:center; line-height:1.7;
+}
+#toast.on{opacity:1; transform:translateX(-50%) translateY(0);}
+
+/* shake */
+@keyframes shakeX{0%,100%{transform:translateX(0);}20%{transform:translateX(-7px);}40%{transform:translateX(7px);}60%{transform:translateX(-5px);}80%{transform:translateX(5px);}}
+.shake{animation:shakeX .5s ease;}
+
+/* scrollbar */
+#vocabList::-webkit-scrollbar,.modal-box::-webkit-scrollbar,#view-summary::-webkit-scrollbar{width:10px;}
+#vocabList::-webkit-scrollbar-thumb,.modal-box::-webkit-scrollbar-thumb,#view-summary::-webkit-scrollbar-thumb{background:var(--line2); border:2px solid var(--line);}
+
+/* ============ V0.2: LANGUAGE, SPEAKERS, VOCAB TIERS ============ */
+/* title language picker */
+.lang-pick{display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}
+.lang-pick .px-btn{min-width:132px;}
+.lang-pick .px-btn.on{background:var(--cyan); color:#0e2733; box-shadow:0 0 0 3px #2b7f9e, inset 0 -5px 0 rgba(0,0,0,.28);}
+/* topbar segmented language selector */
+.lang-seg{display:flex; align-items:stretch; border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2);}
+.lang-seg button{font-family:var(--font-px); font-size:8px; color:var(--dim); background:var(--panel2);
+  border:none; border-right:2px solid var(--line); padding:7px 8px; cursor:pointer; letter-spacing:.5px;
+  transition:background .1s, color .1s, filter .1s; white-space:nowrap;}
+.lang-seg button:last-child{border-right:none;}
+.lang-seg button:hover{filter:brightness(1.25);}
+.lang-seg button.on{background:var(--cyan); color:#0e2733;}
+/* speaker name tag with avatar */
+#speaker{display:flex; align-items:center; gap:6px; padding:5px 10px;}
+#speaker .sp-avatar{width:22px; height:22px; border:2px solid var(--line); box-shadow:0 0 0 2px rgba(0,0,0,.35); flex:none; overflow:hidden;}
+#speaker .sp-avatar img{width:100%; height:100%; object-fit:cover; image-rendering:pixelated; display:block;}
+#speaker.sp-me{background:var(--cyan); color:#0e2733; box-shadow:0 0 0 2px #2b7f9e;}
+#speaker.sp-mg{background:var(--orange); color:#2b1405; box-shadow:0 0 0 2px #b3672e;}
+#speaker.sp-cw{background:var(--green); color:#0c2415; box-shadow:0 0 0 2px #2b8a4d;}
+#speaker.sp-cu{background:var(--pink); color:#2b0f1a; box-shadow:0 0 0 2px #a83a5c;}
+#speaker.sp-res{background:var(--panel3); color:var(--ink); box-shadow:0 0 0 2px var(--line2);}
+/* CN-primary typography */
+#app.mode-cn #storyText{font-family:var(--font-cn); font-size:19px;}
+#app.mode-cn .choice{font-family:var(--font-cn); font-size:18px;}
+#app.mode-cn .ins-body{font-family:var(--font-cn); font-size:20px;}
+#app.mode-cn .ins-learn .ly{font-family:var(--font-cn); font-size:18px;}
+#app.mode-cn .vocab-def{font-family:var(--font-cn); font-size:18px;}
+#app.mode-cn .vocab-ex{font-family:var(--font-cn); font-size:17px;}
+#app.mode-cn .sum-row{font-family:var(--font-cn); font-size:19px;}
+#app.mode-cn .hidden-card{font-family:var(--font-cn); font-size:18px;}
+#app.mode-cn .wrap-card .wc-en{font-family:var(--font-cn); font-size:16px;}
+/* sidebar vocab sections */
+.vocab-sec{font-family:var(--font-px); font-size:8px; color:var(--yellow); letter-spacing:1px;
+  border-top:2px dashed var(--line2); padding-top:10px; margin-top:6px;}
+.vocab-sec:first-child{border-top:none; margin-top:0; padding-top:0;}
+.vocab-sec .cnt{color:var(--dim); margin-left:4px;}
+/* summary wrap-up cards */
+.wrap-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:4px;}
+.wrap-card{background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); padding:10px 12px;}
+.wrap-card .wc-t{font-family:var(--font-px); font-size:8px; color:var(--pink); letter-spacing:1px; margin-bottom:6px;}
+.wrap-card .wc-en{font-family:var(--font-term); font-size:17px; color:var(--ink); line-height:1.4; margin-bottom:4px;}
+.wrap-card .wc-cn{font-family:var(--font-cn); font-size:13px; color:var(--dim); line-height:1.5;}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:1180px){
+  #stage{grid-template-columns:1fr 210px;}
+  #hud{gap:6px;} .stat{min-width:96px; padding:5px 7px;}
+  #charBox{width:230px; bottom:236px;}
+  .title-logo{font-size:24px;}
+}
+@media (max-width:860px){
+  #stage{grid-template-columns:1fr;}
+  #side{display:none;}
+  #topbar{flex-wrap:wrap; gap:8px; padding-top:calc(10px + env(safe-area-inset-top));}
+  .tb-chip{min-height:44px; display:inline-flex; align-items:center; padding:5px 7px; font-size:8px;}
+  #hud{display:grid; grid-template-columns:repeat(5,1fr); gap:5px; width:100%;}
+  .stat{min-width:0; padding:4px 5px;}
+  .s-name{font-size:7px;}
+  .s-num{font-size:10px;}
+  .s-bar{height:5px;}
+  .s-long{display:none;} .s-short{display:inline;}
+  .cn-line{font-size:14px;} .choice-cn{font-size:13px;}
+  #charBox{width:120px; bottom:200px; left:10px;}
+  #dialog{left:10px; right:10px; bottom:calc(10px + env(safe-area-inset-bottom));}
+  #storyText{font-size:20px;}
+  .title-card{flex-direction:column; text-align:center;}
+  .sum-grid{grid-template-columns:1fr;}
+  .wrap-grid{grid-template-columns:1fr;}
+  .lang-seg button{font-size:7px; padding:6px 6px;}
+  #botbar{gap:8px; padding-bottom:calc(10px + env(safe-area-inset-bottom));}
+  #botbar .px-btn{padding:10px 12px; font-size:9px; min-height:46px; display:flex; align-items:center;}
+  .chip{min-height:44px; display:inline-flex; align-items:center;}
+  #toast{top:auto; bottom:98px;}
+}
+@media (max-width:520px){
+  #charBox{width:100px; bottom:188px;}
+  #storyText{font-size:18px;}
+  #dialog{min-height:180px; padding:14px 14px 12px;}
+  .choice{font-size:18px; padding:8px 11px; min-height:46px; display:flex; align-items:center;}
+  .title-logo{font-size:18px;}
+  .title-card img{width:140px; height:140px;}
+  .sum-wrap{padding:18px 14px;}
+  .sum-actions .px-btn{min-width:100%;}
+}
+</style>
+</head>
+<body>
+<div id="crt"></div>
+<div id="app">
+<!-- ================= TITLE VIEW ================= -->
+<section id="view-title">
+  <div class="title-wrap">
+    <div class="title-logo">MILK TEA WORKER<span class="sub">UNIT 1 · WHAT IS ECONOMICS? · INTERACTIVE DAY · V0.2</span></div>
+    <div class="title-card">
+      <img src="assets/char_normal.png" alt="Milk tea shop worker">
+      <div class="title-info">
+        <h2>MILK TEA SHOP WORKER</h2>
+        <div class="row"><span>Age:</span><b>21</b></div>
+        <div class="row"><span>Job:</span><b>Part-time Milk Tea Shop Worker</b></div>
+        <div class="row"><span>Starting Cash:</span><b>¥350</b></div>
+        <p class="title-intro">You are a college student working part-time at a milk tea shop. Today looks normal — at least for now.</p>
+      </div>
+    </div>
+    <div class="lang-pick" id="title-lang">
+      <button class="px-btn" data-lang="cn" type="button">中文</button>
+      <button class="px-btn" data-lang="en" type="button">English</button>
+      <button class="px-btn" data-lang="dual" type="button">中英对照</button>
+    </div>
+    <button class="px-btn primary start-btn" id="btn-start">START DAY</button>
+    <div class="title-hint">5 EVENTS · 4 STATS · 1 SURPRISE</div>
+  </div>
+</section>
+
+<!-- ================= GAME VIEW ================= -->
+<section id="view-game" class="hidden">
+  <header id="topbar">
+    <div class="tb-left">
+      <span class="tb-chip hl" id="tb-day">DAY 1</span>
+      <span class="tb-chip" id="tb-time">08:10 AM</span>
+      <span class="tb-chip" id="tb-loc">DORM ROOM</span>
+      <div class="lang-seg" id="lang-seg">
+        <button data-lang="cn" type="button">中文</button>
+        <button data-lang="en" type="button">EN</button>
+        <button data-lang="dual" type="button">双语</button>
+      </div>
+      <button class="tb-chip cn-toggle" id="btn-auto" type="button">AUTO OFF</button>
+    </div>
+    <div id="hud">
+      <div class="stat money"><div class="s-top"><span class="s-name">MONEY</span><span class="s-num money" id="num-money">¥350</span></div><div class="s-bar"><div class="s-fill" id="fill-money"></div></div></div>
+      <div class="stat energy"><div class="s-top"><span class="s-name">ENERGY</span><span class="s-num" id="num-energy">80</span></div><div class="s-bar"><div class="s-fill" id="fill-energy"></div></div></div>
+      <div class="stat health"><div class="s-top"><span class="s-name">HEALTH</span><span class="s-num" id="num-health">75</span></div><div class="s-bar"><div class="s-fill" id="fill-health"></div></div></div>
+      <div class="stat mood"><div class="s-top"><span class="s-name">MOOD</span><span class="s-num" id="num-mood">65</span></div><div class="s-bar"><div class="s-fill" id="fill-mood"></div></div></div>
+      <div class="stat cr"><div class="s-top"><span class="s-name s-long">CUSTOMER RATING</span><span class="s-name s-short">CR</span><span class="s-num" id="num-cr">50</span></div><div class="s-bar"><div class="s-fill" id="fill-cr"></div></div></div>
+    </div>
+  </header>
+
+  <main id="stage">
+    <div id="sceneBox">
+      <img class="scene-img" id="scene-bedroom" src="assets/scene_bedroom.png" alt="Dorm bedroom">
+      <img class="scene-img" id="scene-street" src="assets/scene_street.png" alt="Street bus stop">
+      <img class="scene-img" id="scene-shop" src="assets/scene_shop.png" alt="Milk tea shop">
+      <img class="scene-img" id="scene-rush" src="assets/scene_rush.png" alt="Lunch rush">
+      <img class="scene-img" id="scene-closing" src="assets/scene_closing.png" alt="Closing time">
+
+      <!-- NPC avatars (preloaded; used in dialogue speaker tags) -->
+      <img class="hidden" src="assets/mg_normal.png" alt="">
+      <img class="hidden" src="assets/mg_worried.png" alt="">
+      <img class="hidden" src="assets/mg_happy.png" alt="">
+      <img class="hidden" src="assets/cw_normal.png" alt="">
+      <img class="hidden" src="assets/cw_happy.png" alt="">
+      <img class="hidden" src="assets/cw_tired.png" alt="">
+      <img class="hidden" src="assets/cu_regular.png" alt="">
+      <img class="hidden" src="assets/cu_adult.png" alt="">
+      <img class="hidden" src="assets/cu_student.png" alt="">
+
+      <div id="charBox">
+        <div class="char-frame">
+          <div class="char-img">
+            <img id="char-normal" src="assets/char_normal.png" alt="Normal">
+            <img id="char-happy" src="assets/char_happy.png" alt="Happy">
+            <img id="char-tired" src="assets/char_tired.png" alt="Tired">
+            <img id="char-worried" src="assets/char_worried.png" alt="Worried">
+            <img id="char-angry" src="assets/char_angry.png" alt="Angry">
+          </div>
+        </div>
+        <div class="char-plate"><b>YOU</b> · MILK TEA WORKER</div>
+      </div>
+
+      <div id="dialog">
+        <div id="speaker">YOU</div>
+        <div id="storyText"></div>
+        <div id="deltas"></div>
+        <div id="choices"></div>
+        <div id="resultArea"></div>
+      </div>
+    </div>
+
+    <aside id="side">
+      <div class="side-title">FINANCE<br>ENGLISH</div>
+      <div id="vocabList"></div>
+      <div class="side-foot" id="side-foot">CLICK A WORD TO SEE<br>THE CHINESE MEANING</div>
+    </aside>
+  </main>
+
+  <footer id="botbar">
+    <button class="px-btn" id="btn-back">BACK</button>
+    <button class="px-btn" id="btn-map">STORY MAP</button>
+    <button class="px-btn" id="btn-vocab">VOCABULARY</button>
+    <div class="spacer"></div>
+    <button class="px-btn cyan hidden" id="btn-continue">CONTINUE</button>
+  </footer>
+</section>
+
+<!-- ================= ECONOMICS INSIGHT CARD (global overlay) ================= -->
+<div id="insightCard" class="hidden">
+  <div class="ins-head">ECONOMICS INSIGHT UNLOCKED</div>
+  <div class="ins-title" id="ins-title"></div>
+  <div class="ins-body" id="ins-body"></div>
+  <div class="ins-learn hidden" id="ins-learn">
+    <div class="ll">LEARN MORE</div>
+    <div id="ins-layers"></div>
+  </div>
+  <div class="ins-actions">
+    <button class="px-btn" id="ins-learn-btn">LEARN MORE</button>
+    <button class="px-btn cyan" id="ins-continue">CONTINUE</button>
+  </div>
+</div>
+
+<!-- ================= SUMMARY VIEW ================= -->
+<section id="view-summary" class="hidden">
+  <div class="sum-wrap">
+    <div class="sum-head">
+      <h1>DAY 1 COMPLETE</h1>
+      <div class="day">END OF SHIFT · 06:30 PM</div>
+    </div>
+
+    <div class="sum-sec"><h3 id="sum-h-status">FINAL STATUS</h3><div class="sum-grid" id="sum-stats"></div></div>
+
+    <div class="sum-sec"><h3 id="sum-h-hidden">HIDDEN RESULTS</h3><div id="sum-hidden"></div></div>
+
+    <div class="sum-sec"><h3 id="sum-h-concepts">ECONOMICS CONCEPTS</h3><div class="chip-row" id="sum-concepts"></div></div>
+
+    <div class="sum-sec"><h3 id="sum-h-vocab">UNIT 1 VOCABULARY</h3><div class="chip-row" id="sum-vocab"></div></div>
+
+    <div class="sum-sec"><h3 id="sum-h-unit1">UNIT 1 WRAP-UP</h3><div class="wrap-grid" id="sum-unit1"></div></div>
+
+    <div class="sum-sec"><h3 id="sum-h-explore">EXPLORATION</h3><div class="chip-row" id="sum-outcomes"></div></div>
+
+    <div class="sum-actions">
+      <button class="px-btn primary" id="btn-replay">REPLAY DAY</button>
+      <button class="px-btn cyan" id="btn-explore">EXPLORE ANOTHER CHOICE</button>
+      <button class="px-btn pink" id="btn-review">VOCABULARY REVIEW</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= MODALS ================= -->
+<div id="modal-vocab" class="modal-veil hidden">
+  <div class="modal-box">
+    <div class="modal-x" data-close="modal-vocab">X</div>
+    <h3>FINANCE ENGLISH<span class="cn" id="mv-zh"></span></h3>
+    <div class="vocab-en" id="mv-term"></div>
+    <div class="vocab-def" id="mv-def"></div>
+    <div class="vocab-ex" id="mv-ex"></div>
+  </div>
+</div>
+
+<div id="modal-map" class="modal-veil hidden">
+  <div class="modal-box">
+    <div class="modal-x" data-close="modal-map">X</div>
+    <h3>STORY MAP</h3>
+    <div id="mapNodes"></div>
+    <div id="mapCount"></div>
+  </div>
+</div>
+
+<div id="modal-review" class="modal-veil hidden">
+  <div class="modal-box">
+    <div class="modal-x" data-close="modal-review">X</div>
+    <h3>VOCABULARY REVIEW</h3>
+    <div id="reviewList"></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ============================================================
+   GAME DATA
+   ============================================================ */
+"use strict";
+
+const INIT = { money:350, energy:80, health:75, mood:65, customerRating:50 };
+
+const VOCAB = {
+  /* ===== CORE CONCEPTS — Unit 1 PPT 核心概念 ===== */
+  "scarcity":            { type:"core", zh:"稀缺性", en:"The condition of limited resources — you cannot have everything you want.", ex:"Time is scarce when you oversleep." },
+  "trade-off":           { type:"core", zh:"权衡取舍", en:"A situation where gaining one benefit requires giving up another.", ex:"This morning you traded money for time." },
+  "opportunity cost":    { type:"core", zh:"机会成本", en:"The value of the next best alternative you give up when you make a choice.", ex:"The taxi cost ¥18 — money you could have spent on lunch instead." },
+  "incentive":           { type:"core", zh:"激励", en:"Something that motivates a choice — money, a discount, or extra pay.", ex:"A ¥5 tip is an incentive to work faster." },
+  "alternative":         { type:"core", zh:"备选方案", en:"Another option you could choose instead.", ex:"Taxi, bus, and running are three alternatives." },
+  "allocate":            { type:"core", zh:"配置", en:"To decide how to divide limited resources among different uses.", ex:"Twelve orders — how do you allocate your energy?" },
+  "revenue":             { type:"core", zh:"营业收入", en:"The total money a business takes in from sales.", ex:"More drinks served → more revenue." },
+  "constraint":          { type:"core", zh:"约束", en:"A limit that restricts your choices.", ex:"Twenty minutes is a hard constraint this morning." },
+  "efficiency":          { type:"core", zh:"效率", en:"Getting a task done with the least wasted time or effort.", ex:"Smooth teamwork improves efficiency." },
+  "supply":              { type:"core", zh:"供给", en:"The amount of a good sellers are willing and able to sell at a given price.", ex:"At the old price, higher costs make supply shrink." },
+  "consumer demand":     { type:"core", zh:"消费者需求", en:"The amount of a good buyers want and can afford at a given price.", ex:"A ¥3 price jump may cut consumer demand." },
+  "microeconomics":      { type:"core", zh:"微观经济学", en:"The study of individual consumers, workers, and firms.", ex:"A milk tea shop's pricing is a microeconomics question." },
+  "macroeconomics":      { type:"core", zh:"宏观经济学", en:"The study of the economy as a whole.", ex:"National inflation is a macroeconomics topic." },
+  "positive economics":  { type:"core", zh:"实证经济学", en:"Statements about what is or what may happen — testable with facts.", ex:"Higher prices may reduce demand." },
+  "normative economics": { type:"core", zh:"规范经济学", en:"Statements about what ought to be — based on values or opinions.", ex:"The shop should keep prices low for students." },
+  /* ===== UNIT 1 WORDS — 正式词汇表词汇，剧情中实际使用 ===== */
+  "input cost":          { type:"unit1", zh:"投入成本", en:"The cost of the materials and resources used to produce something.", ex:"Milk is an input cost of every cup of milk tea." },
+  "operating costs":     { type:"unit1", zh:"运营成本", en:"The money a business spends to keep running: rent, wages, ingredients, utilities.", ex:"Higher operating costs squeeze the shop's profit." },
+  "pricing strategy":    { type:"unit1", zh:"定价策略", en:"A business's plan for deciding what price to charge.", ex:"Raising every drink by ¥3 is one pricing strategy." },
+  "profit margin":       { type:"unit1", zh:"利润率", en:"The share of each sale that remains after costs are paid.", ex:"Costs up and prices unchanged → the profit margin shrinks." },
+  "price sensitivity":   { type:"unit1", zh:"价格敏感度", en:"How strongly buyers react when the price changes.", ex:"Students are price-sensitive — small price changes change their orders." },
+  "customer retention":  { type:"unit1", zh:"客户留存", en:"A business's ability to keep customers coming back.", ex:"A kind reply protects customer retention." },
+  "productivity":        { type:"unit1", zh:"生产率", en:"Output produced per unit of input, such as drinks per hour.", ex:"Faster service raises your productivity." },
+  "labor":               { type:"unit1", zh:"劳动力", en:"The human work used to produce goods and services.", ex:"Asking a coworker for help adds labor to the rush." },
+  "overtime pay":        { type:"unit1", zh:"加班费", en:"Extra pay for working beyond your scheduled hours.", ex:"Staying 30 minutes late earns overtime pay." },
+  /* ===== EXTRA WORDS — 奶茶店剧情需要的扩展词 ===== */
+  "tip":                 { type:"extra", zh:"小费", en:"A small extra payment for good service.", ex:"A customer left a ¥5 tip." },
+  "shift":               { type:"extra", zh:"班次", en:"A scheduled period of work.", ex:"Your shift starts at 8:30." },
+  "commute":             { type:"extra", zh:"通勤", en:"The regular trip between home and work.", ex:"The commute takes 20 minutes." }
+};
+
+/* ---------- bilingual 中英对照 data & helpers ---------- */
+let lang = "en";          // "en" | "cn" | "dual" — 游戏内可随时切换
+let typeCn = "";
+const TYPE_MS = 30, AUTO_DELAY = 1300;
+const STAT_LABEL_CN = { money:"金钱", energy:"精力", health:"健康", mood:"心情", customerRating:"顾客评分" };
+const CN = {
+  e1: {
+    lines:[
+      "哔——哔——哔——……",
+      "你睁开一只眼：早上 8:10。你的 shift（班次）8:30 开始。",
+      "你从床上滚起来，套上围裙，抓起钥匙。",
+      "奶茶店在 20 分钟路程之外。你的 commute（通勤）有三条路——每条都是一个 alternative（备选方案）。",
+      "时间是一个硬性 constraint（约束）。稀缺（scarcity）今天就摆在面前：时间不够，钱包里的钱也不够。"
+    ],
+    choices: {
+      e1a:{ label:"打车。", result:["出租车停在路边。15 分钟后你到了店里——准时，但钱包轻了不少。你花了钱，省了时间。"] },
+      e1b:{ label:"坐公交。", result:["公交很挤但便宜。你挤上去，8:32 到店——勉强赶上。省了钱，花了时间。"] },
+      e1c:{ label:"不吃早饭，跑步赶去。", result:["你空腹跑过两个街区，8:31 打卡。省了时间，搭上了精力。"] }
+    }
+  },
+  e2: {
+    lines:[
+      "你系好围裙，加入早会。",
+      "「早。牛奶价格又涨了，这会增加门店的 input cost（投入成本）。」",
+      "「成本涨了，我们不能假装什么都没发生。」",
+      "你在心里列出方案：涨价、换供应商、按兵不动——每个都是 alternative（备选方案），各有代价。"
+    ],
+    choices: {
+      e2a:{ label:"涨价。", result:["每杯饮料涨 3 元。一些熟客对着价目表皱起眉头。收银机会在之后告诉你真相——这就是你的 pricing strategy（定价策略）。"] },
+      e2b:{ label:"换更便宜的供应商。", result:["你打了三个供应商电话，换了一家更便宜的。今天省了钱——但牛奶的味道有点不一样。"] },
+      e2c:{ label:"价格保持不变。", result:["价格保持稳定。店长缓缓点头，但 profit margin（利润率）变薄了。"] }
+    }
+  },
+  e3: { variants: {
+    raise: {
+      lines:[
+        "一位熟客看着新菜单，眨了眨眼。",
+        "「奶茶贵了 3 块？为什么？」"
+      ],
+      choices: {
+        e3ra:{ label:"礼貌地解释牛奶涨价了。", result:["你平静地解释牛奶价格上涨。她点点头。「好吧……这说得通。」"] },
+        e3rb:{ label:"道歉并给个小折扣。", result:["你给她便宜了 2 块——一个小小的 incentive（激励）。她笑着离开，还告诉了两位朋友。"] },
+        e3rc:{ label:"说这不关你的事。", result:["她皱起眉头。「行吧。」她没点单就走了。"] }
+      }
+    },
+    supplier: {
+      lines:[
+        "一位顾客抿了一口茶，顿了顿。",
+        "「今天味道有点不一样。」"
+      ],
+      choices: {
+        e3sa:{ label:"承认换了供应商。", result:["「哦。」她安静地喝完，留下更少的 tip（小费）。"] },
+        e3sb:{ label:"说配方没变。", result:["她耸耸肩，还是点了单。你有点愧疚。"] },
+        e3sc:{ label:"送一份免费配料。", result:["「免费加珍珠？成交！」她身后的队伍笑了。"] }
+      }
+    },
+    keep: {
+      lines:[
+        "一位学生顾客看着价目表笑了。",
+        "「还是我最爱的平价快乐。」"
+      ],
+      choices: {
+        e3ka:{ label:"微笑并道谢。", result:["「随时欢迎再来！」你是真心的。"] },
+        e3kb:{ label:"提到店里成本变高了。", result:["他点点头。「是啊，什么都变贵了。」"] },
+        e3kc:{ label:"推荐新品水果茶。", result:["他改点了芒果茶。一笔小生意，一位开心的顾客——revenue（收入）多了一杯。"] }
+      }
+    }
+  }},
+  e4a: {
+    lines:[
+      "午间高峰来袭。订单像墙一样堆起来。",
+      "今天早上，你没吃早饭。",
+      "你的手在发抖。视野模糊了一瞬间。"
+    ],
+    choices: {
+      e4a1:{ label:"买杯咖啡。", result:["一杯浓缩咖啡下肚。迷雾散了大半。"] },
+      e4a2:{ label:"短暂休息一下。", result:["你出去休息了两分钟。排队的人开始抱怨。"] },
+      e4a3:{ label:"继续干活。", result:["你硬撑着继续，头一阵阵发痛。"] }
+    }
+  },
+  e4: {
+    lines:[
+      "订单爆炸：10 分钟 12 杯。",
+      "「看住队伍！手脚麻利点！」",
+      "十二杯、十分钟——你要怎么 allocate（配置）自己的精力？"
+    ],
+    choices: {
+      e4b1:{ label:"加快速度。", result:["你像机器一样运作，饮料飞快做好。有位顾客给了你 5 块 tip（小费）——这是继续加速的 incentive（激励）。"] },
+      e4b2:{ label:"请同事帮忙。", result:["同事立刻加入。高峰结束后，你请他们喝了杯饮料。团队合作！"] },
+      e4b3:{ label:"放慢速度避免出错。", result:["每杯都完美。但队伍越来越长，有人开始看手机。"] }
+    }
+  },
+  e4c: {
+    lines:[
+      "高峰结束。你靠在柜台上，喘着粗气。",
+      "双腿像果冻一样发软，精力几乎耗尽。",
+      "店长看着你：「坐下歇会，别倒下。」"
+    ],
+    choices: {
+      e4c1:{ label:"买个饭团。", result:["一个饭团加一瓶汽水。你又像个人了。"] },
+      e4c2:{ label:"在后屋休息一下。", result:["你坐了几分钟。前台同事帮你顶着。"] },
+      e4c3:{ label:"硬撑下去。", result:["你拒绝停下。身体向你提出抗议。"] }
+    },
+    lowMoney: {
+      e4c1:{ label:"喝免费水。", result:["免费的水，一分不花。钱包勉强表示同意。"] }
+    }
+  },
+  e5: {
+    lines:[
+      "招牌翻到「已打烊」。",
+      "店长清点着收银机，然后抬起头。",
+      "「辛苦的一天。明天见？」"
+    ],
+    choices: {
+      e5a:{ label:"多留 30 分钟帮忙打扫。", result:["你拖地、补货，拿到了 overtime pay（加班费）——这是留下的 incentive（激励）。后背在抗议，钱包在感谢你。"] },
+      e5b:{ label:"准时下班。", result:["你交还围裙，走进傍晚的空气里。家在前方。"] },
+      e5c:{ label:"把剩下的奶茶带回家。", result:["最后一杯归你了。甜蜜的胜利——字面意义上的。"] }
+    }
+  },
+  b2: {
+    lines:[
+      "晨风扑面。你在人群中穿梭，围裙随风翻飞。",
+      "8:32，你从后门溜进来——还剩两分钟。",
+      "「今天卡得可真紧啊？」"
+    ]
+  },
+  b3: {
+    lines:[
+      "「看到队伍开始排起来了吗？午高峰要来了。」",
+      "你擦了擦台面，深吸一口气。进入战斗状态。"
+    ]
+  },
+  b4: {
+    lines:[
+      "「快打烊了。今天感觉像过了一周。」",
+      "你看了眼时钟：下午 5:40。还有一个小时。"
+    ]
+  }
+};
+const CN_INSIGHT = {
+  "Scarcity, Trade-off & Opportunity Cost": {
+    body:"时间、金钱和精力都是稀缺的（scarce）。每个选择都要放弃一些东西。",
+    layers:[
+      "你睡过头了。现在时间很稀缺。",
+      "时间有限，必须做选择：打车、公交还是跑步——每种都要放弃点别的。",
+      "稀缺（scarcity）意味着资源有限。机会成本（opportunity cost）是你做出选择时放弃的次优选择的价值。用金钱换时间，就是一次权衡取舍（trade-off）。"
+    ]
+  },
+  "Input Costs & Supply": {
+    body:"在原来的价格水平上，投入成本上升，可能会使供给减少。",
+    layers:[
+      "牛奶涨价了。",
+      "牛奶是投入成本（input cost）。价格不变时，投入成本上升会挤压 profit margin（利润率）。",
+      "在原价格水平上，成本上升会让部分生产无利可图，supply（供给）趋于下降。店铺可以吸收成本、涨价或削减其他成本——这就是 pricing strategy（定价策略）。奶茶店这种单个店铺的决策，属于 microeconomics（微观经济学）的研究范围。"
+    ]
+  },
+  "Incentives": {
+    body:"奖励会改变行为。小费、折扣、加班费——每一个都在推动某个决定。",
+    layers:[
+      "午高峰时，有位顾客给了你 5 块小费。",
+      "小费是对速度的奖励。推动人们做出某种行为的奖励，就是 incentive（激励）。",
+      "激励（incentive）是促使人们做出选择的东西——金钱、折扣、额外报酬都算。商家用激励塑造行为：涨价抑制需求，小费和加班费鼓励付出。"
+    ]
+  }
+};
+function cnEv(ev){
+  const c = CN[ev.id];
+  if(!c) return null;
+  if(c.variants) return c.variants[ev.variant] || c.variants.keep;
+  return c;
+}
+function eventLines(ev){
+  const c = cnEv(ev);
+  return decorateLines(ev.lines, c && c.lines);
+}
+function choiceLabelCn(ch, ev){
+  const c = cnEv(ev);
+  if(!c) return "";
+  if(ch.cnLow && c.lowMoney && c.lowMoney[ch.id]) return c.lowMoney[ch.id].label || "";
+  const cc = c.choices && c.choices[ch.id];
+  return (cc && cc.label) ? cc.label : "";
+}
+function choiceResultLines(ch, ev){
+  const c = cnEv(ev);
+  if(!c) return decorateLines(ch.result, null);
+  if(ch.cnLow && c.lowMoney && c.lowMoney[ch.id]) return decorateLines(ch.result, c.lowMoney[ch.id].result);
+  const cc = c.choices && c.choices[ch.id];
+  return decorateLines(ch.result, cc && cc.result);
+}
+function decorateLines(enArr, cnArr){
+  return enArr.map((ln,i)=>{
+    const base = typeof ln === "object" ? ln : { en:ln };
+    return Object.assign({}, base, { cn:(cnArr && cnArr[i]) || "" });
+  });
+}
+
+const EVENTS = {
+  e1: {
+    id:"e1", title:"Overslept", time:"08:10 AM", loc:"DORM ROOM", scene:"bedroom", expr:"worried",
+    lines:[
+      { s:"me", en:"Beep... beep... beep..." },
+      { s:"me", en:"You open one eye. 8:10 AM. Your shift starts at 8:30." },
+      { s:"me", en:"You roll out of bed, pull on your apron, and grab your keys." },
+      { s:"me", en:"The shop is 20 minutes away. Your commute has three options — each one an alternative." },
+      { s:"me", en:"Time is a hard constraint. Scarcity is real today: time is short, and so is your wallet." }
+    ],
+    choices:[
+      { id:"e1a", label:"Take a taxi.", effects:{money:-18, mood:2}, expr:"happy",
+        result:["A taxi slides to the curb. 15 minutes later you are at the shop — on time, wallet lighter."],
+        vocab:["opportunity cost","trade-off","scarcity","constraint","alternative","shift","commute"], flags:{commute:"taxi"} },
+      { id:"e1b", label:"Take the bus.", effects:{money:-2, energy:-5}, expr:"tired",
+        result:["The bus is packed but cheap. You squeeze in and reach the shop at 8:32 — barely on time."],
+        vocab:["opportunity cost","scarcity","constraint","alternative","shift","commute"], flags:{commute:"bus"} },
+      { id:"e1c", label:"Skip breakfast and run.", effects:{energy:-10, health:-3}, expr:"tired",
+        result:["You sprint two blocks, stomach empty. You clock in at 8:31."],
+        vocab:["opportunity cost","scarcity","constraint","alternative","shift","commute"], flags:{commute:"run", skippedBreakfast:true} }
+    ],
+    insight:{
+      title:"Scarcity, Trade-off & Opportunity Cost",
+      body:"Time, money and energy are all scarce. Every choice gives something up.",
+      layers:[
+        {l:"Layer 1 · 生活现象", t:"You overslept. Now time is scarce."},
+        {l:"Layer 2 · 经济机制", t:"Limited time forces a choice — taxi, bus, or running. Each one gives up something else."},
+        {l:"Layer 3 · 经济学解释", t:"Scarcity means resources are limited. Opportunity cost is the value of the next best alternative you give up. Gaining time cost money — that is a trade-off."}
+      ]
+    }
+  },
+
+  e2: {
+    id:"e2", title:"Ingredient Prices Rise", time:"09:05 AM", loc:"MILK TEA SHOP", scene:"shop", expr:"worried",
+    lines:[
+      { s:"me", en:"You hang your apron and join the team huddle." },
+      { s:"mg", avatar:"mg_worried.png", en:"\"Morning. The price of milk has increased again.\"" },
+      { s:"mg", avatar:"mg_worried.png", en:"\"If costs go up, we can't just pretend nothing happened.\"" },
+      { s:"me", en:"Your brain lines up the options: raise, switch, or hold steady — each one an alternative with a cost." }
+    ],
+    choices:[
+      { id:"e2a", label:"Raise prices.", effects:{mood:-2}, expr:"worried",
+        result:["Each drink goes up ¥3. Some regulars frown at the price board. The register will tell the truth later."],
+        vocab:["input cost","pricing strategy","profit margin","alternative"], flags:{price:"raise"} },
+      { id:"e2b", label:"Use a cheaper supplier.", effects:{energy:-6}, expr:"tired",
+        result:["You call three suppliers and switch to a cheaper one. Savings today — but the milk tastes a little different."],
+        vocab:["input cost","operating costs","profit margin","alternative"], flags:{price:"supplier"} },
+      { id:"e2c", label:"Keep prices unchanged.", effects:{mood:-3}, expr:"worried",
+        result:["Prices stay steady. The manager nods slowly, but the profit margin just got thinner."],
+        vocab:["operating costs","profit margin","supply","alternative"], flags:{price:"keep"} }
+    ],
+    insight:{
+      title:"Input Costs & Supply",
+      body:"Higher input costs may reduce supply at the original price level.",
+      layers:[
+        {l:"Layer 1 · 生活现象", t:"The price of milk went up."},
+        {l:"Layer 2 · 经济机制", t:"Milk is an input cost; higher input costs squeeze the profit margin when prices stay unchanged."},
+        {l:"Layer 3 · 经济学解释", t:"At the original price level, higher costs make some production unprofitable, so supply tends to fall. The shop can absorb the cost, raise prices, or cut costs elsewhere — that is a pricing strategy. A single shop's decision like this belongs to microeconomics."}
+      ]
+    }
+  },
+
+  e3: {
+    id:"e3", title:"Customer Reaction", time:"11:20 AM", loc:"MILK TEA SHOP", scene:"shop", expr:"normal",
+    variants:{
+      raise:{
+        lines:[
+          { s:"me", en:"A regular customer reads the new menu and blinks." },
+          { s:"cu", avatar:"cu_regular.png", en:"\"The milk tea is ¥3 more? Why?\"" }
+        ],
+        choices:[
+          { id:"e3ra", label:"Explain politely that milk got more expensive.", effects:{mood:2, customerRating:3}, expr:"happy",
+            result:["You explain the milk price calmly. She nods. \"Okay... that makes sense.\""],
+            vocab:["consumer demand","price sensitivity","customer retention"] },
+          { id:"e3rb", label:"Apologize and offer a small discount.", effects:{money:-6, customerRating:5, mood:1}, expr:"happy",
+            result:["You knock ¥2 off her drink. She leaves smiling — and tells two friends. A small discount is an incentive to stay."],
+            vocab:["customer retention","price sensitivity","incentive"] },
+          { id:"e3rc", label:"Say it is not your decision.", effects:{mood:-2, customerRating:-4}, expr:"angry",
+            result:["She frowns. \"Right.\" She walks out without ordering."],
+            vocab:["customer retention"], flags:{argued:true} }
+        ]
+      },
+      supplier:{
+        lines:[
+          { s:"me", en:"A customer sips her tea and pauses." },
+          { s:"cu", avatar:"cu_adult.png", en:"\"Tastes a little different today.\"" }
+        ],
+        choices:[
+          { id:"e3sa", label:"Admit the supplier changed.", effects:{customerRating:-2, mood:-2}, expr:"worried",
+            result:["\"Oh.\" She finishes quietly and leaves a smaller tip."],
+            vocab:["customer retention","tip"] },
+          { id:"e3sb", label:"Say the recipe is the same.", effects:{mood:1}, expr:"worried",
+            result:["She shrugs and orders anyway. You feel a little guilty."],
+            vocab:["customer retention"], flags:{dishonest:true} },
+          { id:"e3sc", label:"Offer a free topping.", effects:{money:-4, customerRating:4, mood:1}, expr:"happy",
+            result:["\"Free pearls? Deal!\" The line behind her laughs. A free topping is a sweet incentive."],
+            vocab:["consumer demand","customer retention","incentive"] }
+        ]
+      },
+      keep:{
+        lines:[
+          { s:"me", en:"A student customer grins at the price board." },
+          { s:"cu", avatar:"cu_student.png", en:"\"Still my favorite cheap fix.\"" }
+        ],
+        choices:[
+          { id:"e3ka", label:"Smile and thank them.", effects:{mood:2, customerRating:2}, expr:"happy",
+            result:["\"Come back anytime!\" You mean it."],
+            vocab:["consumer demand","customer retention"] },
+          { id:"e3kb", label:"Mention the shop is facing higher costs.", effects:{mood:-1, customerRating:1}, expr:"worried",
+            result:["He nods. \"Yeah, everything's getting expensive.\""],
+            vocab:["operating costs","consumer demand"] },
+          { id:"e3kc", label:"Suggest they try the new fruit tea.", effects:{customerRating:1, money:3}, expr:"happy",
+            result:["He orders the mango tea instead. A small sale, a happy customer."],
+            vocab:["revenue","consumer demand"] }
+        ]
+      }
+    }
+  },
+
+  e4a: {
+    id:"e4a", title:"Breakfast Crash", time:"12:15 PM", loc:"LUNCH RUSH", scene:"rush", expr:"tired",
+    delayed:true,
+    lines:[
+      { s:"me", en:"The noon wave hits. Orders pile up like a wall." },
+      { s:"me", tag:"earlier", en:"Earlier, you skipped breakfast." },
+      { s:"me", en:"Your hands tremble. The room tilts for a second." }
+    ],
+    choices:[
+      { id:"e4a1", label:"Buy a coffee.", effects:{money:-6, energy:10}, expr:"tired",
+        result:["A quick espresso. The fog lifts — mostly."],
+        vocab:["productivity"] },
+      { id:"e4a2", label:"Take a short break.", effects:{energy:8, customerRating:-2, mood:1}, expr:"worried",
+        result:["You step out for two minutes. The queue grumbles."],
+        vocab:["labor","efficiency"] },
+      { id:"e4a3", label:"Keep working.", effects:{energy:-12, health:-2, mood:-3}, expr:"tired",
+        result:["You push through, head pounding."],
+        vocab:["productivity"] }
+    ]
+  },
+
+  e4: {
+    id:"e4", title:"Lunch Rush", time:"12:30 PM", loc:"LUNCH RUSH", scene:"rush", expr:"worried",
+    lines:[
+      { s:"me", en:"Orders explode: 12 drinks in 10 minutes." },
+      { s:"mg", avatar:"mg_normal.png", en:"\"Watch the queue — fast hands, everyone!\"" },
+      { s:"me", en:"Twelve cups, ten minutes. How do you allocate your energy?" }
+    ],
+    choices:[
+      { id:"e4b1", label:"Work faster.", effects:{energy:-20, customerRating:4, money:5}, expr:"tired",
+        result:["You move like a machine. Drinks fly out. A customer tips you ¥5 — a sweet incentive to keep going."],
+        vocab:["productivity","efficiency","revenue","incentive","tip","allocate"], flags:{fast:true} },
+      { id:"e4b2", label:"Ask a coworker for help.", effects:{energy:-4, mood:3, money:-5}, expr:"happy",
+        result:["Your coworker jumps in. After the rush, you buy them a drink. Teamwork!"],
+        vocab:["labor","productivity","allocate"], flags:{helpedCoworker:true} },
+      { id:"e4b3", label:"Slow down to avoid mistakes.", effects:{energy:-6, customerRating:-3, mood:-2}, expr:"worried",
+        result:["Each drink is perfect. The queue grows. Some customers check their phones."],
+        vocab:["efficiency","customer retention"] }
+    ],
+    insight:{
+      title:"Incentives",
+      body:"Rewards change behavior. A tip, a discount, or overtime pay — each one nudges a decision.",
+      layers:[
+        {l:"Layer 1 · 生活现象", t:"A customer tipped you ¥5 during the rush."},
+        {l:"Layer 2 · 经济机制", t:"The tip is a reward for speed. A reward that pushes people toward a behavior is an incentive."},
+        {l:"Layer 3 · 经济学解释", t:"An incentive is anything that motivates a choice — money, a discount, extra pay. Businesses use incentives to shape behavior: higher prices discourage demand; tips and overtime pay encourage effort."}
+      ]
+    }
+  },
+
+  e4c: {
+    id:"e4c", title:"After the Rush", time:"01:10 PM", loc:"MILK TEA SHOP", scene:"shop", expr:"tired",
+    lowState:true,
+    lines:[
+      { s:"me", en:"The rush ends. You lean on the counter, breathing hard." },
+      { s:"me", en:"Your legs feel like jelly. Your energy is nearly empty." },
+      { s:"mg", avatar:"mg_worried.png", en:"\"Sit down before you drop.\"" }
+    ],
+    choices:[
+      { id:"e4c1", label:"Buy a snack.", effects:{money:-5, energy:8, health:2, mood:2}, expr:"tired",
+        result:["A rice ball and a soda. You feel human again."],
+        vocab:["revenue"] },
+      { id:"e4c2", label:"Rest in the back room.", effects:{energy:10, customerRating:-2}, expr:"tired",
+        result:["You sit for five minutes. The floor staff covers you."],
+        vocab:["labor"] },
+      { id:"e4c3", label:"Push through.", effects:{energy:-6, health:-2, mood:-2}, expr:"angry",
+        result:["You refuse to stop. Your body files a complaint."],
+        vocab:["efficiency"] }
+    ]
+  },
+
+  e5: {
+    id:"e5", title:"End of Shift", time:"06:30 PM", loc:"CLOSING TIME", scene:"closing", expr:"tired",
+    lines:[
+      { s:"me", en:"The sign flips to CLOSED." },
+      { s:"mg", avatar:"mg_normal.png", en:"Your manager counts the register, then looks up." },
+      { s:"mg", avatar:"mg_normal.png", en:"\"Rough day. See you tomorrow?\"" }
+    ],
+    choices:[
+      { id:"e5a", label:"Stay 30 minutes to help clean up.", effects:{money:15, energy:-8, health:-3}, expr:"tired",
+        result:["You mop, restock, and earn overtime pay — a clear incentive to stay. Your back protests, your wallet thanks you."],
+        vocab:["overtime pay","revenue","incentive"] },
+      { id:"e5b", label:"Clock out on time.", effects:{mood:3, energy:2}, expr:"happy",
+        result:["You hand over your apron and step into the evening air. Home calls."],
+        vocab:["revenue"] },
+      { id:"e5c", label:"Take a free leftover milk tea home.", effects:{mood:4, health:-2}, expr:"happy",
+        result:["The last cup is yours. Sweet victory — literally."],
+        vocab:["revenue"] }
+    ]
+  }
+};
+
+/* ---------- buffers — 生活化缓冲段（无选择、无数值） ---------- */
+const BUFFERS = {
+  b2: { id:"b2", title:"On the Way", time:"08:35 AM", loc:"STREET", scene:"street", expr:"tired", buffer:true,
+    lines:[
+      { s:"me", en:"The morning air hits your face. You weave through the crowd, apron flapping." },
+      { s:"me", en:"You slide in through the back door at 8:32 — two minutes to spare." },
+      { s:"cw", avatar:"cw_normal.png", en:"\"Cutting it close today, huh?\"" }
+    ] },
+  b3: { id:"b3", title:"Before the Rush", time:"11:40 AM", loc:"MILK TEA SHOP", scene:"shop", expr:"normal", buffer:true,
+    lines:[
+      { s:"cw", avatar:"cw_normal.png", en:"\"See that line forming? Lunch rush is coming.\"" },
+      { s:"me", en:"You wipe the counter and take a breath. Game face on." }
+    ] },
+  b4: { id:"b4", title:"Before Closing", time:"05:40 PM", loc:"MILK TEA SHOP", scene:"shop", expr:"normal", buffer:true,
+    lines:[
+      { s:"cw", avatar:"cw_happy.png", en:"\"Almost closing time. Today felt like a week.\"" },
+      { s:"me", en:"You glance at the clock: 5:40 PM. Just one more hour." }
+    ] }
+};
+
+/* ---------- speakers ---------- */
+const SPEAKERS = {
+  me:{ name:"YOU", cls:"sp-me" },
+  mg:{ name:"MANAGER", cls:"sp-mg" },
+  cw:{ name:"COWORKER", cls:"sp-cw" },
+  cu:{ name:"CUSTOMER", cls:"sp-cu" }
+};
+</script>
+<script>
+/* ============================================================
+   GAME ENGINE
+   ============================================================ */
+"use strict";
+
+/* ---------- helpers ---------- */
+const $ = id => document.getElementById(id);
+function show(id){ $(id).classList.remove("hidden"); }
+function hide(id){ $(id).classList.add("hidden"); }
+function escapeHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+function clampStat(k,v){
+  if(k==="money") return Math.max(0, Math.min(999, Math.round(v)));
+  return Math.max(0, Math.min(100, Math.round(v)));
+}
+function freshState(){
+  return { money:INIT.money, energy:INIT.energy, health:INIT.health, mood:INIT.mood,
+           customerRating:INIT.customerRating, flags:{}, unlocked:[], discovered:[], insightsSeen:[] };
+}
+function cloneS(){ return JSON.parse(JSON.stringify(S)); }
+function restoreS(s){ S = JSON.parse(JSON.stringify(s)); }
+
+const STAT_LABEL = { money:"Money", energy:"Energy", health:"Health", mood:"Mood", customerRating:"Customer Rating" };
+const STAT_KEYS = ["money","energy","health","mood","customerRating"];
+const STAT_DOM  = { money:"money", energy:"energy", health:"health", mood:"mood", customerRating:"cr" };
+
+/* ---------- state ---------- */
+let S = freshState();
+let history = [];          // [{eventId, state}]
+let phase = "title";       // title | story | choice | choosing | result | insight | summary
+let curEvent = null;
+let pendingInsight = null;
+let typeTimer = null, typing = false, typePaused = false, typeFull = "";
+
+const TOTAL = (function(){
+  let n = 0;
+  for(const id in EVENTS){
+    const ev = EVENTS[id];
+    if(ev.variants){ for(const k in ev.variants) n += ev.variants[k].choices.length; }
+    else n += ev.choices.length;
+  }
+  return n;
+})();
+
+/* ---------- event defs ---------- */
+function getEventDef(id, flags){
+  const ev = EVENTS[id] || BUFFERS[id];
+  if(!ev) return null;
+  if(ev.variants){
+    const f = flags || S.flags;
+    const key = f.price || "keep";
+    return Object.assign({}, ev, { lines:ev.variants[key].lines, choices:ev.variants[key].choices, variant:key });
+  }
+  return ev;
+}
+function getNext(id){
+  switch(id){
+    case "e1":  return "b2";
+    case "b2":  return "e2";
+    case "e2":  return "e3";
+    case "e3":  return "b3";
+    case "b3":  return S.flags.skippedBreakfast ? "e4a" : "e4";
+    case "e4a": return "e4";
+    case "e4":  return S.energy <= 40 ? "e4c" : "b4";
+    case "e4c": return "b4";
+    case "b4":  return "e5";
+    case "e5":  return "summary";
+  }
+  return "summary";
+}
+
+/* ---------- scene & expression ---------- */
+function setHeader(ev){
+  $("tb-time").textContent = ev.time;
+  $("tb-loc").textContent = ev.loc;
+}
+function setScene(name){
+  document.querySelectorAll(".scene-img").forEach(el=>{
+    el.classList.toggle("on", el.id === "scene-"+name);
+  });
+}
+function setExpr(name){
+  document.querySelectorAll("#charBox img").forEach(el=>{
+    el.classList.toggle("on", el.id === "char-"+name);
+  });
+}
+function stageShake(){
+  const box = $("sceneBox");
+  box.classList.remove("shake"); void box.offsetWidth;
+  box.classList.add("shake");
+  setTimeout(()=>box.classList.remove("shake"), 600);
+}
+
+/* ---------- HUD ---------- */
+function renderHUD(){
+  $("num-money").textContent = "¥"+S.money;
+  $("num-energy").textContent = S.energy;
+  $("num-health").textContent = S.health;
+  $("num-mood").textContent = S.mood;
+  $("num-cr").textContent = S.customerRating;
+  $("fill-money").style.width = Math.min(100, S.money/500*100)+"%";
+  $("fill-energy").style.width = S.energy+"%";
+  $("fill-health").style.width = S.health+"%";
+  $("fill-mood").style.width = S.mood+"%";
+  $("fill-cr").style.width = S.customerRating+"%";
+}
+function rollNumber(el, from, to, k){
+  const t0 = performance.now(), dur = 700;
+  (function tick(t){
+    const p = Math.min(1,(t-t0)/dur);
+    const eased = 1-Math.pow(1-p,3);
+    const v = Math.round(from+(to-from)*eased);
+    el.textContent = k==="money" ? "¥"+v : v;
+    if(p<1) requestAnimationFrame(tick);
+  })(t0);
+}
+function applyEffects(effects){
+  const deltas = {};
+  for(const k in effects){
+    const old = S[k];
+    S[k] = clampStat(k, old + effects[k]);
+    deltas[k] = S[k] - old;
+  }
+  renderHUD();
+  // delta chips + hud badges + number roll
+  let chips = "";
+  for(const k in deltas){
+    const d = deltas[k];
+    if(!d) continue;
+    const dom = STAT_DOM[k];
+    chips += '<span class="delta-chip '+(d>0?"up":"down")+'">'+STAT_LABEL[k]+" "+(d>0?"+":"")+d+'</span>';
+    const statEl = document.querySelector(".stat."+dom);
+    if(statEl){
+      const b = document.createElement("span");
+      b.className = "s-delta "+(d>0?"up":"down");
+      b.textContent = (d>0?"+":"")+d;
+      statEl.appendChild(b);
+      setTimeout(()=>b.remove(), 1800);
+    }
+    const numEl = $("num-"+dom);
+    if(numEl) rollNumber(numEl, S[k]-d, S[k], k);
+  }
+  if(chips) $("deltas").innerHTML = chips;
+}
+
+/* ---------- typewriter ---------- */
+let lineIndex = 0, linesDone = null, lineWaiting = false, advanceTimer = null;
+let curLines = [], curContainer = null;
+let autoPlay = false;
+function stopTyping(){
+  if(typeTimer){ clearInterval(typeTimer); typeTimer = null; }
+  typing = false;
+}
+function playLines(lines, container, done){
+  stopTyping();
+  clearTimeout(advanceTimer);
+  curLines = lines; curContainer = container;
+  container.innerHTML = "";
+  lineIndex = 0; linesDone = done; lineWaiting = false;
+  typeCurrentLine();
+}
+function typeCurrentLine(){
+  clearTimeout(advanceTimer);
+  lineWaiting = false;
+  if(lineIndex >= curLines.length){
+    stopTyping();
+    const d = linesDone; linesDone = null;
+    if(d) d();
+    return;
+  }
+  typeInto(curContainer, curLines[lineIndex]);
+  lineIndex++;
+}
+function typeInto(el, item){
+  if(typeof item === "object" && item.s){ setSpeakerTag(item.s, item.avatar, item.tag); }
+  const enTxt = typeof item === "string" ? item : item.en;
+  const cnTxt = typeof item === "object" ? (item.cn || "") : "";
+  const text = (lang === "cn") ? (cnTxt || enTxt) : enTxt;
+  const cnLine = (lang === "dual") ? cnTxt : "";
+  typing = true; typeFull = text; typeCn = cnLine;
+  el.innerHTML = "";
+  let pos = 0;
+  typeTimer = setInterval(()=>{
+    if(typePaused) return;
+    pos++;
+    if(pos >= text.length){
+      stopTyping();
+      el.innerHTML = renderRich(text);
+      if(cnLine){ el.insertAdjacentHTML("beforeend", '<div class="cn-line">'+escapeHtml(cnLine)+'</div>'); }
+      lineWaiting = true;
+      if(autoPlay){ advanceTimer = setTimeout(typeCurrentLine, AUTO_DELAY); }
+      else { el.insertAdjacentHTML("beforeend", '<span class="cont-hint">▼ CLICK</span>'); }
+    } else {
+      el.innerHTML = escapeHtml(text.slice(0,pos)) + '<span class="caret">▌</span>';
+    }
+  }, TYPE_MS);
+}
+function skipCurrentLine(){
+  if(!typing || typePaused) return;
+  stopTyping();
+  $("storyText").innerHTML = renderRich(typeFull);
+  if(typeCn){ $("storyText").insertAdjacentHTML("beforeend", '<div class="cn-line">'+escapeHtml(typeCn)+'</div>'); }
+  lineWaiting = true;
+  if(autoPlay){ advanceTimer = setTimeout(typeCurrentLine, AUTO_DELAY); }
+  else { $("storyText").insertAdjacentHTML("beforeend", '<span class="cont-hint">▼ CLICK</span>'); }
+}
+function storyClick(e){
+  if(e && e.target.closest && (e.target.closest(".vw") || e.target.closest(".cn-line"))) return;
+  if(typing){ skipCurrentLine(); return; }
+  if(lineWaiting){ typeCurrentLine(); }
+}
+
+/* ---------- speaker tag ---------- */
+function setSpeakerTag(s, avatar, tag){
+  const sp = $("speaker");
+  if(s === "result"){ sp.className = "sp-res"; sp.innerHTML = "RESULT"; return; }
+  const def = SPEAKERS[s] || SPEAKERS.me;
+  sp.className = def.cls || "sp-me";
+  const img = avatar ? '<span class="sp-avatar"><img src="assets/'+escapeHtml(avatar)+'" alt=""></span>' : "";
+  sp.innerHTML = img + (tag === "earlier" ? "YOU — EARLIER, YOU SKIPPED BREAKFAST" : def.name);
+  sp.classList.toggle("bad", tag === "earlier");
+}
+
+/* ---------- extra conditional lines (low state / past choices) ---------- */
+function extraLines(ev){
+  const out = [];
+  if(ev.id === "e5"){
+    if(S.flags.helpedCoworker){
+      out.push({ s:"cw", avatar:"cw_happy.png", en:"\"Thanks for the drink earlier — you're good people.\"", cn:"「谢谢你之前请的饮料——你人真好。」" });
+    }
+    if(S.mood <= 30){
+      out.push({ s:"mg", avatar:"mg_worried.png", en:"\"You look wiped today. Don't forget to eat.\"", cn:"「你今天看起来很累。别忘了吃饭。」" });
+    }
+  }
+  return out;
+}
+
+/* ---------- rich text with clickable vocab ---------- */
+function renderRich(text){
+  let html = escapeHtml(text);
+  const keys = Object.keys(VOCAB).sort((a,b)=>b.length-a.length);
+  for(const k of keys){
+    const re = new RegExp("\\b("+k.replace(/[.*+?^${}()|[\]\\]/g,"\\$&")+")","gi");
+    html = html.replace(re, '<span class="vw" data-term="$1">$1</span>');
+  }
+  return html;
+}
+
+/* ---------- event flow ---------- */
+function goEvent(id){
+  curEvent = id;
+  history.push({ eventId:id, state:cloneS() });
+  renderEventInner(id);
+}
+function renderEventInner(id){
+  const ev = getEventDef(id);
+  setHeader(ev); setScene(ev.scene); setExpr(ev.expr);
+  phase = "story";
+  hide("btn-continue");
+  $("deltas").innerHTML = ""; $("resultArea").innerHTML = ""; $("choices").innerHTML = "";
+  setSpeakerTag("me");
+  if(ev.lowState) stageShake();
+  const lines = eventLines(ev).concat(extraLines(ev));
+  playLines(lines, $("storyText"), ()=>{
+    if(ev.buffer){ phase = "result"; showContinue("CONTINUE"); }
+    else renderChoices(ev);
+  });
+}
+function renderEventBack(id){
+  curEvent = id;
+  renderEventInner(id);
+}
+function mutateChoices(ev){
+  if(ev.id === "e4c" && S.money < 50){
+    const list = ev.choices.slice();
+    list[0] = { id:"e4c1", label:"Sip free water.", effects:{energy:3}, expr:"tired",
+      result:["Free water, zero yen. Your wallet approves — barely."],
+      vocab:["revenue"], cnLow:true };
+    return list;
+  }
+  return ev.choices;
+}
+function renderChoices(ev){
+  phase = "choice";
+  const c = $("choices"); c.innerHTML = "";
+  mutateChoices(ev).forEach((ch,i)=>{
+    const b = document.createElement("button");
+    b.className = "choice"; b.dataset.idx = i;
+    const cnLbl = choiceLabelCn(ch, ev);
+    b.innerHTML = '<span class="idx">'+(i+1)+'</span>'+escapeHtml(lang === "cn" ? (cnLbl || ch.label) : ch.label)
+      + (lang === "dual" && cnLbl ? '<span class="choice-cn">'+escapeHtml(cnLbl)+'</span>' : "");
+    c.appendChild(b);
+  });
+}
+
+let lastChoice = null;
+function choose(i){
+  const ev = getEventDef(curEvent);
+  const list = mutateChoices(ev);
+  const ch = ev && list[i];
+  if(!ch || phase !== "choice") return;
+  phase = "choosing";
+  lastChoice = ch;
+  document.querySelectorAll(".choice").forEach(b=>{ b.disabled = true; });
+
+  if(!S.discovered.includes(ch.id)) S.discovered.push(ch.id);
+  if(ch.flags) Object.assign(S.flags, ch.flags);
+  applyEffects(ch.effects);
+  setExpr(ch.expr);
+  if(ch.vocab) ch.vocab.forEach(v=>unlockVocab(v));
+
+  setTimeout(()=>{
+    $("choices").innerHTML = "";
+    setSpeakerTag("result");
+    phase = "result";
+    playLines(choiceResultLines(ch, ev), $("storyText"), ()=>finishResult(ev));
+  }, 480);
+}
+function finishResult(ev){
+  if(ev.insight){
+    pendingInsight = ev.insight;
+    if(!S.insightsSeen.includes(ev.insight.title)) S.insightsSeen.push(ev.insight.title);
+    showContinue("INSIGHT →");
+  } else {
+    showContinue("CONTINUE");
+  }
+}
+function showContinue(label){
+  const b = $("btn-continue");
+  b.textContent = label;
+  b.classList.remove("hidden");
+  b.classList.add("pulse");
+}
+function doContinue(){
+  if(phase !== "result" && phase !== "insight") return;
+  if(pendingInsight){ showInsight(pendingInsight, false); pendingInsight = null; hide("btn-continue"); return; }
+  hide("btn-continue");
+  const next = getNext(curEvent);
+  if(next === "summary") buildSummary();
+  else goEvent(next);
+}
+
+/* ---------- economics insight card ---------- */
+let insightFromSummary = false;
+let curInsight = null;
+function showInsight(ins, fromSummary){
+  insightFromSummary = !!fromSummary;
+  curInsight = ins;
+  const ci = CN_INSIGHT[ins.title];
+  const bodyTxt = (lang === "cn" && ci) ? ci.body : ins.body;
+  $("ins-title").textContent = ins.title;
+  $("ins-body").innerHTML = renderRich(bodyTxt)
+    + (lang === "dual" && ci ? '<div class="cn-line">'+escapeHtml(ci.body)+'</div>' : "");
+  $("ins-layers").innerHTML = ins.layers.map((l,i)=>{
+    const lt = (lang === "cn" && ci) ? (ci.layers[i] || "") : l.t;
+    return '<div class="ly"><b>'+escapeHtml(l.l)+'</b><br>'+escapeHtml(lt)
+      + (lang === "dual" && ci ? '<div class="cn-line">'+escapeHtml(ci.layers[i]||"")+'</div>' : '')
+      + '</div>';
+  }).join("");
+  $("ins-learn").classList.add("hidden");
+  $("ins-learn-btn").classList.remove("hidden");
+  phase = "insight";
+  show("insightCard");
+}
+function openInsightByTitle(t){
+  for(const id in EVENTS){
+    const ev = EVENTS[id];
+    if(ev.insight && ev.insight.title === t){ showInsight(ev.insight, true); return; }
+  }
+}
+
+/* ---------- vocabulary ---------- */
+function unlockVocab(term){
+  if(S.unlocked.includes(term)) return;
+  S.unlocked.push(term);
+  renderSidebar(term);
+  toast("NEW WORD UNLOCKED — "+term);
+}
+const VOCAB_SECTIONS = [
+  { key:"core",  en:"CORE CONCEPTS", cn:"核心概念" },
+  { key:"unit1", en:"UNIT 1 WORDS",  cn:"单元一词汇" },
+  { key:"extra", en:"EXTRA WORDS",   cn:"扩展词汇" }
+];
+function renderSidebar(newTerm){
+  const list = $("vocabList"); list.innerHTML = "";
+  if(!S.unlocked.length){
+    list.innerHTML = '<div class="vocab-sec">'+(lang === "cn" ? "暂无词汇" : "NO WORDS YET")+'</div>';
+    return;
+  }
+  VOCAB_SECTIONS.forEach(sec=>{
+    const words = S.unlocked.filter(t=>VOCAB[t] && VOCAB[t].type === sec.key);
+    if(!words.length) return;
+    const head = document.createElement("div");
+    head.className = "vocab-sec";
+    head.textContent = (lang === "cn" ? sec.cn : sec.en) + " (" + words.length + ")";
+    list.appendChild(head);
+    words.forEach(t=>{
+      const b = document.createElement("button");
+      b.className = "vocab-item" + (t === newTerm ? " new" : "");
+      b.innerHTML = '<span>'+escapeHtml(t)+'</span>' + (t === newTerm ? '<span class="tag">NEW</span>' : "");
+      b.onclick = ()=>openVocab(t);
+      list.appendChild(b);
+    });
+  });
+}
+function openVocab(termRaw){
+  const term = termRaw.toLowerCase();
+  const v = VOCAB[term];
+  if(!v) return;
+  $("mv-term").textContent = term;
+  $("mv-zh").textContent = v.zh;
+  $("mv-def").textContent = v.en;
+  $("mv-ex").innerHTML = "Example — <b>"+escapeHtml(v.ex)+"</b>";
+  typePaused = true;
+  show("modal-vocab");
+}
+function openReview(){
+  const list = $("reviewList"); list.innerHTML = "";
+  if(!S.unlocked.length){
+    list.innerHTML = '<div class="rv"><div class="vocab-en">No words unlocked yet.</div><div class="vocab-zh">还没有解锁词汇——继续游戏吧。</div></div>';
+  } else {
+    S.unlocked.forEach(t=>{
+      const v = VOCAB[t];
+      const d = document.createElement("div"); d.className = "rv";
+      d.innerHTML = '<div class="vocab-en">'+escapeHtml(t)+'</div><div class="vocab-zh">'+escapeHtml(v.zh)+'</div><div class="vocab-def">'+escapeHtml(v.en)+'</div>';
+      list.appendChild(d);
+    });
+  }
+  show("modal-review");
+}
+function closeModal(id){ hide(id); typePaused = false; }
+
+/* ---------- toast ---------- */
+let toastTimer = null;
+function toast(msg){
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>t.classList.remove("on"), 2400);
+}
+
+/* ---------- backtracking ---------- */
+function doBack(){
+  if(phase === "summary" || phase === "title") return;
+  if(phase === "result" || phase === "insight"){
+    const entry = history[history.length-1];
+    restoreS(entry.state);
+    renderHUD(); renderSidebar();
+    hide("insightCard"); pendingInsight = null;
+    renderEventBack(entry.eventId);
+    return;
+  }
+  if(phase === "choice" || phase === "story"){
+    if(history.length > 1){
+      history.pop();
+      const entry = history[history.length-1];
+      restoreS(entry.state);
+      renderHUD(); renderSidebar();
+      renderEventBack(entry.eventId);
+    } else {
+      toast("START OF THE DAY — NO EARLIER CHOICE");
+    }
+  }
+}
+function jumpToIndex(i){
+  history = history.slice(0, i+1);
+  const entry = history[i];
+  restoreS(entry.state);
+  renderHUD(); renderSidebar();
+  hide("view-summary"); show("view-game"); hide("insightCard");
+  renderEventBack(entry.eventId);
+}
+function jumpToEvent(id){
+  if(id === "summary"){ closeModal("modal-map"); buildSummary(); return; }
+  let idx = -1;
+  for(let i=history.length-1;i>=0;i--){ if(history[i].eventId === id){ idx = i; break; } }
+  if(idx < 0) return;
+  closeModal("modal-map");
+  jumpToIndex(idx);
+}
+function exploreAnother(){
+  for(let i=0;i<history.length;i++){
+    const entry = history[i];
+    const ev = getEventDef(entry.eventId, entry.state.flags);
+    if(!ev) continue;
+    if(ev.choices.some(c=>!S.discovered.includes(c.id))){
+      jumpToIndex(i);
+      return;
+    }
+  }
+  toast("ALL BRANCHES EXPLORED — REPLAY DAY TO SEE IT CHANGE");
+}
+
+/* ---------- story map ---------- */
+const MAP_DEFS = [
+  { id:"e1", t:"Overslept", s:"Dorm Room" },
+  { id:"e2", t:"Prices Rise", s:"Morning Shift" },
+  { id:"e3", t:"Customer Reaction", s:"Late Morning" },
+  { id:"e4a", t:"Breakfast Crash", s:"Lunch Rush", cond:true },
+  { id:"e4",  t:"Lunch Rush", s:"Noon" },
+  { id:"e4c", t:"After the Rush", s:"Low Energy", cond:true },
+  { id:"e5",  t:"End of Shift", s:"Closing Time" },
+  { id:"summary", t:"Day Summary", s:"Night" }
+];
+function openMap(){
+  const box = $("mapNodes"); box.innerHTML = "";
+  const visited = history.map(h=>h.eventId);
+  const lastReal = [...history].reverse().find(h=>!h.eventId.startsWith("b"));
+  const current = lastReal ? lastReal.eventId : "";
+  MAP_DEFS.forEach(n=>{
+    if(n.cond && !visited.includes(n.id)) return;
+    const row = document.createElement("div");
+    row.className = "map-node";
+    const isCur = n.id === current;
+    const isVis = visited.includes(n.id);
+    if(isCur) row.classList.add("current");
+    else if(isVis) row.classList.add("visited");
+    else row.classList.add("unknown");
+    const icon = document.createElement("div"); icon.className = "icon";
+    icon.textContent = isCur ? "▶" : (isVis ? "✓" : "?");
+    const info = document.createElement("div");
+    info.innerHTML = '<div class="mt">'+escapeHtml(n.t)+'</div><div class="ms">'+escapeHtml(n.s)+'</div>';
+    row.appendChild(icon); row.appendChild(info);
+    if(isVis && !isCur && n.id !== "summary"){
+      row.onclick = ()=>{ openMapClick(n.id); };
+    } else if(isVis && !isCur && n.id === "summary"){
+      row.onclick = ()=>{ openMapClick("summary"); };
+    } else {
+      row.classList.add("dim");
+    }
+    box.appendChild(row);
+  });
+  $("mapCount").textContent = "OUTCOMES DISCOVERED: "+S.discovered.length+" / "+TOTAL;
+  show("modal-map");
+}
+function openMapClick(id){ jumpToEvent(id); }
+
+/* ---------- summary ---------- */
+function computeHidden(){
+  const f = S.flags, out = [];
+  if(f.price === "raise" && f.argued){
+    out.push({ label:"A customer left a bad review tonight", note:"You argued with a customer this morning.", cnLabel:"今晚有位顾客留下了差评", cnNote:"今天早上你和顾客争执过。", effects:{ customerRating:-10 } });
+  } else if(f.price === "raise"){
+    out.push({ label:"A customer left a bad review tonight", note:"The price hike didn't sit well with everyone.", cnLabel:"今晚有位顾客留下了差评", cnNote:"涨价让一部分人难以接受。", effects:{ customerRating:-6 } });
+  }
+  if(f.price === "supplier" && f.dishonest){
+    out.push({ label:"A review says the tea tasted different", note:"You said the recipe was the same. It wasn't.", cnLabel:"有评价说茶味变了", cnNote:"你说配方没变，其实不是。", effects:{ customerRating:-6 } });
+  } else if(f.price === "supplier"){
+    out.push({ label:"A review says the tea tasted different", note:"The cheaper milk left a trace.", cnLabel:"有评价说茶味变了", cnNote:"更便宜的牛奶留下了痕迹。", effects:{ customerRating:-3 } });
+  }
+  if(f.fast){
+    out.push({ label:"The manager noticed your speed", note:"\"Fast hands,\" she said at the end of the day.", cnLabel:"店长注意到了你的速度", cnNote:"「手真快。」她下班时说。", effects:{ mood:2 } });
+  }
+  if(f.skippedBreakfast){
+    out.push({ label:"You skipped breakfast this morning", note:"You crashed during the lunch rush.", cnLabel:"今天早上你没吃早饭", cnNote:"午间高峰时你差点撑不住。", effects:null });
+  }
+  if(S.customerRating >= 60){
+    out.push({ label:"Customers tipped well today", note:"Your service earned a little extra.", cnLabel:"顾客今天小费给得不错", cnNote:"你的服务换来了一点额外收入。", effects:{ money:6 } });
+  }
+  return out;
+}
+let summaryApplied = false;
+function applyHidden(){
+  if(summaryApplied) return;
+  summaryApplied = true;
+  computeHidden().forEach(h=>{
+    if(h.effects){ for(const k in h.effects){ S[k] = clampStat(k, S[k] + h.effects[k]); } }
+  });
+}
+function buildSummary(){
+  phase = "summary";
+  applyHidden();
+  ["microeconomics","macroeconomics","positive economics","normative economics"].forEach(t=>{
+    if(!S.unlocked.includes(t)) S.unlocked.push(t);
+  });
+  renderSidebar();
+  renderSummary();
+  hide("view-game"); show("view-summary");
+}
+function renderSummary(){
+  const P = (en, cn)=> lang === "cn" ? cn : en;
+  $("sum-h-status").textContent  = P("FINAL STATUS","最终状态");
+  $("sum-h-hidden").textContent  = P("HIDDEN RESULTS","隐藏结果");
+  $("sum-h-concepts").textContent = P("ECONOMICS CONCEPTS","经济学概念");
+  $("sum-h-vocab").textContent   = P("UNIT 1 VOCABULARY","单元一词汇");
+  $("sum-h-unit1").textContent   = P("UNIT 1 WRAP-UP","单元一收口");
+  $("sum-h-explore").textContent = P("EXPLORATION","探索进度");
+
+  const grid = $("sum-stats"); grid.innerHTML = "";
+  STAT_KEYS.forEach(k=>{
+    const from = INIT[k], to = S[k], d = to - from;
+    const row = document.createElement("div"); row.className = "sum-row";
+    row.innerHTML =
+      '<span class="k">'+STAT_LABEL[k]+(lang !== "en" ? " · "+STAT_LABEL_CN[k] : "")+'</span>'+
+      '<span class="v">'+(k==="money"?"¥"+from:from)+'</span>'+
+      '<span class="arrow">→</span>'+
+      '<span class="v">'+(k==="money"?"¥"+to:to)+'</span>'+
+      '<span class="d '+(d>0?"up":(d<0?"down":""))+'">'+(d>0?"+":"")+d+'</span>';
+    grid.appendChild(row);
+  });
+
+  const hidden = computeHidden();
+  const hb = $("sum-hidden"); hb.innerHTML = "";
+  if(hidden.length){
+    hidden.forEach(h=>{
+      let effTxt = "";
+      if(h.effects) effTxt = Object.keys(h.effects).map(k=>STAT_LABEL[k]+(lang !== "en" ? "·"+STAT_LABEL_CN[k] : "")+" "+(h.effects[k]>0?"+":"")+h.effects[k]).join("  ");
+      const c = document.createElement("div"); c.className = "hidden-card";
+      const primary = lang === "cn" ? (h.cnLabel || h.label) : h.label;
+      const note = lang === "cn" ? (h.cnNote || h.note) : h.note;
+      c.innerHTML = '<span class="hb">'+(lang === "cn" ? "隐藏结果" : "HIDDEN RESULT")+'</span>'+escapeHtml(primary)+
+        '<div class="he">'+escapeHtml(note)+(effTxt ? " · "+escapeHtml(effTxt) : "")+'</div>';
+      hb.appendChild(c);
+    });
+  } else {
+    hb.innerHTML = '<div class="hidden-card"><span class="hb">'+(lang === "cn" ? "无" : "NONE")+'</span>'+escapeHtml(P("No hidden surprises today. Try a riskier choice.","今天没有隐藏惊喜。试试更大胆的选择。"))+'</div>';
+  }
+
+  const cb = $("sum-concepts"); cb.innerHTML = "";
+  (S.insightsSeen.length ? S.insightsSeen : ["Scarcity, Trade-off & Opportunity Cost","Input Costs & Supply","Incentives"]).forEach(t=>{
+    cb.innerHTML += '<span class="chip concept" data-concept="'+escapeHtml(t)+'">'+escapeHtml(t)+'</span>';
+  });
+
+  const vb = $("sum-vocab"); vb.innerHTML = "";
+  if(S.unlocked.length){
+    VOCAB_SECTIONS.forEach(sec=>{
+      const words = S.unlocked.filter(t=>VOCAB[t] && VOCAB[t].type === sec.key);
+      if(!words.length) return;
+      vb.innerHTML += '<div class="vocab-sec" style="width:100%;">'+(lang === "cn" ? sec.cn : sec.en)+" ("+words.length+")</div>";
+      words.forEach(t=>{
+        vb.innerHTML += '<span class="chip" onclick="openVocab(\''+t+'\')">'+escapeHtml(t)+'</span>';
+      });
+    });
+  } else {
+    vb.innerHTML = '<span class="chip">'+escapeHtml(P("None yet — replay to unlock words","还没有词汇——重玩一局解锁吧"))+'</span>';
+  }
+
+  const wb = $("sum-unit1"); wb.innerHTML = "";
+  const wrapData = [
+    { t:"MICRO vs MACRO",
+      en:"Microeconomics: one shop, one worker, one customer. Macroeconomics: the economy as a whole.",
+      cn:"微观经济学（microeconomics）研究单个店铺、单个消费者；宏观经济学（macroeconomics）研究整体经济。" },
+    { t:"POSITIVE vs NORMATIVE",
+      en:"Positive: \"Higher prices may reduce demand.\" Normative: \"The shop should keep prices low for students.\"",
+      cn:"实证（positive）陈述“是什么、可能发生什么”；规范（normative）陈述“应该怎样”。" }
+  ];
+  wrapData.forEach(w=>{
+    const card = document.createElement("div"); card.className = "wrap-card";
+    card.innerHTML = '<div class="wc-t">'+w.t+'</div><div class="wc-en">'+escapeHtml(lang === "cn" ? w.cn : w.en)+'</div>'
+      + (lang === "dual" ? '<div class="wc-cn">'+escapeHtml(w.cn)+'</div>' : '');
+    wb.appendChild(card);
+  });
+
+  const ob = $("sum-outcomes"); ob.innerHTML = "";
+  ob.innerHTML = '<span class="chip outcome">OUTCOMES DISCOVERED: '+S.discovered.length+' / '+TOTAL+'</span>';
+}
+
+/* ---------- replay / start ---------- */
+function replay(){
+  S = freshState();
+  history = [];
+  curEvent = null; pendingInsight = null; lastChoice = null;
+  summaryApplied = false; curInsight = null;
+  stopTyping(); clearTimeout(advanceTimer); lineWaiting = false;
+  renderHUD(); renderSidebar();
+  hide("insightCard"); hide("view-summary"); hide("modal-vocab"); hide("modal-map"); hide("modal-review");
+  hide("view-title"); show("view-game");
+  syncLangUI();
+  goEvent("e1");
+}
+
+/* ---------- language switching (live, no restart) ---------- */
+function syncLangUI(){
+  document.querySelectorAll("#title-lang .px-btn, #lang-seg button").forEach(b=>{
+    b.classList.toggle("on", b.dataset.lang === lang);
+  });
+  const app = document.getElementById("app");
+  app.classList.remove("mode-cn","mode-en","mode-dual");
+  app.classList.add("mode-"+lang);
+  const L = (en, cn)=> lang === "cn" ? cn : en;
+  $("btn-start").textContent = L("START DAY","开始新的一天");
+  $("btn-continue").textContent = L(pendingInsight ? "INSIGHT →" : "CONTINUE", pendingInsight ? "洞察 →" : "继续");
+  $("btn-back").textContent = L("BACK","返回");
+  $("btn-map").textContent = L("STORY MAP","剧情地图");
+  $("btn-vocab").textContent = L("VOCABULARY","词汇");
+  $("btn-replay").textContent = L("REPLAY DAY","重新开始");
+  $("btn-explore").textContent = L("EXPLORE ANOTHER CHOICE","探索其他选择");
+  $("btn-review").textContent = L("VOCABULARY REVIEW","词汇复习");
+  $("ins-learn-btn").textContent = L("LEARN MORE","了解更多");
+  $("ins-continue").textContent = L("CONTINUE","继续");
+  $("side-foot").innerHTML = lang === "cn" ? "点击词汇查看中文释义" : "CLICK A WORD TO SEE<br>THE CHINESE MEANING";
+  renderSidebar();
+}
+function setLang(l){
+  if(!["en","cn","dual"].includes(l)) return;
+  const changed = lang !== l;
+  lang = l;
+  syncLangUI();
+  if(!changed || phase === "title") return;
+  if(phase === "summary"){ renderSummary(); return; }
+  if(phase === "insight" && curInsight){ showInsight(curInsight, insightFromSummary); return; }
+  if(phase === "result" && lastChoice && curEvent){
+    const ev = getEventDef(curEvent);
+    stopTyping(); clearTimeout(advanceTimer);
+    $("choices").innerHTML = "";
+    playLines(choiceResultLines(lastChoice, ev), $("storyText"), ()=>{});
+    return;
+  }
+  if(curEvent){ renderEventInner(curEvent); }
+}
+
+/* ---------- events wiring ---------- */
+function toggleAuto(){
+  autoPlay = !autoPlay;
+  const b = $("btn-auto");
+  b.textContent = autoPlay ? "AUTO ON" : "AUTO OFF";
+  b.classList.toggle("on", autoPlay);
+  toast(autoPlay ? "自动播放已开启" : "自动播放已关闭");
+  if(autoPlay){
+    if(lineWaiting){ advanceTimer = setTimeout(typeCurrentLine, AUTO_DELAY); }
+  } else {
+    clearTimeout(advanceTimer); advanceTimer = null;
+    if(lineWaiting && !$("storyText").querySelector(".cont-hint")){
+      $("storyText").insertAdjacentHTML("beforeend", '<span class="cont-hint">▼ CLICK</span>');
+    }
+  }
+}
+document.addEventListener("click", e=>{
+  const cc = e.target.closest("[data-concept]");
+  if(cc){ openInsightByTitle(cc.dataset.concept); return; }
+  const vw = e.target.closest(".vw");
+  if(vw){ openVocab(vw.dataset.term); return; }
+  const ch = e.target.closest(".choice");
+  if(ch && !ch.disabled){ choose(parseInt(ch.dataset.idx, 10)); return; }
+});
+$("storyText").addEventListener("click", storyClick);
+$("btn-start").onclick = replay;
+document.querySelectorAll("#title-lang .px-btn, #lang-seg button").forEach(b=>{
+  b.onclick = ()=>setLang(b.dataset.lang);
+});
+$("btn-auto").onclick = toggleAuto;
+$("btn-back").onclick = doBack;
+$("btn-map").onclick = openMap;
+$("btn-vocab").onclick = openReview;
+$("btn-continue").onclick = doContinue;
+$("ins-learn-btn").onclick = ()=>{ $("ins-learn").classList.remove("hidden"); $("ins-learn-btn").classList.add("hidden"); };
+$("ins-continue").onclick = ()=>{ hide("insightCard"); if(insightFromSummary){ insightFromSummary = false; phase = "summary"; } else { doContinue(); } };
+$("btn-replay").onclick = replay;
+$("btn-explore").onclick = exploreAnother;
+$("btn-review").onclick = openReview;
+document.querySelectorAll("[data-close]").forEach(el=>{
+  el.onclick = ()=>closeModal(el.dataset.close);
+});
+document.querySelectorAll(".modal-veil").forEach(m=>{
+  m.addEventListener("click", e=>{ if(e.target === m) closeModal(m.id); });
+});
+document.addEventListener("keydown", e=>{
+  if(e.key === "Escape"){
+    document.querySelectorAll(".modal-veil:not(.hidden)").forEach(m=>closeModal(m.id));
+    return;
+  }
+  if((e.key === "Enter" || e.key === " ") && phase === "choice"){
+    const btn = document.querySelector(".choice:not(:disabled)");
+    if(btn){ e.preventDefault(); btn.click(); }
+  }
+  if(e.key === "Enter" && (phase === "result" || phase === "insight")){
+    doContinue();
+  }
+});
+
+syncLangUI();
+renderHUD();
+</script>
+</body>
+</html>
