@@ -168,7 +168,7 @@ body{
   position:absolute; left:16px; right:16px; bottom:14px; z-index:4;
   background:var(--panel); border:3px solid var(--line);
   box-shadow:0 0 0 3px var(--line2), 0 8px 0 rgba(0,0,0,.32);
-  padding:16px 20px 14px; min-height:196px; display:flex; flex-direction:column;
+  padding:34px 20px 14px; min-height:196px; display:flex; flex-direction:column;
 }
 #speaker{
   position:absolute; top:-18px; left:14px; font-family:var(--font-px); font-size:9px;
@@ -219,7 +219,7 @@ body{
 /* insight card */
 #insightCard{
   position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); z-index:75;
-  width:min(640px, 88%); background:#1b1d36; border:3px solid var(--line);
+  width:min(640px, 88%); max-height:88vh; overflow-y:auto; background:#1b1d36; border:3px solid var(--line);
   box-shadow:0 0 0 3px var(--yellow), 0 0 0 6px var(--line), 0 14px 0 rgba(0,0,0,.35);
   padding:22px 26px; animation:cardIn .25s ease-out;
 }
@@ -320,7 +320,16 @@ body{
 .vocab-zh{font-family:var(--font-cn); font-size:16px; color:var(--ink); margin-bottom:12px;}
 .vocab-def{font-family:var(--font-term); font-size:21px; color:var(--dim); line-height:1.45; margin-bottom:12px;}
 .vocab-ex{font-family:var(--font-term); font-size:19px; color:var(--faint); font-style:italic; border-top:2px dashed var(--line2); padding-top:10px; line-height:1.4;}
+.vocab-excn{font-family:var(--font-cn); font-size:16px; color:var(--faint); line-height:1.5; display:none; margin-top:4px;}
 .vocab-ex b{color:var(--cyan); font-weight:normal;}
+.vocab-cnhelp{display:none; font-family:var(--font-cn); font-size:18px; color:var(--ink); line-height:1.5;
+  background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2);
+  padding:10px 12px; margin-bottom:12px;}
+.cn-help-btn{font-family:var(--font-px); font-size:9px; color:var(--cyan); background:transparent;
+  border:2px solid var(--cyan); box-shadow:0 0 0 2px var(--line2); padding:6px 12px;
+  cursor:pointer; letter-spacing:1px; margin-bottom:12px; transition:background .1s, color .1s;}
+.cn-help-btn:hover{background:var(--cyan); color:#0e2733;}
+.vocab-en-sub{font-family:var(--font-term); font-size:15px; color:var(--faint); line-height:1.45; margin-bottom:12px; font-style:italic;}
 
 #reviewList{display:flex; flex-direction:column; gap:12px;}
 #reviewList .rv{background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); padding:10px 12px;}
@@ -357,8 +366,8 @@ body{
 .shake{animation:shakeX .5s ease;}
 
 /* scrollbar */
-#vocabList::-webkit-scrollbar,.modal-box::-webkit-scrollbar,#view-summary::-webkit-scrollbar{width:10px;}
-#vocabList::-webkit-scrollbar-thumb,.modal-box::-webkit-scrollbar-thumb,#view-summary::-webkit-scrollbar-thumb{background:var(--line2); border:2px solid var(--line);}
+#vocabList::-webkit-scrollbar,.modal-box::-webkit-scrollbar,#view-summary::-webkit-scrollbar,#insightCard::-webkit-scrollbar{width:10px;}
+#vocabList::-webkit-scrollbar-thumb,.modal-box::-webkit-scrollbar-thumb,#view-summary::-webkit-scrollbar-thumb,#insightCard::-webkit-scrollbar-thumb{background:var(--line2); border:2px solid var(--line);}
 
 /* ============ V0.2: LANGUAGE, SPEAKERS, VOCAB TIERS ============ */
 /* title language picker */
@@ -387,8 +396,8 @@ body{
 #app.mode-cn .choice{font-family:var(--font-cn); font-size:18px;}
 #app.mode-cn .ins-body{font-family:var(--font-cn); font-size:20px;}
 #app.mode-cn .ins-learn .ly{font-family:var(--font-cn); font-size:18px;}
-#app.mode-cn .vocab-def{font-family:var(--font-cn); font-size:18px;}
-#app.mode-cn .vocab-ex{font-family:var(--font-cn); font-size:17px;}
+#app.mode-cn .vocab-ex{font-size:14px; color:var(--faint);}
+#app.mode-cn .vocab-excn{font-size:14px; color:var(--faint);}
 #app.mode-cn .sum-row{font-family:var(--font-cn); font-size:19px;}
 #app.mode-cn .hidden-card{font-family:var(--font-cn); font-size:18px;}
 #app.mode-cn .wrap-card .wc-en{font-family:var(--font-cn); font-size:16px;}
@@ -430,6 +439,7 @@ body{
   .sum-grid{grid-template-columns:1fr;}
   .wrap-grid{grid-template-columns:1fr;}
   .lang-seg button{font-size:7px; padding:6px 6px;}
+  .cn-help-btn{min-height:44px; display:inline-flex; align-items:center;}
   #botbar{gap:8px; padding-bottom:calc(10px + env(safe-area-inset-bottom));}
   #botbar .px-btn{padding:10px 12px; font-size:9px; min-height:46px; display:flex; align-items:center;}
   .chip{min-height:44px; display:inline-flex; align-items:center;}
@@ -438,7 +448,7 @@ body{
 @media (max-width:520px){
   #charBox{width:100px; bottom:188px;}
   #storyText{font-size:18px;}
-  #dialog{min-height:180px; padding:14px 14px 12px;}
+  #dialog{min-height:180px; padding:32px 14px 12px;}
   .choice{font-size:18px; padding:8px 11px; min-height:46px; display:flex; align-items:center;}
   .title-logo{font-size:18px;}
   .title-card img{width:140px; height:140px;}
@@ -448,6 +458,7 @@ body{
 </style>
 </head>
 <body>
+<audio id="bgm" loop preload="auto" src="assets/bgm.mp3"></audio>
 <div id="crt"></div>
 <div id="app">
 <!-- ================= TITLE VIEW ================= -->
@@ -487,6 +498,7 @@ body{
         <button data-lang="dual" type="button">双语</button>
       </div>
       <button class="tb-chip cn-toggle" id="btn-auto" type="button">AUTO OFF</button>
+      <button class="tb-chip cn-toggle" id="btn-music" type="button">♪ OFF</button>
     </div>
     <div id="hud">
       <div class="stat money"><div class="s-top"><span class="s-name">MONEY</span><span class="s-num money" id="num-money">¥350</span></div><div class="s-bar"><div class="s-fill" id="fill-money"></div></div></div>
@@ -565,6 +577,7 @@ body{
   </div>
   <div class="ins-actions">
     <button class="px-btn" id="ins-learn-btn">LEARN MORE</button>
+    <button class="cn-help-btn hidden" id="ins-cn-btn" type="button">中文帮助</button>
     <button class="px-btn cyan" id="ins-continue">CONTINUE</button>
   </div>
 </div>
@@ -604,7 +617,10 @@ body{
     <h3>FINANCE ENGLISH<span class="cn" id="mv-zh"></span></h3>
     <div class="vocab-en" id="mv-term"></div>
     <div class="vocab-def" id="mv-def"></div>
+    <div class="vocab-cnhelp" id="mv-cnhelp"></div>
+    <button class="cn-help-btn" id="mv-help" type="button">CN HELP</button>
     <div class="vocab-ex" id="mv-ex"></div>
+    <div class="vocab-excn" id="mv-excn"></div>
   </div>
 </div>
 
@@ -637,35 +653,35 @@ const INIT = { money:350, energy:80, health:75, mood:65, customerRating:50 };
 
 const VOCAB = {
   /* ===== CORE CONCEPTS — Unit 1 PPT 核心概念 ===== */
-  "scarcity":            { type:"core", zh:"稀缺性", en:"The condition of limited resources — you cannot have everything you want.", ex:"Time is scarce when you oversleep." },
-  "trade-off":           { type:"core", zh:"权衡取舍", en:"A situation where gaining one benefit requires giving up another.", ex:"This morning you traded money for time." },
-  "opportunity cost":    { type:"core", zh:"机会成本", en:"The value of the next best alternative you give up when you make a choice.", ex:"The taxi cost ¥18 — money you could have spent on lunch instead." },
-  "incentive":           { type:"core", zh:"激励", en:"Something that motivates a choice — money, a discount, or extra pay.", ex:"A ¥5 tip is an incentive to work faster." },
-  "alternative":         { type:"core", zh:"备选方案", en:"Another option you could choose instead.", ex:"Taxi, bus, and running are three alternatives." },
-  "allocate":            { type:"core", zh:"配置", en:"To decide how to divide limited resources among different uses.", ex:"Twelve orders — how do you allocate your energy?" },
-  "revenue":             { type:"core", zh:"营业收入", en:"The total money a business takes in from sales.", ex:"More drinks served → more revenue." },
-  "constraint":          { type:"core", zh:"约束", en:"A limit that restricts your choices.", ex:"Twenty minutes is a hard constraint this morning." },
-  "efficiency":          { type:"core", zh:"效率", en:"Getting a task done with the least wasted time or effort.", ex:"Smooth teamwork improves efficiency." },
-  "supply":              { type:"core", zh:"供给", en:"The amount of a good sellers are willing and able to sell at a given price.", ex:"At the old price, higher costs make supply shrink." },
-  "consumer demand":     { type:"core", zh:"消费者需求", en:"The amount of a good buyers want and can afford at a given price.", ex:"A ¥3 price jump may cut consumer demand." },
-  "microeconomics":      { type:"core", zh:"微观经济学", en:"The study of individual consumers, workers, and firms.", ex:"A milk tea shop's pricing is a microeconomics question." },
-  "macroeconomics":      { type:"core", zh:"宏观经济学", en:"The study of the economy as a whole.", ex:"National inflation is a macroeconomics topic." },
-  "positive economics":  { type:"core", zh:"实证经济学", en:"Statements about what is or what may happen — testable with facts.", ex:"Higher prices may reduce demand." },
-  "normative economics": { type:"core", zh:"规范经济学", en:"Statements about what ought to be — based on values or opinions.", ex:"The shop should keep prices low for students." },
+  "scarcity":            { type:"core", zh:"稀缺性", en:"The condition of limited resources — you cannot have everything you want.", ex:"Time is scarce when you oversleep.", exCn:"睡过头的时候，时间就变得稀缺了。" },
+  "trade-off":           { type:"core", zh:"权衡取舍", en:"A situation where gaining one benefit requires giving up another.", ex:"This morning you traded money for time.", exCn:"今天早上，你花钱换来了时间。" },
+  "opportunity cost":    { type:"core", zh:"机会成本", en:"The value of the next best alternative you give up when you make a choice.", ex:"The taxi cost ¥18 — money you could have spent on lunch instead.", exCn:"打车花了 18 元——这笔钱本来可以拿去买午饭。" },
+  "incentive":           { type:"core", zh:"激励", en:"Something that motivates a choice — money, a discount, or extra pay.", ex:"A ¥5 tip is an incentive to work faster.", exCn:"5 元小费，就是让你干得更快的激励。" },
+  "alternative":         { type:"core", zh:"备选方案", en:"Another option you could choose instead.", ex:"Taxi, bus, and running are three alternatives.", exCn:"打车、坐公交、跑步，是三个备选方案。" },
+  "allocate":            { type:"core", zh:"配置", en:"To decide how to divide limited resources among different uses.", ex:"Twelve orders — how do you allocate your energy?", exCn:"十二单订单——你打算怎么分配自己的精力？" },
+  "revenue":             { type:"core", zh:"营业收入", en:"The total money a business takes in from sales.", ex:"More drinks served → more revenue.", exCn:"卖出去的奶茶越多，营业收入就越多。" },
+  "constraint":          { type:"core", zh:"约束", en:"A limit that restricts your choices.", ex:"Twenty minutes is a hard constraint this morning.", exCn:"今早只有二十分钟，这是个硬约束。" },
+  "efficiency":          { type:"core", zh:"效率", en:"Getting a task done with the least wasted time or effort.", ex:"Smooth teamwork improves efficiency.", exCn:"配合顺畅，就能提高效率。" },
+  "supply":              { type:"core", zh:"供给", en:"How much of a product sellers can sell at a certain price.", ex:"At the old price, higher costs make supply shrink.", exCn:"价格不变时，成本上升会让供给减少。" },
+  "consumer demand":     { type:"core", zh:"消费者需求", en:"How much of a product buyers want and can pay for at a certain price.", ex:"A ¥3 price jump may cut consumer demand.", exCn:"涨价 3 元，可能会压低消费者需求。" },
+  "microeconomics":      { type:"core", zh:"微观经济学", en:"The study of individual consumers, workers, and firms.", ex:"A milk tea shop's pricing is a microeconomics question.", exCn:"一家奶茶店怎么定价，是一个微观经济学问题。" },
+  "macroeconomics":      { type:"core", zh:"宏观经济学", en:"The study of the economy as a whole.", ex:"National inflation is a macroeconomics topic.", exCn:"全国物价上涨，是一个宏观经济学话题。" },
+  "positive economics":  { type:"core", zh:"实证经济学", en:"Facts-based statements about what is or what may happen.", ex:"Higher prices may reduce demand.", exCn:"价格上涨，可能会降低需求。" },
+  "normative economics": { type:"core", zh:"规范经济学", en:"Opinion-based statements about what should be.", ex:"The shop should keep prices low for students.", exCn:"这家店应该给学生保持低价。" },
   /* ===== UNIT 1 WORDS — 正式词汇表词汇，剧情中实际使用 ===== */
-  "input cost":          { type:"unit1", zh:"投入成本", en:"The cost of the materials and resources used to produce something.", ex:"Milk is an input cost of every cup of milk tea." },
-  "operating costs":     { type:"unit1", zh:"运营成本", en:"The money a business spends to keep running: rent, wages, ingredients, utilities.", ex:"Higher operating costs squeeze the shop's profit." },
-  "pricing strategy":    { type:"unit1", zh:"定价策略", en:"A business's plan for deciding what price to charge.", ex:"Raising every drink by ¥3 is one pricing strategy." },
-  "profit margin":       { type:"unit1", zh:"利润率", en:"The share of each sale that remains after costs are paid.", ex:"Costs up and prices unchanged → the profit margin shrinks." },
-  "price sensitivity":   { type:"unit1", zh:"价格敏感度", en:"How strongly buyers react when the price changes.", ex:"Students are price-sensitive — small price changes change their orders." },
-  "customer retention":  { type:"unit1", zh:"客户留存", en:"A business's ability to keep customers coming back.", ex:"A kind reply protects customer retention." },
-  "productivity":        { type:"unit1", zh:"生产率", en:"Output produced per unit of input, such as drinks per hour.", ex:"Faster service raises your productivity." },
-  "labor":               { type:"unit1", zh:"劳动力", en:"The human work used to produce goods and services.", ex:"Asking a coworker for help adds labor to the rush." },
-  "overtime pay":        { type:"unit1", zh:"加班费", en:"Extra pay for working beyond your scheduled hours.", ex:"Staying 30 minutes late earns overtime pay." },
+  "input cost":          { type:"unit1", zh:"投入成本", en:"The cost of the materials and resources used to produce something.", ex:"Milk is an input cost of every cup of milk tea.", exCn:"牛奶，就是每杯奶茶的投入成本。" },
+  "operating costs":     { type:"unit1", zh:"运营成本", en:"The money a business spends to keep running: rent, wages, ingredients, utilities.", ex:"Higher operating costs squeeze the shop's profit.", exCn:"运营成本上升，会挤压店铺的利润。" },
+  "pricing strategy":    { type:"unit1", zh:"定价策略", en:"A business's plan for deciding what price to charge.", ex:"Raising every drink by ¥3 is one pricing strategy.", exCn:"每杯奶茶涨价 3 元，就是一种定价策略。" },
+  "profit margin":       { type:"unit1", zh:"利润率", en:"The share of each sale that remains after costs are paid.", ex:"Costs up and prices unchanged → the profit margin shrinks.", exCn:"成本上涨、价格不变 → 利润率就缩水了。" },
+  "price sensitivity":   { type:"unit1", zh:"价格敏感度", en:"How strongly buyers react when the price changes.", ex:"Students are price-sensitive — small price changes change their orders.", exCn:"学生对价格很敏感——很小的涨价就会改变他们点什么。" },
+  "customer retention":  { type:"unit1", zh:"客户留存", en:"A business's ability to keep customers coming back.", ex:"A kind reply protects customer retention.", exCn:"客气回应一句，能保住客户留存。" },
+  "productivity":        { type:"unit1", zh:"生产率", en:"Output produced per unit of input, such as drinks per hour.", ex:"Faster service raises your productivity.", exCn:"出餐更快，你的生产率就更高。" },
+  "labor":               { type:"unit1", zh:"劳动力", en:"The human work used to produce goods and services.", ex:"Asking a coworker for help adds labor to the rush.", exCn:"叫同事来帮忙，就是给高峰期增加了劳动力。" },
+  "overtime pay":        { type:"unit1", zh:"加班费", en:"Extra pay for working beyond your scheduled hours.", ex:"Staying 30 minutes late earns overtime pay.", exCn:"多留半小时下班，就能赚到加班费。" },
   /* ===== EXTRA WORDS — 奶茶店剧情需要的扩展词 ===== */
-  "tip":                 { type:"extra", zh:"小费", en:"A small extra payment for good service.", ex:"A customer left a ¥5 tip." },
-  "shift":               { type:"extra", zh:"班次", en:"A scheduled period of work.", ex:"Your shift starts at 8:30." },
-  "commute":             { type:"extra", zh:"通勤", en:"The regular trip between home and work.", ex:"The commute takes 20 minutes." }
+  "tip":                 { type:"extra", zh:"小费", en:"A small extra payment for good service.", ex:"A customer left a ¥5 tip.", exCn:"一位顾客留下了 5 元小费。" },
+  "shift":               { type:"extra", zh:"班次", en:"A scheduled period of work.", ex:"Your shift starts at 8:30.", exCn:"你的班次 8:30 开始。" },
+  "commute":             { type:"extra", zh:"通勤", en:"The regular trip between home and work.", ex:"The commute takes 20 minutes.", exCn:"这趟通勤要花 20 分钟。" }
 };
 
 /* ---------- bilingual 中英对照 data & helpers ---------- */
@@ -680,7 +696,7 @@ const CN = {
       "你睁开一只眼：早上 8:10。你的 shift（班次）8:30 开始。",
       "你从床上滚起来，套上围裙，抓起钥匙。",
       "奶茶店在 20 分钟路程之外。你的 commute（通勤）有三条路——每条都是一个 alternative（备选方案）。",
-      "时间是一个硬性 constraint（约束）。稀缺（scarcity）今天就摆在面前：时间不够，钱包里的钱也不够。"
+      "稀缺（scarcity）今天就摆在面前：时间不够，钱包里的钱也不够。"
     ],
     choices: {
       e1a:{ label:"打车。", result:["出租车停在路边。15 分钟后你到了店里——准时，但钱包轻了不少。你花了钱，省了时间。"] },
@@ -813,7 +829,8 @@ const CN_INSIGHT = {
     layers:[
       "你睡过头了。现在时间很稀缺。",
       "时间有限，必须做选择：打车、公交还是跑步——每种都要放弃点别的。",
-      "稀缺（scarcity）意味着资源有限。机会成本（opportunity cost）是你做出选择时放弃的次优选择的价值。用金钱换时间，就是一次权衡取舍（trade-off）。"
+      "稀缺（scarcity）意味着资源有限。机会成本（opportunity cost）是你做出选择时放弃的次优选择的价值。用金钱换时间，就是一次权衡取舍（trade-off）。",
+      "核心原则：经济学的基础是稀缺性（scarcity）概念——The foundation of economics lies in the concept of scarcity。你本可以从另一个选择（alternative action）中获得的好处，就是你实际所做选择的机会成本（opportunity cost）。"
     ]
   },
   "Input Costs & Supply": {
@@ -872,7 +889,7 @@ const EVENTS = {
       { s:"me", en:"You open one eye. 8:10 AM. Your shift starts at 8:30." },
       { s:"me", en:"You roll out of bed, pull on your apron, and grab your keys." },
       { s:"me", en:"The shop is 20 minutes away. Your commute has three options — each one an alternative." },
-      { s:"me", en:"Time is a hard constraint. Scarcity is real today: time is short, and so is your wallet." }
+      { s:"me", en:"Scarcity is real today: time is short, and so is your wallet." }
     ],
     choices:[
       { id:"e1a", label:"Take a taxi.", effects:{money:-18, mood:2}, expr:"happy",
@@ -891,7 +908,8 @@ const EVENTS = {
       layers:[
         {l:"Layer 1 · 生活现象", t:"You overslept. Now time is scarce."},
         {l:"Layer 2 · 经济机制", t:"Limited time forces a choice — taxi, bus, or running. Each one gives up something else."},
-        {l:"Layer 3 · 经济学解释", t:"Scarcity means resources are limited. Opportunity cost is the value of the next best alternative you give up. Gaining time cost money — that is a trade-off."}
+        {l:"Layer 3 · 经济学解释", t:"Scarcity means resources are limited. Opportunity cost is the value of the next best alternative you give up. Gaining time cost money — that is a trade-off."},
+        {l:"Core Principle · 核心原则", t:"The foundation of economics lies in the concept of scarcity. And the benefits you could have received by taking an alternative action are the opportunity costs of the action you did take."}
       ]
     }
   },
@@ -1448,6 +1466,27 @@ function doContinue(){
 /* ---------- economics insight card ---------- */
 let insightFromSummary = false;
 let curInsight = null;
+let insCnOpen = false;
+function renderInsightLayers(ins){
+  const ci = CN_INSIGHT[ins.title];
+  $("ins-layers").innerHTML = ins.layers.map((l,i)=>{
+    let tOut;
+    if(lang === "cn" && ci) tOut = escapeHtml(ci.layers[i] || "");
+    else tOut = escapeHtml(l.t);
+    let cnLine = "";
+    if(ci && lang !== "cn" && (lang === "dual" || insCnOpen)){
+      cnLine = '<div class="cn-line">'+escapeHtml(ci.layers[i]||"")+'</div>';
+    }
+    return '<div class="ly"><b>'+escapeHtml(l.l)+'</b><br>'+tOut + cnLine + '</div>';
+  }).join("");
+  const cnBtn = $("ins-cn-btn");
+  if(lang === "en" && ci){
+    cnBtn.classList.remove("hidden");
+    cnBtn.textContent = insCnOpen ? "中文帮助 ▲" : "中文帮助";
+  } else {
+    cnBtn.classList.add("hidden");
+  }
+}
 function showInsight(ins, fromSummary){
   insightFromSummary = !!fromSummary;
   curInsight = ins;
@@ -1456,16 +1495,15 @@ function showInsight(ins, fromSummary){
   $("ins-title").textContent = ins.title;
   $("ins-body").innerHTML = renderRich(bodyTxt)
     + (lang === "dual" && ci ? '<div class="cn-line">'+escapeHtml(ci.body)+'</div>' : "");
-  $("ins-layers").innerHTML = ins.layers.map((l,i)=>{
-    const lt = (lang === "cn" && ci) ? (ci.layers[i] || "") : l.t;
-    return '<div class="ly"><b>'+escapeHtml(l.l)+'</b><br>'+escapeHtml(lt)
-      + (lang === "dual" && ci ? '<div class="cn-line">'+escapeHtml(ci.layers[i]||"")+'</div>' : '')
-      + '</div>';
-  }).join("");
+  renderInsightLayers(ins);
   $("ins-learn").classList.add("hidden");
   $("ins-learn-btn").classList.remove("hidden");
   phase = "insight";
   show("insightCard");
+}
+function toggleInsightCn(){
+  insCnOpen = !insCnOpen;
+  if(curInsight) renderInsightLayers(curInsight);
 }
 function openInsightByTitle(t){
   for(const id in EVENTS){
@@ -1508,16 +1546,48 @@ function renderSidebar(newTerm){
     });
   });
 }
+let lastVocabTerm = null;
+let cnHelpOpen = false;
 function openVocab(termRaw){
   const term = termRaw.toLowerCase();
   const v = VOCAB[term];
   if(!v) return;
+  lastVocabTerm = term;
   $("mv-term").textContent = term;
-  $("mv-zh").textContent = v.zh;
-  $("mv-def").textContent = v.en;
   $("mv-ex").innerHTML = "Example — <b>"+escapeHtml(v.ex)+"</b>";
   typePaused = true;
+  renderVocabCard(v);
   show("modal-vocab");
+}
+function renderVocabCard(v){
+  const isCn = lang === "cn", isDual = lang === "dual";
+  $("mv-zh").textContent = isCn || isDual ? v.zh : "";
+  const exCnEl = $("mv-excn");
+  exCnEl.textContent = "例句 — " + (v.exCn || "");
+  if(isCn){
+    $("mv-def").innerHTML = '<div class="vocab-zh">'+escapeHtml(v.zh)+'</div>'
+      + '<div class="vocab-en-sub">'+escapeHtml(v.en)+'</div>';
+    $("mv-cnhelp").style.display = "none";
+    $("mv-help").classList.add("hidden");
+    exCnEl.style.display = "block";
+  } else if(isDual){
+    $("mv-def").textContent = v.en;
+    $("mv-cnhelp").style.display = "block";
+    $("mv-cnhelp").textContent = v.zh;
+    $("mv-help").classList.add("hidden");
+    exCnEl.style.display = "block";
+  } else {
+    $("mv-def").textContent = v.en;
+    $("mv-cnhelp").style.display = cnHelpOpen ? "block" : "none";
+    $("mv-cnhelp").textContent = v.zh;
+    exCnEl.style.display = cnHelpOpen ? "block" : "none";
+    $("mv-help").classList.remove("hidden");
+    $("mv-help").textContent = cnHelpOpen ? "CN HELP ▲" : "CN HELP";
+  }
+}
+function toggleCnHelp(){
+  cnHelpOpen = !cnHelpOpen;
+  if(lastVocabTerm && VOCAB[lastVocabTerm]) renderVocabCard(VOCAB[lastVocabTerm]);
 }
 function openReview(){
   const list = $("reviewList"); list.innerHTML = "";
@@ -1533,7 +1603,7 @@ function openReview(){
   }
   show("modal-review");
 }
-function closeModal(id){ hide(id); typePaused = false; }
+function closeModal(id){ hide(id); typePaused = false; if(id === "modal-vocab"){ cnHelpOpen = false; } }
 
 /* ---------- toast ---------- */
 let toastTimer = null;
@@ -1743,6 +1813,12 @@ function renderSummary(){
 
   const wb = $("sum-unit1"); wb.innerHTML = "";
   const wrapData = [
+    { t:"SCARCITY — THE FOUNDATION",
+      en:"The foundation of economics lies in the concept of scarcity.",
+      cn:"经济学的基石是稀缺性（scarcity）：资源有限，不能满足所有欲望。" },
+    { t:"OPPORTUNITY COST",
+      en:"The benefits you could have received by taking an alternative action are the opportunity costs of the action you did take.",
+      cn:"你本可以从另一个选择（alternative action）中获得的好处，就是你实际所做选择的机会成本（opportunity cost）。" },
     { t:"MICRO vs MACRO",
       en:"Microeconomics: one shop, one worker, one customer. Macroeconomics: the economy as a whole.",
       cn:"微观经济学（microeconomics）研究单个店铺、单个消费者；宏观经济学（macroeconomics）研究整体经济。" },
@@ -1772,7 +1848,44 @@ function replay(){
   hide("insightCard"); hide("view-summary"); hide("modal-vocab"); hide("modal-map"); hide("modal-review");
   hide("view-title"); show("view-game");
   syncLangUI();
+  bgmStart();
   goEvent("e1");
+}
+
+/* ---------- background music ---------- */
+const bgmEl = document.getElementById("bgm");
+let bgmOn = false;
+function bgmTryPlay(){
+  if(!bgmEl) return;
+  bgmEl.volume = 0.15;
+  bgmEl.play().then(()=>{ bgmOn = true; syncMusicBtn(); }).catch(()=>{ bgmOn = false; syncMusicBtn(); });
+}
+function bgmStart(){ bgmTryPlay(); }
+function bgmAutoStart(){
+  if(!bgmEl) return;
+  bgmEl.volume = 0.15;
+  bgmEl.play().then(()=>{ bgmOn = true; syncMusicBtn(); }).catch(()=>{
+    bgmOn = false; syncMusicBtn();
+    const resume = ()=>{
+      bgmTryPlay();
+      document.removeEventListener("click", resume);
+      document.removeEventListener("keydown", resume);
+      document.removeEventListener("touchstart", resume);
+    };
+    document.addEventListener("click", resume);
+    document.addEventListener("keydown", resume);
+    document.addEventListener("touchstart", resume);
+  });
+}
+function toggleBgm(){
+  if(!bgmEl) return;
+  if(bgmOn){ bgmEl.pause(); bgmOn = false; }
+  else { bgmEl.play().then(()=>{ bgmOn = true; }).catch(()=>{ bgmOn = false; }); }
+  syncMusicBtn();
+}
+function syncMusicBtn(){
+  const b = $("btn-music");
+  if(b) b.textContent = bgmOn ? "♪ ON" : "♪ OFF";
 }
 
 /* ---------- language switching (live, no restart) ---------- */
@@ -1803,6 +1916,9 @@ function setLang(l){
   lang = l;
   syncLangUI();
   if(!changed || phase === "title") return;
+  if(!$("modal-vocab").classList.contains("hidden") && lastVocabTerm && VOCAB[lastVocabTerm]){
+    renderVocabCard(VOCAB[lastVocabTerm]);
+  }
   if(phase === "summary"){ renderSummary(); return; }
   if(phase === "insight" && curInsight){ showInsight(curInsight, insightFromSummary); return; }
   if(phase === "result" && lastChoice && curEvent){
@@ -1845,12 +1961,15 @@ document.querySelectorAll("#title-lang .px-btn, #lang-seg button").forEach(b=>{
   b.onclick = ()=>setLang(b.dataset.lang);
 });
 $("btn-auto").onclick = toggleAuto;
+$("btn-music").onclick = toggleBgm;
+$("mv-help").onclick = toggleCnHelp;
 $("btn-back").onclick = doBack;
 $("btn-map").onclick = openMap;
 $("btn-vocab").onclick = openReview;
 $("btn-continue").onclick = doContinue;
 $("ins-learn-btn").onclick = ()=>{ $("ins-learn").classList.remove("hidden"); $("ins-learn-btn").classList.add("hidden"); };
-$("ins-continue").onclick = ()=>{ hide("insightCard"); if(insightFromSummary){ insightFromSummary = false; phase = "summary"; } else { doContinue(); } };
+$("ins-cn-btn").onclick = toggleInsightCn;
+$("ins-continue").onclick = ()=>{ insCnOpen = false; hide("insightCard"); if(insightFromSummary){ insightFromSummary = false; phase = "summary"; } else { doContinue(); } };
 $("btn-replay").onclick = replay;
 $("btn-explore").onclick = exploreAnother;
 $("btn-review").onclick = openReview;
@@ -1876,6 +1995,7 @@ document.addEventListener("keydown", e=>{
 
 syncLangUI();
 renderHUD();
+bgmAutoStart();
 </script>
 </body>
 </html>
