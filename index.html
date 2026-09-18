@@ -164,8 +164,8 @@ body{
 }
 .char-plate b{color:var(--yellow); font-weight:normal;}
 #tb-day,#tb-time,#tb-loc{margin-top:4px;}
-#btn-music{font-size:18px; line-height:1; padding:0 14px;}
-#btn-music.on{color:#0e2733;}
+#btn-music{font-size:18px; line-height:1; padding:2px 14px 6px;}
+#btn-music.on{color:#0e2733; background:var(--cyan); box-shadow:0 0 0 2px #2b7f9e;}
 
 /* dialogue */
 #dialog{
@@ -1872,9 +1872,15 @@ function bgmAutoStart(){
 }
 function toggleBgm(){
   if(!bgmEl) return;
-  if(bgmOn){ bgmEl.pause(); bgmOn = false; }
-  else { bgmEl.play().then(()=>{ bgmOn = true; }).catch(()=>{ bgmOn = false; }); }
+  bgmOn = !bgmOn;
   syncMusicBtn();
+  toast(bgmOn ? "背景音乐已开启" : "背景音乐已关闭");
+  if(bgmOn){
+    bgmEl.volume = 0.15;
+    bgmEl.play().catch(()=>{ bgmOn = false; syncMusicBtn(); });
+  } else {
+    bgmEl.pause();
+  }
 }
 function syncMusicBtn(){
   const b = $("btn-music");
