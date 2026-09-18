@@ -96,15 +96,16 @@ body{
 #view-game{flex:1; display:flex; flex-direction:column; min-height:0;}
 
 #topbar{
-  display:flex; align-items:center; justify-content:space-between; gap:14px;
+  display:flex; align-items:flex-end; justify-content:space-between; gap:14px;
   padding:10px 14px; background:var(--panel); border-bottom:3px solid var(--line);
   box-shadow:0 4px 0 rgba(0,0,0,.18); z-index:5;
 }
-.tb-left{display:flex; gap:8px; flex-wrap:wrap;}
+.tb-left{display:flex; gap:8px; flex-wrap:wrap; align-items:flex-end;}
 .tb-chip{
   font-family:var(--font-px); font-size:9px; color:var(--ink);
   background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2);
-  padding:7px 10px; letter-spacing:.5px; white-space:nowrap;
+  padding:0 12px; letter-spacing:.5px; white-space:nowrap; line-height:1;
+  display:inline-flex; align-items:center; justify-content:center; height:36px; box-sizing:border-box;
 }
 .tb-chip.hl{color:#241f12; background:var(--yellow); box-shadow:0 0 0 2px #b78a2e;}
 #hud{display:flex; gap:10px; align-items:stretch;}
@@ -162,6 +163,9 @@ body{
   padding:9px; margin-top:10px; letter-spacing:1px;
 }
 .char-plate b{color:var(--yellow); font-weight:normal;}
+#tb-day,#tb-time,#tb-loc{margin-top:4px;}
+#btn-music{font-size:18px; line-height:1; padding:0 14px;}
+#btn-music.on{color:#0e2733;}
 
 /* dialogue */
 #dialog{
@@ -218,12 +222,12 @@ body{
 
 /* insight card */
 #insightCard{
-  position:absolute; left:50%; top:46%; transform:translate(-50%,-50%); z-index:75;
-  width:min(640px, 88%); max-height:88vh; overflow-y:auto; background:#1b1d36; border:3px solid var(--line);
+  position:fixed; left:50%; top:50%; transform:translate(-50%,-50%); z-index:90;
+  width:min(640px, 92%); max-height:88vh; overflow-y:auto; background:#1b1d36; border:3px solid var(--line);
   box-shadow:0 0 0 3px var(--yellow), 0 0 0 6px var(--line), 0 14px 0 rgba(0,0,0,.35);
   padding:22px 26px; animation:cardIn .25s ease-out;
 }
-@keyframes cardIn{0%{transform:translate(-50%,-44%) scale(.9); opacity:0;}100%{transform:translate(-50%,-50%) scale(1); opacity:1;}}
+@keyframes cardIn{0%{transform:translate(-50%,-46%) scale(.9); opacity:0;}100%{transform:translate(-50%,-50%) scale(1); opacity:1;}}
 .ins-head{font-family:var(--font-px); font-size:10px; color:#241f12; background:var(--yellow);
   border:2px solid var(--line); box-shadow:0 0 0 2px #b78a2e; display:inline-block; padding:7px 12px; letter-spacing:1px; margin-bottom:14px;}
 .ins-title{font-family:var(--font-px); font-size:14px; color:var(--cyan); margin-bottom:10px; line-height:1.6;}
@@ -375,10 +379,10 @@ body{
 .lang-pick .px-btn{min-width:132px;}
 .lang-pick .px-btn.on{background:var(--cyan); color:#0e2733; box-shadow:0 0 0 3px #2b7f9e, inset 0 -5px 0 rgba(0,0,0,.28);}
 /* topbar segmented language selector */
-.lang-seg{display:flex; align-items:stretch; border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2);}
+.lang-seg{display:flex; align-items:stretch; border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); position:relative; top:1px;}
 .lang-seg button{font-family:var(--font-px); font-size:8px; color:var(--dim); background:var(--panel2);
-  border:none; border-right:2px solid var(--line); padding:7px 8px; cursor:pointer; letter-spacing:.5px;
-  transition:background .1s, color .1s, filter .1s; white-space:nowrap;}
+  border:none; border-right:2px solid var(--line); padding:0 10px; cursor:pointer; letter-spacing:.5px;
+  transition:background .1s, color .1s, filter .1s; white-space:nowrap; line-height:1; height:33px; box-sizing:border-box;}
 .lang-seg button:last-child{border-right:none;}
 .lang-seg button:hover{filter:brightness(1.25);}
 .lang-seg button.on{background:var(--cyan); color:#0e2733;}
@@ -424,7 +428,9 @@ body{
   #stage{grid-template-columns:1fr;}
   #side{display:none;}
   #topbar{flex-wrap:wrap; gap:8px; padding-top:calc(10px + env(safe-area-inset-top));}
-  .tb-chip{min-height:44px; display:inline-flex; align-items:center; padding:5px 7px; font-size:8px;}
+  .tb-left{flex-wrap:nowrap; gap:6px; width:100%;}
+  .tb-chip{min-height:44px; display:inline-flex; align-items:center; justify-content:center; padding:5px 6px; font-size:8px;}
+  #btn-music{min-width:44px; padding:5px 8px;}
   #hud{display:grid; grid-template-columns:repeat(5,1fr); gap:5px; width:100%;}
   .stat{min-width:0; padding:4px 5px;}
   .s-name{font-size:7px;}
@@ -432,7 +438,7 @@ body{
   .s-bar{height:5px;}
   .s-long{display:none;} .s-short{display:inline;}
   .cn-line{font-size:14px;} .choice-cn{font-size:13px;}
-  #charBox{width:120px; bottom:200px; left:10px;}
+  #charBox{width:120px; bottom:248px; left:10px;}
   #dialog{left:10px; right:10px; bottom:calc(10px + env(safe-area-inset-bottom));}
   #storyText{font-size:20px;}
   .title-card{flex-direction:column; text-align:center;}
@@ -446,7 +452,7 @@ body{
   #toast{top:auto; bottom:98px;}
 }
 @media (max-width:520px){
-  #charBox{width:100px; bottom:188px;}
+  #charBox{width:100px; bottom:236px;}
   #storyText{font-size:18px;}
   #dialog{min-height:180px; padding:32px 14px 12px;}
   .choice{font-size:18px; padding:8px 11px; min-height:46px; display:flex; align-items:center;}
@@ -497,8 +503,8 @@ body{
         <button data-lang="en" type="button">EN</button>
         <button data-lang="dual" type="button">双语</button>
       </div>
-      <button class="tb-chip cn-toggle" id="btn-auto" type="button">AUTO OFF</button>
-      <button class="tb-chip cn-toggle" id="btn-music" type="button">♪ OFF</button>
+      <button class="tb-chip cn-toggle" id="btn-auto" type="button">AUTO</button>
+      <button class="tb-chip cn-toggle" id="btn-music" type="button" aria-label="音乐">♪</button>
     </div>
     <div id="hud">
       <div class="stat money"><div class="s-top"><span class="s-name">MONEY</span><span class="s-num money" id="num-money">¥350</span></div><div class="s-bar"><div class="s-fill" id="fill-money"></div></div></div>
@@ -577,7 +583,6 @@ body{
   </div>
   <div class="ins-actions">
     <button class="px-btn" id="ins-learn-btn">LEARN MORE</button>
-    <button class="cn-help-btn hidden" id="ins-cn-btn" type="button">中文帮助</button>
     <button class="px-btn cyan" id="ins-continue">CONTINUE</button>
   </div>
 </div>
@@ -1466,7 +1471,6 @@ function doContinue(){
 /* ---------- economics insight card ---------- */
 let insightFromSummary = false;
 let curInsight = null;
-let insCnOpen = false;
 function renderInsightLayers(ins){
   const ci = CN_INSIGHT[ins.title];
   $("ins-layers").innerHTML = ins.layers.map((l,i)=>{
@@ -1474,18 +1478,11 @@ function renderInsightLayers(ins){
     if(lang === "cn" && ci) tOut = escapeHtml(ci.layers[i] || "");
     else tOut = escapeHtml(l.t);
     let cnLine = "";
-    if(ci && lang !== "cn" && (lang === "dual" || insCnOpen)){
+    if(ci && lang !== "cn"){
       cnLine = '<div class="cn-line">'+escapeHtml(ci.layers[i]||"")+'</div>';
     }
     return '<div class="ly"><b>'+escapeHtml(l.l)+'</b><br>'+tOut + cnLine + '</div>';
   }).join("");
-  const cnBtn = $("ins-cn-btn");
-  if(lang === "en" && ci){
-    cnBtn.classList.remove("hidden");
-    cnBtn.textContent = insCnOpen ? "中文帮助 ▲" : "中文帮助";
-  } else {
-    cnBtn.classList.add("hidden");
-  }
 }
 function showInsight(ins, fromSummary){
   insightFromSummary = !!fromSummary;
@@ -1494,16 +1491,12 @@ function showInsight(ins, fromSummary){
   const bodyTxt = (lang === "cn" && ci) ? ci.body : ins.body;
   $("ins-title").textContent = ins.title;
   $("ins-body").innerHTML = renderRich(bodyTxt)
-    + (lang === "dual" && ci ? '<div class="cn-line">'+escapeHtml(ci.body)+'</div>' : "");
+    + (lang !== "cn" && ci ? '<div class="cn-line">'+escapeHtml(ci.body)+'</div>' : "");
   renderInsightLayers(ins);
   $("ins-learn").classList.add("hidden");
   $("ins-learn-btn").classList.remove("hidden");
   phase = "insight";
   show("insightCard");
-}
-function toggleInsightCn(){
-  insCnOpen = !insCnOpen;
-  if(curInsight) renderInsightLayers(curInsight);
 }
 function openInsightByTitle(t){
   for(const id in EVENTS){
@@ -1885,7 +1878,7 @@ function toggleBgm(){
 }
 function syncMusicBtn(){
   const b = $("btn-music");
-  if(b) b.textContent = bgmOn ? "♪ ON" : "♪ OFF";
+  if(b) b.classList.toggle("on", bgmOn);
 }
 
 /* ---------- language switching (live, no restart) ---------- */
@@ -1935,7 +1928,6 @@ function setLang(l){
 function toggleAuto(){
   autoPlay = !autoPlay;
   const b = $("btn-auto");
-  b.textContent = autoPlay ? "AUTO ON" : "AUTO OFF";
   b.classList.toggle("on", autoPlay);
   toast(autoPlay ? "自动播放已开启" : "自动播放已关闭");
   if(autoPlay){
@@ -1968,8 +1960,7 @@ $("btn-map").onclick = openMap;
 $("btn-vocab").onclick = openReview;
 $("btn-continue").onclick = doContinue;
 $("ins-learn-btn").onclick = ()=>{ $("ins-learn").classList.remove("hidden"); $("ins-learn-btn").classList.add("hidden"); };
-$("ins-cn-btn").onclick = toggleInsightCn;
-$("ins-continue").onclick = ()=>{ insCnOpen = false; hide("insightCard"); if(insightFromSummary){ insightFromSummary = false; phase = "summary"; } else { doContinue(); } };
+$("ins-continue").onclick = ()=>{ hide("insightCard"); if(insightFromSummary){ insightFromSummary = false; phase = "summary"; } else { doContinue(); } };
 $("btn-replay").onclick = replay;
 $("btn-explore").onclick = exploreAnother;
 $("btn-review").onclick = openReview;
