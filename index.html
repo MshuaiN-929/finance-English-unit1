@@ -379,7 +379,7 @@ body{
 .lang-pick .px-btn{min-width:132px;}
 .lang-pick .px-btn.on{background:var(--cyan); color:#0e2733; box-shadow:0 0 0 3px #2b7f9e, inset 0 -5px 0 rgba(0,0,0,.28);}
 /* topbar segmented language selector */
-.lang-seg{display:flex; align-items:stretch; border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); position:relative; top:1px;}
+.lang-seg{display:flex; align-items:stretch; border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2);}
 .lang-seg button{font-family:var(--font-px); font-size:8px; color:var(--dim); background:var(--panel2);
   border:none; border-right:2px solid var(--line); padding:0 10px; cursor:pointer; letter-spacing:.5px;
   transition:background .1s, color .1s, filter .1s; white-space:nowrap; line-height:1; height:33px; box-sizing:border-box;}
@@ -428,13 +428,14 @@ body{
   #stage{grid-template-columns:1fr;}
   #side{display:none;}
   #topbar{flex-wrap:wrap; gap:8px; padding-top:calc(10px + env(safe-area-inset-top));}
+  #tb-day{display:none;}
   .tb-left{flex-wrap:nowrap; gap:6px; width:100%;}
   .tb-chip{min-height:44px; display:inline-flex; align-items:center; justify-content:center; padding:5px 6px; font-size:8px;}
   #btn-music{min-width:44px; padding:5px 8px;}
   #hud{display:grid; grid-template-columns:repeat(5,1fr); gap:5px; width:100%;}
   .stat{min-width:0; padding:4px 5px;}
   .s-name{font-size:7px;}
-  .s-num{font-size:10px;}
+  .s-num{font-size:8px;}
   .s-bar{height:5px;}
   .s-long{display:none;} .s-short{display:inline;}
   .cn-line{font-size:14px;} .choice-cn{font-size:13px;}
@@ -445,6 +446,8 @@ body{
   .sum-grid{grid-template-columns:1fr;}
   .wrap-grid{grid-template-columns:1fr;}
   .lang-seg button{font-size:7px; padding:6px 6px;}
+  .lang-pick{flex-wrap:nowrap; gap:6px;}
+  .lang-pick .px-btn{min-width:0; padding:10px 10px; font-size:10px; flex:1;}
   .cn-help-btn{min-height:44px; display:inline-flex; align-items:center;}
   #botbar{gap:8px; padding-bottom:calc(10px + env(safe-area-inset-bottom));}
   #botbar .px-btn{padding:10px 12px; font-size:9px; min-height:46px; display:flex; align-items:center;}
