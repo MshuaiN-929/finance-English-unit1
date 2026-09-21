@@ -57,6 +57,7 @@ body{
 .px-btn.primary{background:var(--yellow); color:#241f12; box-shadow:0 0 0 3px #b78a2e, inset 0 -5px 0 rgba(0,0,0,.28);}
 .px-btn.cyan{background:var(--cyan); color:#0e2733; box-shadow:0 0 0 3px #2b7f9e, inset 0 -5px 0 rgba(0,0,0,.28);}
 .px-btn.pink{background:var(--pink); color:#2b0f1a; box-shadow:0 0 0 3px #a83a5c, inset 0 -5px 0 rgba(0,0,0,.28);}
+.px-btn.green{background:var(--green); color:#0c2415; box-shadow:0 0 0 3px #2b8a4d, inset 0 -5px 0 rgba(0,0,0,.28);}
 .px-btn:disabled{filter:grayscale(.7) brightness(.7); cursor:not-allowed; transform:none;}
 
 /* ---------- pixel panel ---------- */
@@ -81,9 +82,14 @@ body{
 .title-logo{font-family:var(--font-px); font-size:30px; line-height:1.35; color:var(--yellow);
   text-shadow:4px 4px 0 #0b0c1a, 0 0 18px rgba(255,209,102,.35); letter-spacing:1px;}
 .title-logo .sub{display:block; font-size:11px; color:var(--cyan); margin-top:10px; text-shadow:2px 2px 0 #0b0c1a;}
+.title-logo .sub b{font:inherit; color:inherit; font-weight:normal; cursor:default;}
 .title-card{display:flex; gap:22px; align-items:center; background:var(--panel); border:3px solid var(--line);
   box-shadow:0 0 0 3px var(--line2), 0 10px 0 rgba(0,0,0,.25); padding:18px 22px; max-width:680px; text-align:left;}
 .title-card img{width:170px; height:170px; image-rendering:pixelated; border:3px solid var(--line); box-shadow:0 0 0 2px var(--line2);}
+.title-portrait{position:relative; flex:0 0 auto; width:170px; height:170px;}
+.title-portrait>img{display:block; box-sizing:border-box;}
+.hat-secret{position:absolute; z-index:2; left:21%; top:15%; width:58%; height:29%; padding:0; border:0; background:transparent; opacity:0; cursor:default;}
+.hat-secret:focus{outline:none;}
 .title-info{font-family:var(--font-term); font-size:22px; line-height:1.5; color:var(--ink);}
 .title-info h2{font-family:var(--font-px); font-size:13px; color:var(--pink); margin-bottom:10px; line-height:1.6;}
 .title-info .row{display:flex; gap:8px; align-items:baseline;}
@@ -134,15 +140,17 @@ body{
 .s-delta{
   position:absolute; right:-6px; top:-14px; font-family:var(--font-px); font-size:9px;
   padding:4px 6px; border:2px solid var(--line); z-index:6;
-  animation:popDelta .18s ease-out; opacity:0; pointer-events:none;
+  animation:popDelta .18s ease-out forwards; opacity:0; pointer-events:none;
 }
 .s-delta.up{background:var(--green); color:#0c2415;}
 .s-delta.down{background:var(--red); color:#2b0f0f;}
 @keyframes popDelta{0%{transform:scale(.4); opacity:0;}60%{transform:scale(1.25); opacity:1;}100%{transform:scale(1); opacity:1;}}
+.stat.result-flash{animation:hudResultFlash .45s steps(2) 4;}
+@keyframes hudResultFlash{0%,100%{filter:none;}50%{filter:brightness(1.75); box-shadow:0 0 0 2px var(--cyan), 0 0 12px rgba(76,201,240,.8);}}
 
-#stage{flex:1; display:grid; grid-template-columns:1fr 264px; min-height:0;}
+#stage{flex:1; display:grid; grid-template-columns:1fr 264px; grid-template-rows:minmax(0,1fr) auto; min-height:0;}
 
-#sceneBox{position:relative; overflow:hidden; min-width:0;}
+#sceneBox{position:relative; overflow:hidden; min-width:0; grid-column:1; grid-row:1;}
 .scene-img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
   image-rendering:pixelated; opacity:0; transition:opacity .45s ease;}
 .scene-img.on{opacity:1;}
@@ -167,6 +175,12 @@ body{
 #tb-day,#tb-time,#tb-loc{margin-top:4px;}
 #btn-music{font-size:18px; line-height:1; padding:2px 14px 6px;}
 #btn-music.on{color:#0e2733; background:var(--cyan); box-shadow:0 0 0 2px #2b7f9e;}
+.audio-control{position:relative;}
+.audio-panel{position:absolute; z-index:30; top:45px; left:0; width:230px; padding:12px; background:var(--panel); border:3px solid var(--line); box-shadow:0 0 0 3px var(--line2),0 8px 0 rgba(0,0,0,.35);}
+.audio-row{display:grid; grid-template-columns:58px 1fr 34px; align-items:center; gap:8px; margin-bottom:10px; font-family:var(--font-px); font-size:7px; color:var(--ink);}
+.audio-row input{width:100%; accent-color:var(--cyan); cursor:pointer;}
+.audio-value{color:var(--cyan); text-align:right;}
+#btn-bgm-toggle{width:100%; padding:7px 8px; font-size:7px;}
 
 /* dialogue */
 #dialog{
@@ -220,6 +234,18 @@ body{
   font-family:var(--font-px); font-size:8px; color:var(--faint); letter-spacing:1px;}
 
 #resultArea{display:flex; flex-direction:column; gap:10px; margin-top:8px;}
+#speaker.sp-res{color:#241f12; background:var(--yellow); box-shadow:0 0 0 2px #b78a2e, 0 0 12px rgba(255,209,102,.7); animation:resultTitleFlash .45s steps(2) 4;}
+@keyframes resultTitleFlash{0%,100%{filter:none;}50%{filter:brightness(1.35);}}
+
+#insight-unlocked{
+  position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); z-index:25;
+  max-width:calc(100% - 32px); padding:12px 18px; text-align:center; pointer-events:none;
+  font-family:var(--font-px); font-size:11px; line-height:1.6; letter-spacing:1px; white-space:nowrap;
+  color:var(--yellow); background:rgba(20,22,43,.94); border:3px solid var(--cyan);
+  box-shadow:0 0 0 3px var(--line), 0 0 18px rgba(76,201,240,.65);
+}
+#insight-unlocked.show{animation:insightUnlocked 1.8s ease-out forwards;}
+@keyframes insightUnlocked{0%{opacity:0; transform:translate(-50%,-42%) scale(.88);}15%,72%{opacity:1; transform:translate(-50%,-50%) scale(1);}100%{opacity:0; transform:translate(-50%,-56%) scale(1);}}
 
 /* insight card */
 #insightCard{
@@ -237,12 +263,14 @@ body{
 .ins-learn .ll{font-family:var(--font-px); font-size:8px; color:var(--yellow); letter-spacing:1px; margin-bottom:8px;}
 .ins-learn .ly{font-family:var(--font-term); font-size:20px; color:var(--dim); line-height:1.45; margin-bottom:8px;}
 .ins-learn .ly b{color:var(--ink); font-weight:normal;}
-.ins-actions{display:flex; gap:10px; margin-top:16px;}
+.ins-actions{display:grid; grid-template-columns:repeat(2,minmax(150px,1fr)); gap:10px; margin-top:16px; min-height:50px;}
+.ins-actions .px-btn{width:100%; min-height:50px;}
+.ins-actions .used{visibility:hidden; pointer-events:none;}
 
 /* ============ SIDE PANEL ============ */
 #side{
   background:var(--panel); border-left:3px solid var(--line); box-shadow:0 0 0 2px var(--line2);
-  display:flex; flex-direction:column; overflow:hidden;
+  display:flex; flex-direction:column; overflow:hidden; grid-column:2; grid-row:1 / 3;
 }
 .side-title{
   font-family:var(--font-px); font-size:12px; text-align:center; color:var(--ink);
@@ -267,22 +295,23 @@ body{
 #botbar{
   display:flex; align-items:center; gap:12px; padding:10px 14px;
   background:var(--panel); border-top:3px solid var(--line); box-shadow:0 -4px 0 rgba(0,0,0,.18);
-  z-index:5;
+  z-index:5; grid-column:1; grid-row:2; min-height:68px; box-sizing:border-box;
 }
+#botbar .px-btn{height:46px; box-sizing:border-box;}
 #botbar .spacer{flex:1;}
 #btn-continue{padding:13px 30px;}
-#btn-continue.pulse{animation:contPulse 1.1s steps(2) infinite;}
-@keyframes contPulse{0%,100%{box-shadow:0 0 0 3px var(--line2), inset 0 -5px 0 rgba(0,0,0,.28);}50%{box-shadow:0 0 0 3px var(--line2), inset 0 -5px 0 rgba(0,0,0,.28), 0 0 0 4px rgba(255,255,255,.4);}}
+#btn-continue.pulse{animation:contPulse 1.5s ease-in-out infinite;}
+@keyframes contPulse{0%,100%{background:var(--cyan); color:#0e2733; box-shadow:0 0 0 3px #2b7f9e, inset 0 -5px 0 rgba(0,0,0,.28); filter:brightness(1);}50%{background:#d7f8ff; color:#071820; box-shadow:0 0 0 3px var(--yellow), inset 0 -5px 0 rgba(0,0,0,.18), 0 0 16px rgba(255,209,102,.95); filter:brightness(1.25);}}
 
 /* ============ SUMMARY ============ */
 #view-summary{
-  position:fixed; inset:0; z-index:70; overflow-y:auto;
+  position:fixed; inset:0; z-index:70; overflow:hidden; display:flex; align-items:center; justify-content:center;
   background:linear-gradient(rgba(13,14,30,.94), rgba(13,14,30,.97)), url('assets/scene_closing.png') center/cover;
   image-rendering:pixelated;
-  padding:36px 20px;
+  padding:24px 20px;
 }
-.sum-wrap{max-width:760px; margin:0 auto; background:var(--panel); border:3px solid var(--line);
-  box-shadow:0 0 0 3px var(--line2), 0 16px 0 rgba(0,0,0,.35); padding:28px 30px;}
+.sum-wrap{width:min(920px,96vw); height:min(850px,calc(100vh - 48px)); overflow-y:auto; margin:0 auto; background:var(--panel); border:3px solid var(--line);
+  box-shadow:0 0 0 3px var(--line2), 0 16px 0 rgba(0,0,0,.35); padding:28px 30px; scrollbar-gutter:stable;}
 .sum-head{text-align:center; margin-bottom:20px;}
 .sum-head h1{font-family:var(--font-px); font-size:22px; color:var(--yellow); text-shadow:3px 3px 0 #0b0c1a; line-height:1.6;}
 .sum-head .day{font-family:var(--font-px); font-size:10px; color:var(--cyan); letter-spacing:2px; margin-top:8px;}
@@ -339,6 +368,102 @@ body{
 #reviewList{display:flex; flex-direction:column; gap:12px;}
 #reviewList .rv{background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); padding:10px 12px;}
 
+.quiz-progress{font-family:var(--font-px); font-size:8px; color:var(--cyan); letter-spacing:1px; margin-bottom:12px;}
+.quiz-prompt{font-family:var(--font-term); font-size:21px; color:var(--ink); line-height:1.45; background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); padding:12px 14px; margin-bottom:14px;}
+.quiz-prompt{position:relative; padding-right:54px;}
+.quiz-help{position:absolute; top:9px; right:10px; width:31px; height:31px; padding:0; font-family:var(--font-px); font-size:12px; color:var(--cyan); background:#172044; border:2px solid var(--cyan); box-shadow:0 0 0 2px #244867; cursor:pointer;}
+.quiz-help:hover{background:var(--cyan); color:#0e2733;}
+.quiz-prompt .cn-line{margin-top:7px;}
+.quiz-options{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.quiz-option{font-family:var(--font-term); font-size:18px; color:var(--ink); background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); padding:10px; cursor:pointer; text-align:left;}
+.quiz-option:hover:not(:disabled){background:var(--panel3);}
+.quiz-option.selected:not(:disabled){background:#243d68; color:var(--cyan); border-color:var(--cyan); box-shadow:0 0 0 2px #24627b,0 0 14px rgba(76,201,240,.38);}
+.quiz-option.correct{background:var(--green); color:#0c2415;}
+.quiz-option.wrong{background:var(--red); color:#2b0f0f;}
+.quiz-feedback{min-height:34px; margin-top:12px; font-family:var(--font-px); font-size:8px; color:var(--yellow); line-height:1.6;}
+.quiz-actions{display:flex; justify-content:flex-end; margin-top:12px;}
+.quiz-score{text-align:center; font-family:var(--font-px); font-size:18px; color:var(--yellow); line-height:1.8; padding:18px 0 8px;}
+#modal-quiz{z-index:75; background:linear-gradient(rgba(13,14,30,.94),rgba(13,14,30,.98)),url('assets/scene_closing.png') center/cover; overflow-y:auto;}
+#modal-quiz .modal-box{width:min(760px,94%); max-height:none; margin:auto; border-color:var(--line); box-shadow:0 0 0 3px var(--line2),0 0 34px rgba(76,201,240,.22);}
+#modal-quiz.required .modal-x{display:none;}
+#modal-secret.required .modal-x{display:none;}
+.quiz-stage{text-align:center; font-family:var(--font-px); font-size:8px; color:var(--faint); letter-spacing:1px; margin-bottom:15px;}
+.quiz-stage b{color:var(--yellow); font-weight:normal;}
+.quiz-reward{text-align:center; position:relative; padding:2px 10px 8px;}
+.reward-particles{position:absolute; inset:50px 8% 96px; overflow:hidden; pointer-events:none; z-index:2;}
+.reward-particle{position:absolute; left:var(--x); top:var(--y); width:var(--s); height:var(--s); background:var(--c); box-shadow:0 0 8px var(--c),0 0 16px var(--c); animation:rewardSpark var(--d) steps(4) infinite; animation-delay:var(--delay); transform:rotate(45deg);}
+.reward-particle:nth-child(3n){clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);}
+@keyframes rewardSpark{0%,100%{opacity:0; transform:translateY(9px) rotate(45deg) scale(.4);}28%,68%{opacity:1; transform:translateY(-4px) rotate(45deg) scale(1);}82%{opacity:.35; transform:translateY(-12px) rotate(45deg) scale(.65);}}
+.quiz-reward-title{font-family:var(--font-px); font-size:16px; color:var(--yellow); line-height:1.7; text-shadow:2px 2px 0 #0b0c1a,0 0 12px rgba(255,209,102,.65);}
+.quiz-reward-sub{font-family:var(--font-term); font-size:20px; color:var(--dim); margin:2px 0 4px;}
+.quiz-reward-img{display:block; width:min(310px,72vw); height:290px; object-fit:contain; margin:-6px auto -12px; image-rendering:pixelated; filter:drop-shadow(0 0 16px rgba(76,201,240,.35));}
+.quiz-reward.crown .quiz-reward-img{width:min(360px,78vw); height:315px; filter:drop-shadow(0 0 20px rgba(255,209,102,.55));}
+.quiz-stars{font-family:var(--font-px); font-size:28px; color:var(--yellow); letter-spacing:8px; text-shadow:0 0 10px rgba(255,209,102,.85); margin:2px 0 10px;}
+.quiz-rank{display:inline-block; position:relative; min-width:270px; font-family:var(--font-px); font-size:14px; color:#fff4ae;
+  background:linear-gradient(180deg,#4a286d 0%,#241b4e 48%,#171735 100%); border:4px solid var(--line);
+  box-shadow:0 0 0 3px #8a4dff,0 0 0 6px #d89cff, inset 0 0 0 3px rgba(255,209,102,.42), inset 0 -8px 0 rgba(0,0,0,.24), 0 0 26px rgba(138,77,255,.9), 0 0 40px rgba(255,209,102,.28);
+  padding:15px 28px; letter-spacing:2px; line-height:1.5; text-shadow:3px 3px 0 #6b2d75,0 0 10px rgba(255,239,153,.9); animation:rankGlow 1.8s ease-in-out infinite;}
+.quiz-rank::before,.quiz-rank::after{content:"◆"; position:absolute; top:50%; transform:translateY(-50%) rotate(45deg); color:var(--yellow); font-size:10px; text-shadow:0 0 9px var(--yellow);}
+.quiz-rank::before{left:-20px;}.quiz-rank::after{right:-20px;}
+@keyframes rankGlow{0%,100%{filter:brightness(1); transform:translateY(0);}50%{filter:brightness(1.28); transform:translateY(-2px);}}
+.quiz-achievement{width:100%; box-sizing:border-box; margin:17px 0 5px; padding:10px 16px; font-family:var(--font-term); font-size:18px; color:var(--ink); line-height:1.4; background:rgba(76,201,240,.08); border:2px solid var(--cyan); box-shadow:0 0 14px rgba(76,201,240,.18);}
+.quiz-achievement .cn{display:block; margin-top:5px; font-family:var(--font-cn); font-size:14px; color:var(--dim);}
+.quiz-review-box{background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); padding:14px; margin:18px 0 8px; font-family:var(--font-term); font-size:19px; color:var(--ink); line-height:1.45;}
+.secret-ending{margin:18px 0 4px; padding:14px 16px; text-align:left; background:#2a1834; border:2px solid var(--pink); box-shadow:0 0 0 2px #6f2d59,0 0 16px rgba(255,93,143,.25);}
+.secret-ending .se-head{font-family:var(--font-px); font-size:9px; color:var(--pink); letter-spacing:1px; margin-bottom:8px;}
+.secret-ending .se-body{font-family:var(--font-term); font-size:19px; color:var(--ink); line-height:1.45;}
+.secret-ending .se-cn{font-family:var(--font-cn); font-size:14px; color:var(--dim); line-height:1.6; margin-top:6px;}
+.secret-ending .se-money{font-family:var(--font-px); font-size:10px; color:var(--yellow); text-align:center; margin-top:10px; letter-spacing:1px; text-shadow:0 0 10px rgba(255,209,102,.7);}
+.secret-ending .se-money strong{display:flex; align-items:center; justify-content:center; width:min(235px,62%); height:72px; margin:7px auto 2px; padding:4px 11px; line-height:1; font-weight:900; color:#fff2a3; background:linear-gradient(180deg,#4b3211,#21182e); border:3px solid #ffd166; box-shadow:0 0 0 2px #9a5d18,inset 0 0 0 2px rgba(255,242,163,.22),0 0 17px rgba(255,209,102,.65); text-shadow:3px 3px 0 #8c5416,0 0 10px #ffd166; animation:secretMoneyGlow 1.25s steps(2) infinite;}
+.yen-mark{font-family:var(--font-px); font-size:34px;}
+.infinity-mark{display:inline-block; margin-left:6px; font-family:"Arial Black",Impact,sans-serif; font-size:46px; font-weight:900; line-height:1; vertical-align:middle; letter-spacing:-.08em;}
+@keyframes secretMoneyGlow{50%{filter:brightness(1.45); transform:scale(1.06);}}
+#modal-secret .modal-box{width:min(980px,96vw); max-height:92vh; padding:20px 24px; overflow-x:hidden;}
+#modal-secret .modal-box>h3{white-space:nowrap; font-size:11px; padding-right:48px;}
+.secret-shop{text-align:center; padding:2px;}
+.secret-shop .shop-money{display:flex; align-items:center; justify-content:center; color:#fff2a3; margin:8px 0 12px; text-shadow:4px 4px 0 #8c5416,0 0 15px #ffd166,0 0 28px #ff9f1c; animation:secretMoneyGlow 1.25s steps(2) infinite;}
+.secret-shop .shop-story{font-family:var(--font-term); font-size:20px; color:var(--ink); line-height:1.45; margin-bottom:8px;}
+.secret-shop .shop-cn{font-family:var(--font-cn); font-size:15px; color:var(--dim); line-height:1.55; margin-bottom:18px;}
+.secret-scene{position:relative; height:340px; margin:12px 0 16px; overflow:hidden; background:linear-gradient(rgba(18,20,42,.08),rgba(18,20,42,.18)),url('assets/scene_reward.png') center/cover; border:4px solid var(--line); box-shadow:0 0 0 3px #8c641e,inset 0 0 28px rgba(255,209,102,.18); image-rendering:pixelated; transition:filter .35s,box-shadow .35s;}
+.secret-scene::after{content:"SECRET STOCKROOM"; position:absolute; left:14px; top:13px; padding:7px 10px; font-family:var(--font-px); font-size:8px; color:#241f12; background:var(--yellow); border:2px solid #8c641e; box-shadow:3px 3px 0 rgba(0,0,0,.35);}
+.secret-scene.takeover{filter:saturate(1.3) brightness(1.15); box-shadow:0 0 0 4px #ffd166,inset 0 0 45px rgba(255,209,102,.45),0 0 34px rgba(255,209,102,.65);}
+.secret-scene.takeover::before{content:"★ THIS SHOP IS YOURS · 整间店都是你的 ★"; position:absolute; z-index:5; left:50%; top:50%; transform:translate(-50%,-50%); width:78%; padding:16px 12px; font-family:var(--font-px); font-size:12px; line-height:1.8; color:#fff2a3; background:rgba(32,18,55,.92); border:4px solid var(--yellow); box-shadow:0 0 0 4px #9a5d18,0 0 34px #ffd166; animation:takeoverIn .45s steps(5);}
+@keyframes takeoverIn{from{transform:translate(-50%,-50%) scale(.3); opacity:0;}to{transform:translate(-50%,-50%) scale(1); opacity:1;}}
+.scene-material{position:absolute; z-index:3; width:64px; height:88px; padding:0; cursor:pointer; color:#fff4c1; background:transparent; border:0; box-shadow:none; font-family:var(--font-px); font-size:6px; line-height:1; image-rendering:pixelated; transform:translateX(-50%); transform-origin:50% 88%; transition:filter .14s;}
+.scene-material img{display:block; width:64px; height:64px; object-fit:contain; margin:0 auto -1px; image-rendering:pixelated; filter:brightness(.92) saturate(.94) contrast(1.05) drop-shadow(0 5px 4px rgba(0,0,0,.52)); pointer-events:none;}
+.scene-material span{display:inline-block; padding:3px 4px 2px; color:#fff6c7; background:rgba(31,20,18,.72); text-shadow:2px 2px 0 #5f3213; pointer-events:none;}
+.scene-material:hover,.scene-material:focus-visible{animation:stockJump .52s steps(5) infinite; filter:brightness(1.22) drop-shadow(0 0 7px rgba(255,209,102,.9)); outline:none;}
+.scene-material:active{animation:none; transform:translateX(-50%) translateY(4px) scale(.9);}
+.scene-material.bought{animation:materialBoughtPop .65s steps(6); filter:brightness(1.22) drop-shadow(0 0 10px var(--yellow));}
+@keyframes stockJump{0%,100%{transform:translateX(-50%) translateY(0) rotate(0);}45%{transform:translateX(-50%) translateY(-12px) rotate(-3deg);}70%{transform:translateX(-50%) translateY(-6px) rotate(3deg);}}
+@keyframes materialBoughtPop{0%{transform:translateX(-50%) scale(.78);}55%{transform:translateX(-50%) scale(1.2);}100%{transform:translateX(-50%) scale(1);}}
+@keyframes boughtPop{0%{transform:scale(.88);}55%{transform:scale(1.045);}100%{transform:scale(1);}}
+.mat-milk{left:40%;top:13%}.mat-tea{left:50%;top:13%}.mat-pearls{left:60%;top:13%}
+.mat-syrup{left:40%;top:36%}.mat-matcha{left:50%;top:36%}.mat-cocoa{left:60%;top:36%}
+.mat-cream{left:40%;top:64%}.mat-fruit{left:50%;top:64%}.mat-cups{left:60%;top:64%}
+.mat-tea,.mat-pearls{top:14.5%}.mat-matcha,.mat-cocoa{top:37.5%}
+.mat-cream img,.mat-fruit img,.mat-cups img{filter:brightness(.86) saturate(.92) contrast(1.08) drop-shadow(0 6px 5px rgba(0,0,0,.6));}
+.buy-flash{position:absolute; z-index:8; left:50%; top:45%; transform:translate(-50%,-50%); font-family:var(--font-px); font-size:13px; color:#fff2a3; text-shadow:3px 3px 0 #8c5416,0 0 16px #ffd166; pointer-events:none; animation:buyFlash .9s ease-out forwards;}
+@keyframes buyFlash{0%{opacity:0; transform:translate(-50%,-15%) scale(.5);}25%{opacity:1; transform:translate(-50%,-50%) scale(1.2);}100%{opacity:0; transform:translate(-50%,-110%) scale(1);}}
+.secret-items{display:grid; grid-template-columns:repeat(4,1fr); gap:15px; width:94%; margin:0 auto;}
+.secret-item{min-height:76px; padding:8px 6px; cursor:pointer; background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); font-family:var(--font-term); font-size:16px; color:var(--ink); transition:transform .12s,filter .12s;}
+.secret-item:hover{transform:scale(1.045); filter:brightness(1.25);}
+.secret-item.bought{animation:boughtPop .65s steps(6); color:#102619; background:linear-gradient(180deg,#71e895,#43bd70); border-color:#1d6b3b; box-shadow:0 0 0 2px #2b8a4d,0 0 14px rgba(91,226,126,.45);}
+.secret-item.bought b{color:#17301e;}
+.secret-item b{display:block; color:var(--yellow); font-weight:normal; margin-bottom:8px;}
+.secret-item.buy-shop{grid-column:1/-1; display:flex; flex-direction:column; align-items:center; justify-content:space-evenly; gap:0; min-height:116px; width:100%; padding:10px 8px; justify-self:stretch; background:linear-gradient(180deg,#5c2347,#2a1834); border-color:var(--yellow); box-shadow:0 0 0 3px #9a5d18,0 0 18px rgba(255,209,102,.28); font-family:var(--font-px); font-size:10px; color:#fff2a3; text-align:center;}
+.secret-item.buy-shop b{margin:0; color:#ffd166; font-family:var(--font-px); font-size:16px; line-height:1.15; text-shadow:2px 2px 0 #6a3516;}
+.buy-shop-en{display:block; color:#fff2c7; font-family:var(--font-px); font-size:10px; line-height:1.2;}
+.buy-shop-cn{display:block; font-family:var(--font-cn); font-size:17px; line-height:1.2; color:#eacb9b; text-align:center; text-shadow:1px 1px 0 rgba(0,0,0,.5);}
+.secret-item.buy-shop.bought{color:#2b1705; background:linear-gradient(180deg,#ffe28a,#d9a93c); border-color:#fff2a3; box-shadow:0 0 0 3px #9a5d18,0 0 18px rgba(255,209,102,.48);}
+.secret-item.buy-shop.bought b{color:#5a3107;}
+.purchase-trail{display:flex; flex-wrap:wrap; justify-content:center; gap:7px; min-height:0; margin:9px 0 2px;}
+.purchase-money{font-family:"Arial Black",Impact,sans-serif; font-size:25px; line-height:1; color:#fff2a3; padding:5px 9px; background:#3d2a14; border:2px solid var(--yellow); box-shadow:0 0 9px rgba(255,209,102,.65); animation:moneyStamp .35s steps(4);}
+@keyframes moneyStamp{from{opacity:0;transform:translateY(12px) scale(.4)}to{opacity:1;transform:none}}
+.pixel-arrow{display:inline-block; margin-left:10px; font-family:var(--font-px); font-size:17px; line-height:.8; color:currentColor; text-shadow:2px 2px 0 rgba(0,0,0,.28); vertical-align:-1px;}
+@media(max-width:700px){#modal-secret .modal-box>h3{white-space:normal;font-size:9px;}.secret-scene{height:300px}.secret-items{grid-template-columns:1fr}.scene-material{width:58px;height:78px}.scene-material img{width:58px;height:58px}}
+@media(max-width:560px){.secret-ending .se-money strong{width:min(210px,70%);height:66px;padding:4px 8px}.yen-mark{font-size:30px}.infinity-mark{font-size:42px}.secret-shop .yen-mark{font-size:40px}.secret-shop .infinity-mark{font-size:58px}.ins-actions{grid-template-columns:1fr 1fr;}.ins-actions .px-btn{padding:10px 8px; font-size:9px;}.secret-scene{height:280px}.scene-material{width:50px;height:70px;font-size:5px}.scene-material img{width:50px;height:50px}.secret-item{font-size:16px}}
+
 /* story map */
 #mapNodes{display:flex; flex-direction:column; gap:0; padding:4px 0 6px;}
 .map-node{display:flex; align-items:center; gap:12px; padding:10px 8px; position:relative; cursor:pointer; border:2px solid transparent; transition:background .12s;}
@@ -371,8 +496,9 @@ body{
 .shake{animation:shakeX .5s ease;}
 
 /* scrollbar */
-#vocabList::-webkit-scrollbar,.modal-box::-webkit-scrollbar,#view-summary::-webkit-scrollbar,#insightCard::-webkit-scrollbar{width:10px;}
-#vocabList::-webkit-scrollbar-thumb,.modal-box::-webkit-scrollbar-thumb,#view-summary::-webkit-scrollbar-thumb,#insightCard::-webkit-scrollbar-thumb{background:var(--line2); border:2px solid var(--line);}
+#vocabList::-webkit-scrollbar,.modal-box::-webkit-scrollbar,.sum-wrap::-webkit-scrollbar,#insightCard::-webkit-scrollbar{width:12px;}
+#vocabList::-webkit-scrollbar-thumb,.modal-box::-webkit-scrollbar-thumb,.sum-wrap::-webkit-scrollbar-thumb,#insightCard::-webkit-scrollbar-thumb{background:linear-gradient(var(--cyan),#2b7f9e); border:3px solid var(--line);}
+.sum-wrap::-webkit-scrollbar-track{background:#0d0e1d; border-left:2px solid var(--line);}
 
 /* ============ V0.2: LANGUAGE, SPEAKERS, VOCAB TIERS ============ */
 /* title language picker */
@@ -452,6 +578,7 @@ body{
   .lang-seg button{font-size:11px;}
   .lang-pick .px-btn{min-width:0; padding:12px 8px; font-size:9px; white-space:nowrap;}
   .cn-help-btn{min-height:44px; display:inline-flex; align-items:center;}
+  .quiz-options{grid-template-columns:1fr;}
   #botbar{gap:8px; padding-bottom:calc(10px + env(safe-area-inset-bottom));}
   #botbar .px-btn{padding:10px 12px; font-size:9px; min-height:46px; display:flex; align-items:center;}
   .chip{min-height:44px; display:inline-flex; align-items:center;}
@@ -464,6 +591,7 @@ body{
   .choice{font-size:18px; padding:8px 11px; min-height:46px; display:flex; align-items:center;}
   .title-logo{font-size:18px;}
   .title-card img{width:140px; height:140px;}
+  .title-portrait{width:140px; height:140px;}
   .sum-wrap{padding:18px 14px;}
   .sum-actions .px-btn{min-width:100%;}
 }
@@ -476,9 +604,9 @@ body{
 <!-- ================= TITLE VIEW ================= -->
 <section id="view-title">
   <div class="title-wrap">
-    <div class="title-logo">MILK TEA WORKER<span class="sub">UNIT 1 · WHAT IS ECONOMICS? · INTERACTIVE DAY · V0.2</span></div>
+    <div class="title-logo">MILK TEA WORKER<span class="sub">UNIT 1 · WHAT IS ECONOMICS? · INTERACTIVE DAY · <b>V0.2</b></span></div>
     <div class="title-card">
-      <img src="assets/char_normal.png" alt="Milk tea shop worker">
+      <div class="title-portrait"><img src="assets/char_normal.png" alt="Milk tea shop worker"><button class="hat-secret" id="hat-secret" type="button" aria-label="Worker hat"></button></div>
       <div class="title-info">
         <h2>MILK TEA SHOP WORKER</h2>
         <div class="row"><span>Age:</span><b>21</b></div>
@@ -488,12 +616,11 @@ body{
       </div>
     </div>
     <div class="lang-pick" id="title-lang">
-      <button class="px-btn" data-lang="cn" type="button">中文</button>
       <button class="px-btn" data-lang="en" type="button">English</button>
       <button class="px-btn" data-lang="dual" type="button">中英对照</button>
     </div>
     <button class="px-btn primary start-btn" id="btn-start">START DAY</button>
-    <div class="title-hint">5 EVENTS · 4 STATS · 1 SURPRISE</div>
+    <div class="title-hint">5 EVENTS · 4 STATS · A SECRET ENDING IS HIDDEN</div>
   </div>
 </section>
 
@@ -505,9 +632,15 @@ body{
       <span class="tb-chip" id="tb-time">08:10 AM</span>
       <span class="tb-chip" id="tb-loc">DORM ROOM</span>
       <button class="tb-chip cn-toggle" id="btn-auto" type="button">AUTO</button>
-      <button class="tb-chip cn-toggle" id="btn-music" type="button" aria-label="音乐">♪</button>
+      <div class="audio-control">
+        <button class="tb-chip cn-toggle" id="btn-music" type="button" aria-label="音乐和音效调节">♪</button>
+        <div class="audio-panel hidden" id="audio-panel">
+          <label class="audio-row"><span>MUSIC</span><input id="music-volume" type="range" min="0" max="100" value="9"><span class="audio-value" id="music-value">9</span></label>
+          <label class="audio-row"><span>SFX</span><input id="sfx-volume" type="range" min="0" max="100" value="100"><span class="audio-value" id="sfx-value">100</span></label>
+          <button class="px-btn cyan" id="btn-bgm-toggle" type="button">MUSIC ON</button>
+        </div>
+      </div>
       <div class="lang-seg" id="lang-seg">
-        <button data-lang="cn" type="button">中文</button>
         <button data-lang="en" type="button">EN</button>
         <button data-lang="dual" type="button">双语</button>
       </div>
@@ -560,6 +693,7 @@ body{
         <div id="choices"></div>
         <div id="resultArea"></div>
       </div>
+      <div id="insight-unlocked" class="hidden">ECONOMICS INSIGHT UNLOCKED</div>
     </div>
 
     <aside id="side">
@@ -567,15 +701,15 @@ body{
       <div id="vocabList"></div>
       <div class="side-foot" id="side-foot">CLICK A WORD TO SEE<br>THE CHINESE MEANING</div>
     </aside>
-  </main>
 
-  <footer id="botbar">
-    <button class="px-btn" id="btn-back">BACK</button>
-    <button class="px-btn" id="btn-map">STORY MAP</button>
-    <button class="px-btn" id="btn-vocab">VOCABULARY</button>
-    <div class="spacer"></div>
-    <button class="px-btn cyan hidden" id="btn-continue">CONTINUE</button>
-  </footer>
+    <footer id="botbar">
+      <button class="px-btn" id="btn-back">BACK</button>
+      <button class="px-btn" id="btn-map">STORY MAP</button>
+      <button class="px-btn" id="btn-vocab">VOCABULARY</button>
+      <div class="spacer"></div>
+      <button class="px-btn cyan hidden" id="btn-continue">CONTINUE</button>
+    </footer>
+  </main>
 </section>
 
 <!-- ================= ECONOMICS INSIGHT CARD (global overlay) ================= -->
@@ -588,8 +722,8 @@ body{
     <div id="ins-layers"></div>
   </div>
   <div class="ins-actions">
-    <button class="px-btn" id="ins-learn-btn">LEARN MORE</button>
     <button class="px-btn cyan" id="ins-continue">CONTINUE</button>
+    <button class="px-btn cyan" id="ins-learn-btn">LEARN MORE</button>
   </div>
 </div>
 
@@ -617,6 +751,7 @@ body{
       <button class="px-btn primary" id="btn-replay">REPLAY DAY</button>
       <button class="px-btn cyan" id="btn-explore">EXPLORE ANOTHER CHOICE</button>
       <button class="px-btn pink" id="btn-review">VOCABULARY REVIEW</button>
+      <button class="px-btn green" id="btn-quiz">VOCAB QUIZ</button>
     </div>
   </div>
 </section>
@@ -649,6 +784,42 @@ body{
     <div class="modal-x" data-close="modal-review">X</div>
     <h3>VOCABULARY REVIEW</h3>
     <div id="reviewList"></div>
+  </div>
+</div>
+
+<div id="modal-quiz" class="modal-veil hidden">
+  <div class="modal-box">
+    <div class="modal-x" data-close="modal-quiz">X</div>
+    <h3 id="quiz-title">VOCABULARY QUIZ</h3>
+    <div id="quiz-content"></div>
+  </div>
+</div>
+
+<div id="modal-secret" class="modal-veil hidden">
+  <div class="modal-box">
+    <div class="modal-x" data-close="modal-secret">X</div>
+    <h3>SECRET ENDING · OWNER'S PRICING PASS</h3>
+    <div class="secret-shop">
+      <div class="shop-story">The manager gives you full pricing authority — and an unlimited business fund.</div>
+      <div class="shop-cn">店长正式认可了你的经营能力，把新品定价权和无限经营资金都交给了你。</div>
+      <div class="shop-money"><span class="yen-mark">¥</span><span class="infinity-mark">∞</span></div>
+      <div class="secret-scene" id="secret-scene">
+        <button class="scene-material mat-milk" type="button" data-buy="MILK"><img src="assets/reward_items/item_milk.png" alt="Milk"><span>MILK</span></button>
+        <button class="scene-material mat-tea" type="button" data-buy="TEA"><img src="assets/reward_items/item_tea.png" alt="Tea"><span>TEA</span></button>
+        <button class="scene-material mat-pearls" type="button" data-buy="PEARLS"><img src="assets/reward_items/item_pearls.png" alt="Pearls"><span>PEARLS</span></button>
+        <button class="scene-material mat-syrup" type="button" data-buy="SYRUP"><img src="assets/reward_items/item_syrup.png" alt="Syrup"><span>SYRUP</span></button>
+        <button class="scene-material mat-matcha" type="button" data-buy="MATCHA"><img src="assets/reward_items/item_matcha.png" alt="Matcha"><span>MATCHA</span></button>
+        <button class="scene-material mat-cocoa" type="button" data-buy="COCOA"><img src="assets/reward_items/item_cocoa.png" alt="Cocoa"><span>COCOA</span></button>
+        <button class="scene-material mat-cream" type="button" data-buy="CREAM"><img src="assets/reward_items/item_cream.png" alt="Cream"><span>CREAM</span></button>
+        <button class="scene-material mat-fruit" type="button" data-buy="FRUIT"><img src="assets/reward_items/item_fruit.png" alt="Fruit"><span>FRUIT</span></button>
+        <button class="scene-material mat-cups" type="button" data-buy="CUPS"><img src="assets/reward_items/item_cups.png" alt="Cups"><span>CUPS</span></button>
+      </div>
+      <div class="secret-items">
+        <button class="secret-item buy-shop" data-buy="THE ENTIRE SHOP" data-takeover="true" type="button"><b>¥100,000,000</b><span class="buy-shop-en">BUY THE ENTIRE SHOP</span><span class="buy-shop-cn">买下整座店</span></button>
+      </div>
+      <div class="purchase-trail" id="purchase-trail" aria-live="polite"></div>
+      <div class="quiz-actions"><button class="px-btn cyan" type="button" id="secret-finish">BACK TO TITLE</button></div>
+    </div>
   </div>
 </div>
 
@@ -1266,11 +1437,14 @@ function applyEffects(effects){
     chips += '<span class="delta-chip '+(d>0?"up":"down")+'">'+STAT_LABEL[k]+" "+(d>0?"+":"")+d+'</span>';
     const statEl = document.querySelector(".stat."+dom);
     if(statEl){
+      statEl.classList.remove("result-flash");
+      void statEl.offsetWidth;
+      statEl.classList.add("result-flash");
       const b = document.createElement("span");
       b.className = "s-delta "+(d>0?"up":"down");
       b.textContent = (d>0?"+":"")+d;
       statEl.appendChild(b);
-      setTimeout(()=>b.remove(), 1800);
+      setTimeout(()=>{ b.remove(); statEl.classList.remove("result-flash"); }, 1800);
     }
     const numEl = $("num-"+dom);
     if(numEl) rollNumber(numEl, S[k]-d, S[k], k);
@@ -1455,10 +1629,20 @@ function finishResult(ev){
   if(ev.insight){
     pendingInsight = ev.insight;
     if(!S.insightsSeen.includes(ev.insight.title)) S.insightsSeen.push(ev.insight.title);
+    showInsightUnlocked();
     showContinue("INSIGHT →");
   } else {
     showContinue("CONTINUE");
   }
+}
+let insightUnlockTimer = null;
+function showInsightUnlocked(){
+  const el = $("insight-unlocked");
+  clearTimeout(insightUnlockTimer);
+  el.classList.remove("hidden","show");
+  void el.offsetWidth;
+  el.classList.add("show");
+  insightUnlockTimer = setTimeout(()=>{ el.classList.remove("show"); el.classList.add("hidden"); }, 1800);
 }
 function showContinue(label){
   const b = $("btn-continue");
@@ -1501,7 +1685,8 @@ function showInsight(ins, fromSummary){
     + (lang !== "cn" && ci ? '<div class="cn-line">'+escapeHtml(ci.body)+'</div>' : "");
   renderInsightLayers(ins);
   $("ins-learn").classList.add("hidden");
-  $("ins-learn-btn").classList.remove("hidden");
+  $("ins-learn-btn").classList.remove("hidden","used");
+  $("ins-continue").classList.remove("cyan");
   phase = "insight";
   show("insightCard");
 }
@@ -1603,7 +1788,148 @@ function openReview(){
   }
   show("modal-review");
 }
-function closeModal(id){ hide(id); typePaused = false; if(id === "modal-vocab"){ cnHelpOpen = false; } }
+let sfxCtx = null, sfxVolume = 1;
+function playSfx(kind){
+  try{
+    if(sfxVolume <= 0) return;
+    sfxCtx = sfxCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if(sfxCtx.state === "suspended") sfxCtx.resume();
+    const now = sfxCtx.currentTime;
+    const notes = kind === "correct" ? [[523,0,.07],[659,.08,.08],[784,.17,.1]]
+      : kind === "wrong" ? [[180,0,.12],[135,.1,.14]]
+      : kind === "perfect" ? [[392,0,.16],[523,.12,.16],[659,.24,.18],[784,.38,.2],[1047,.55,.28],[1319,.78,.34],[1568,1.04,.5]]
+      : kind === "reward" ? [[392,0,.1],[523,.1,.13],[659,.23,.18]]
+      : [[1180,0,.025],[1760,.018,.035]];
+    notes.forEach(([freq,delay,dur])=>{
+      const osc = sfxCtx.createOscillator(), gain = sfxCtx.createGain();
+      osc.type = kind === "click" ? "triangle" : "square"; osc.frequency.setValueAtTime(freq, now+delay);
+      gain.gain.setValueAtTime(.0001, now+delay);
+      const peak = (kind === "click" ? .035 : (kind === "perfect" ? .052 : .04)) * Math.max(.001,sfxVolume);
+      gain.gain.exponentialRampToValueAtTime(peak, now+delay+.006);
+      gain.gain.exponentialRampToValueAtTime(.0001, now+delay+dur);
+      osc.connect(gain); gain.connect(sfxCtx.destination);
+      osc.start(now+delay); osc.stop(now+delay+dur+.02);
+    });
+  }catch(e){}
+}
+
+let quizTerms = [], quizIndex = 0, quizScore = 0, quizMissed = [], quizRequired = false, quizSelected = null;
+function shuffled(list){
+  const out = list.slice();
+  for(let i=out.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [out[i],out[j]] = [out[j],out[i]];
+  }
+  return out;
+}
+function openQuiz(required){
+  const pool = S.unlocked.filter(t=>VOCAB[t] && (VOCAB[t].type === "core" || VOCAB[t].type === "unit1"));
+  if(!pool.length){ toast("NO VOCABULARY UNLOCKED YET"); return; }
+  quizRequired = !!required;
+  quizTerms = shuffled(pool).slice(0, Math.min(5, pool.length));
+  quizIndex = 0; quizScore = 0; quizMissed = []; quizSelected = null;
+  $("modal-quiz").classList.toggle("required", quizRequired);
+  renderQuiz();
+  show("modal-quiz");
+}
+function renderQuiz(){
+  const box = $("quiz-content");
+  $("quiz-title").textContent = "VOCABULARY QUIZ";
+  if(quizIndex >= quizTerms.length){
+    renderQuizReward();
+    return;
+  }
+  const answer = quizTerms[quizIndex];
+  const v = VOCAB[answer];
+  quizSelected = null;
+  const pool = S.unlocked.filter(t=>VOCAB[t] && (VOCAB[t].type === "core" || VOCAB[t].type === "unit1") && t !== answer);
+  const options = shuffled([answer].concat(shuffled(pool).slice(0,3)));
+  box.innerHTML = '<div class="quiz-stage">SHIFT COMPLETE　→　<b>VOCAB QUIZ</b>　→　LEARNING REWARD　→　DAY SUMMARY</div>'+ 
+    '<div class="quiz-progress">QUESTION '+(quizIndex+1)+' / '+quizTerms.length+'</div>'+ 
+    '<div class="quiz-prompt"><button class="quiz-help" type="button" aria-label="显示中文提示" title="中文提示">?</button>'+escapeHtml(v.en)+'<div class="cn-line hidden" id="quiz-cn">'+escapeHtml(v.zh)+'</div></div>'+
+    '<div class="quiz-options" id="quiz-options"></div><div class="quiz-feedback" id="quiz-feedback">CHOOSE AN ANSWER, THEN SUBMIT</div>'+
+    '<div class="quiz-actions"><button class="px-btn cyan" type="button" id="quiz-submit" disabled>SUBMIT ANSWER</button><button class="px-btn cyan hidden" type="button" id="quiz-next">NEXT</button></div>';
+  const opts = $("quiz-options");
+  options.forEach(term=>{
+    const b = document.createElement("button");
+    b.className = "quiz-option"; b.type = "button"; b.textContent = term;
+    b.onclick = ()=>{
+      quizSelected = term;
+      opts.querySelectorAll(".quiz-option").forEach(option=>option.classList.toggle("selected", option === b));
+      $("quiz-submit").disabled = false;
+      $("quiz-feedback").textContent = "ANSWER SELECTED · PRESS SUBMIT";
+      playSfx("click");
+    };
+    opts.appendChild(b);
+  });
+  $("quiz-content").querySelector(".quiz-help").onclick = e=>{
+    e.currentTarget.classList.add("hidden");
+    $("quiz-cn").classList.remove("hidden");
+  };
+  $("quiz-submit").onclick = ()=>{ if(quizSelected) answerQuiz(quizSelected, answer); };
+}
+function answerQuiz(selected, answer){
+  const buttons = document.querySelectorAll("#quiz-options .quiz-option");
+  buttons.forEach(b=>{
+    b.disabled = true;
+    if(b.textContent === answer) b.classList.add("correct");
+    else if(b.textContent === selected) b.classList.add("wrong");
+  });
+  if(selected === answer){
+    quizScore++;
+    $("quiz-feedback").textContent = "CORRECT";
+    playSfx("correct");
+  } else {
+    quizMissed.push(answer);
+    $("quiz-feedback").textContent = "CORRECT ANSWER: "+answer;
+    playSfx("wrong");
+  }
+  const next = $("quiz-next");
+  $("quiz-submit").classList.add("hidden");
+  next.textContent = quizIndex === quizTerms.length-1 ? "VIEW SCORE" : "NEXT";
+  next.classList.remove("hidden");
+  next.onclick = ()=>{ quizIndex++; renderQuiz(); };
+}
+function renderQuizReward(){
+  const box = $("quiz-content");
+  const perfect = quizScore === quizTerms.length;
+  let rank, image, stars, cls;
+  if(perfect){ rank="VOCAB MASTER"; image="assets/reward-crown.png"; stars="★★★"; cls="crown"; }
+  else if(quizScore === 4){ rank="GREAT JOB"; image="assets/reward-sapphire.png"; stars="★★"; cls="sapphire"; }
+  else if(quizScore === 3){ rank="GOOD PROGRESS"; image="assets/reward-emerald.png"; stars="★"; cls="emerald"; }
+  else { rank="REVIEW RECOMMENDED"; image=""; stars=""; cls="review"; }
+  const missed = quizMissed.length ? '<div class="quiz-review-box">REVIEW THESE WORDS<br><b>'+quizMissed.map(escapeHtml).join(" · ")+'</b></div>' : "";
+  const secret = perfect && S.insightsSeen.length >= 3;
+  const achievement = perfect ? '<div class="quiz-achievement">You earned the manager\'s trust and the authority to price the shop\'s next product.<span class="cn">你获得了店长的认可，并拥有了下一款新品的定价权。</span></div>' : '';
+  const secretHtml = secret ? '<div class="secret-ending"><div class="se-head">SECRET ENDING UNLOCKED · THE PRICING TABLE</div><div class="se-body">At closing, the manager slides next week\'s menu across the counter. “You understand customers, costs, and trade-offs. Help me price the new drink.” Your idea sells out.</div>'+
+    '<div class="se-cn">打烊时，店长把下周的菜单推到你面前：“你懂顾客、成本和取舍。来帮我给新品定价吧。”你的方案在下一周一售而空。</div>'+
+    '<div class="se-money">FUTURE BUSINESS FUND<strong><span class="yen-mark">¥</span><span class="infinity-mark">∞</span></strong></div></div>' : "";
+  const particles = image ? '<div class="reward-particles" aria-hidden="true">'+[
+    ['7%','18%','5px','#ffd166','1.4s','-.2s'],['12%','42%','4px','#ff5d8f','1.2s','-.7s'],['16%','72%','6px','#4cc9f0','1.6s','-1.1s'],['21%','27%','7px','#fff3a6','1.8s','-.8s'],['25%','58%','5px','#4cc9f0','1.35s','-.4s'],['29%','8%','4px','#ffd166','1.1s','-.9s'],['34%','78%','7px','#ff5d8f','1.7s','-1.3s'],['38%','34%','5px','#fff3a6','1.25s','-.5s'],['43%','14%','6px','#4cc9f0','1.55s','-1s'],['47%','66%','4px','#ffd166','1.15s','-.25s'],['52%','22%','7px','#fff3a6','1.85s','-1.4s'],['56%','82%','5px','#ff5d8f','1.4s','-.6s'],['61%','42%','6px','#4cc9f0','1.65s','-1.2s'],['65%','9%','4px','#ffd166','1.2s','-.75s'],['70%','72%','7px','#fff3a6','1.75s','-.35s'],['74%','30%','5px','#ff5d8f','1.3s','-1.05s'],['79%','58%','6px','#4cc9f0','1.6s','-.45s'],['83%','15%','4px','#fff3a6','1.15s','-.85s'],['88%','76%','7px','#ffd166','1.9s','-1.35s'],['92%','38%','5px','#4cc9f0','1.45s','-.15s'],['10%','88%','4px','#fff3a6','1.25s','-.95s'],['31%','48%','4px','#4cc9f0','1.1s','-.3s'],['69%','51%','4px','#ffd166','1.3s','-1.15s'],['90%','6%','5px','#ff5d8f','1.55s','-.55s']
+  ].map(p=>'<i class="reward-particle" style="--x:'+p[0]+';--y:'+p[1]+';--s:'+p[2]+';--c:'+p[3]+';--d:'+p[4]+';--delay:'+p[5]+'"></i>').join('')+'</div>' : '';
+  box.innerHTML = '<div class="quiz-stage">SHIFT COMPLETE　→　VOCAB QUIZ '+quizScore+'/'+quizTerms.length+'　→　<b>LEARNING REWARD</b>　→　DAY SUMMARY</div>'+ 
+    '<div class="quiz-reward '+cls+'"><div class="quiz-reward-title">'+(perfect?'PERFECT VOCABULARY SCORE':'VOCABULARY RESULT')+'</div>'+ 
+    '<div class="quiz-reward-sub">'+quizScore+' / '+quizTerms.length+'</div>'+ 
+    particles+(image?'<img class="quiz-reward-img" src="'+image+'" alt="">':'')+ 
+    (stars?'<div class="quiz-stars">'+stars+'</div>':'')+'<div class="quiz-rank">'+rank+'</div>'+achievement+missed+secretHtml+ 
+    '<div class="quiz-actions"><button class="px-btn cyan" type="button" id="quiz-summary">'+(secret?'ENTER SECRET SHOP <span class="pixel-arrow">▶</span>':(quizRequired?'VIEW DAY SUMMARY <span class="pixel-arrow">▶</span>':'BACK TO DAY SUMMARY'))+'</button></div></div>';
+  playSfx(perfect ? "perfect" : "reward");
+  $("quiz-summary").onclick = secret ? ()=>openSecretShop(true) : finishQuiz;
+}
+function finishQuiz(){
+  hide("modal-secret");
+  $("modal-secret").classList.remove("required");
+  hide("modal-quiz");
+  $("modal-quiz").classList.remove("required");
+  quizRequired = false;
+  phase = "summary";
+  show("view-summary");
+}
+function closeModal(id){
+  if(id === "modal-quiz" && $("modal-quiz").classList.contains("required")) return;
+  if(id === "modal-secret" && $("modal-secret").classList.contains("required")) return;
+  hide(id); typePaused = false; if(id === "modal-vocab"){ cnHelpOpen = false; }
+}
 
 /* ---------- toast ---------- */
 let toastTimer = null;
@@ -1751,23 +2077,24 @@ function buildSummary(){
   });
   renderSidebar();
   renderSummary();
-  hide("view-game"); show("view-summary");
+  hide("view-game"); hide("view-summary");
+  openQuiz(true);
 }
 function renderSummary(){
   const P = (en, cn)=> lang === "cn" ? cn : en;
-  $("sum-h-status").textContent  = P("FINAL STATUS","最终状态");
-  $("sum-h-hidden").textContent  = P("HIDDEN RESULTS","隐藏结果");
-  $("sum-h-concepts").textContent = P("ECONOMICS CONCEPTS","经济学概念");
-  $("sum-h-vocab").textContent   = P("UNIT 1 VOCABULARY","单元一词汇");
-  $("sum-h-unit1").textContent   = P("UNIT 1 WRAP-UP","单元一收口");
-  $("sum-h-explore").textContent = P("EXPLORATION","探索进度");
+  $("sum-h-status").textContent  = "FINAL STATUS";
+  $("sum-h-hidden").textContent  = "HIDDEN RESULTS · 隐藏结果";
+  $("sum-h-concepts").textContent = "ECONOMICS CONCEPTS";
+  $("sum-h-vocab").textContent   = "UNIT 1 VOCABULARY";
+  $("sum-h-unit1").textContent   = "UNIT 1 WRAP-UP";
+  $("sum-h-explore").textContent = "EXPLORATION";
 
   const grid = $("sum-stats"); grid.innerHTML = "";
   STAT_KEYS.forEach(k=>{
     const from = INIT[k], to = S[k], d = to - from;
     const row = document.createElement("div"); row.className = "sum-row";
     row.innerHTML =
-      '<span class="k">'+STAT_LABEL[k]+(lang !== "en" ? " · "+STAT_LABEL_CN[k] : "")+'</span>'+
+      '<span class="k">'+STAT_LABEL[k]+'</span>'+
       '<span class="v">'+(k==="money"?"¥"+from:from)+'</span>'+
       '<span class="arrow">→</span>'+
       '<span class="v">'+(k==="money"?"¥"+to:to)+'</span>'+
@@ -1780,16 +2107,15 @@ function renderSummary(){
   if(hidden.length){
     hidden.forEach(h=>{
       let effTxt = "";
-      if(h.effects) effTxt = Object.keys(h.effects).map(k=>STAT_LABEL[k]+(lang !== "en" ? "·"+STAT_LABEL_CN[k] : "")+" "+(h.effects[k]>0?"+":"")+h.effects[k]).join("  ");
+       if(h.effects) effTxt = Object.keys(h.effects).map(k=>STAT_LABEL[k]+"·"+STAT_LABEL_CN[k]+" "+(h.effects[k]>0?"+":"")+h.effects[k]).join("  ");
       const c = document.createElement("div"); c.className = "hidden-card";
-      const primary = lang === "cn" ? (h.cnLabel || h.label) : h.label;
-      const note = lang === "cn" ? (h.cnNote || h.note) : h.note;
-      c.innerHTML = '<span class="hb">'+(lang === "cn" ? "隐藏结果" : "HIDDEN RESULT")+'</span>'+escapeHtml(primary)+
-        '<div class="he">'+escapeHtml(note)+(effTxt ? " · "+escapeHtml(effTxt) : "")+'</div>';
+      c.innerHTML = '<span class="hb">HIDDEN RESULT · 隐藏结果</span>'+escapeHtml(h.label)+
+        '<div class="he">'+escapeHtml(h.note)+(effTxt ? " · "+escapeHtml(effTxt) : "")+'</div>'+ 
+        '<div class="he">'+escapeHtml(h.cnLabel || h.label)+' · '+escapeHtml(h.cnNote || h.note)+'</div>';
       hb.appendChild(c);
     });
   } else {
-    hb.innerHTML = '<div class="hidden-card"><span class="hb">'+(lang === "cn" ? "无" : "NONE")+'</span>'+escapeHtml(P("No hidden surprises today. Try a riskier choice.","今天没有隐藏惊喜。试试更大胆的选择。"))+'</div>';
+    hb.innerHTML = '<div class="hidden-card"><span class="hb">NONE · 无</span>No hidden surprises today. Try a riskier choice.<div class="he">今天没有隐藏惊喜。试试更大胆的选择。</div></div>';
   }
 
   const cb = $("sum-concepts"); cb.innerHTML = "";
@@ -1802,7 +2128,7 @@ function renderSummary(){
     VOCAB_SECTIONS.forEach(sec=>{
       const words = S.unlocked.filter(t=>VOCAB[t] && VOCAB[t].type === sec.key);
       if(!words.length) return;
-      vb.innerHTML += '<div class="vocab-sec" style="width:100%;">'+(lang === "cn" ? sec.cn : sec.en)+" ("+words.length+")</div>";
+      vb.innerHTML += '<div class="vocab-sec" style="width:100%;">'+sec.en+" ("+words.length+")</div>";
       words.forEach(t=>{
         vb.innerHTML += '<span class="chip" onclick="openVocab(\''+t+'\')">'+escapeHtml(t)+'</span>';
       });
@@ -1828,13 +2154,13 @@ function renderSummary(){
   ];
   wrapData.forEach(w=>{
     const card = document.createElement("div"); card.className = "wrap-card";
-    card.innerHTML = '<div class="wc-t">'+w.t+'</div><div class="wc-en">'+escapeHtml(lang === "cn" ? w.cn : w.en)+'</div>'
-      + (lang === "dual" ? '<div class="wc-cn">'+escapeHtml(w.cn)+'</div>' : '');
+    card.innerHTML = '<div class="wc-t">'+w.t+'</div><div class="wc-en">'+escapeHtml(w.en)+'</div>'+
+      '<div class="wc-cn">'+escapeHtml(w.cn)+'</div>';
     wb.appendChild(card);
   });
 
   const ob = $("sum-outcomes"); ob.innerHTML = "";
-  ob.innerHTML = '<span class="chip outcome">OUTCOMES DISCOVERED: '+S.discovered.length+' / '+TOTAL+'</span>';
+  ob.innerHTML = '<span class="chip outcome">OUTCOMES DISCOVERED · 已发现结果: '+S.discovered.length+' / '+TOTAL+'</span>';
 }
 
 /* ---------- replay / start ---------- */
@@ -1845,7 +2171,7 @@ function replay(){
   summaryApplied = false; curInsight = null;
   stopTyping(); clearTimeout(advanceTimer); lineWaiting = false;
   renderHUD(); renderSidebar();
-  hide("insightCard"); hide("view-summary"); hide("modal-vocab"); hide("modal-map"); hide("modal-review");
+  hide("insightCard"); hide("view-summary"); hide("modal-vocab"); hide("modal-map"); hide("modal-review"); hide("modal-quiz"); hide("modal-secret");
   hide("view-title"); show("view-game");
   syncLangUI();
   bgmStart();
@@ -1854,16 +2180,16 @@ function replay(){
 
 /* ---------- background music ---------- */
 const bgmEl = document.getElementById("bgm");
-let bgmOn = false;
+let bgmOn = false, bgmVolume = 0.09;
 function bgmTryPlay(){
   if(!bgmEl) return;
-  bgmEl.volume = 0.15;
+  bgmEl.volume = bgmVolume;
   bgmEl.play().then(()=>{ bgmOn = true; syncMusicBtn(); }).catch(()=>{ bgmOn = false; syncMusicBtn(); });
 }
 function bgmStart(){ bgmTryPlay(); }
 function bgmAutoStart(){
   if(!bgmEl) return;
-  bgmEl.volume = 0.15;
+  bgmEl.volume = bgmVolume;
   bgmEl.play().then(()=>{ bgmOn = true; syncMusicBtn(); }).catch(()=>{
     bgmOn = false; syncMusicBtn();
     const resume = ()=>{
@@ -1883,7 +2209,7 @@ function toggleBgm(){
   syncMusicBtn();
   toast(bgmOn ? "背景音乐已开启" : "背景音乐已关闭");
   if(bgmOn){
-    bgmEl.volume = 0.15;
+    bgmEl.volume = bgmVolume;
     bgmEl.play().catch(()=>{ bgmOn = false; syncMusicBtn(); });
   } else {
     bgmEl.pause();
@@ -1892,6 +2218,8 @@ function toggleBgm(){
 function syncMusicBtn(){
   const b = $("btn-music");
   if(b) b.classList.toggle("on", bgmOn);
+  const toggle = $("btn-bgm-toggle");
+  if(toggle) toggle.textContent = bgmOn ? "MUSIC ON" : "MUSIC OFF";
 }
 
 /* ---------- language switching (live, no restart) ---------- */
@@ -1911,13 +2239,14 @@ function syncLangUI(){
   $("btn-replay").textContent = L("REPLAY DAY","重新开始");
   $("btn-explore").textContent = L("EXPLORE ANOTHER CHOICE","探索其他选择");
   $("btn-review").textContent = L("VOCABULARY REVIEW","词汇复习");
+  $("btn-quiz").textContent = "RETAKE VOCAB QUIZ";
   $("ins-learn-btn").textContent = L("LEARN MORE","了解更多");
   $("ins-continue").textContent = L("CONTINUE","继续");
   $("side-foot").innerHTML = lang === "cn" ? "点击词汇查看中文释义" : "CLICK A WORD TO SEE<br>THE CHINESE MEANING";
   renderSidebar();
 }
 function setLang(l){
-  if(!["en","cn","dual"].includes(l)) return;
+  if(!["en","dual"].includes(l)) return;
   const changed = lang !== l;
   lang = l;
   syncLangUI();
@@ -1938,6 +2267,29 @@ function setLang(l){
 }
 
 /* ---------- events wiring ---------- */
+let secretTapCount = 0, secretTapTimer = null, secretTakeoverTimer = null;
+let secretFromQuiz = false;
+function openSecretShop(fromQuiz){
+  secretFromQuiz = !!fromQuiz;
+  $("modal-secret").classList.toggle("required", secretFromQuiz);
+  $("secret-finish").innerHTML = secretFromQuiz ? 'CONTINUE TO DAY SUMMARY <span class="pixel-arrow">▶</span>' : "BACK TO TITLE";
+  clearTimeout(secretTakeoverTimer);
+  $("secret-scene").classList.remove("takeover");
+  document.querySelectorAll("#modal-secret .bought").forEach(el=>el.classList.remove("bought"));
+  $("purchase-trail").innerHTML = "";
+  if(secretFromQuiz) hide("modal-quiz");
+  show("modal-secret");
+  playSfx("perfect");
+}
+function tapSecretEntrance(){
+  secretTapCount++;
+  clearTimeout(secretTapTimer);
+  secretTapTimer = setTimeout(()=>{ secretTapCount = 0; }, 2600);
+  if(secretTapCount < 5) return;
+  secretTapCount = 0;
+  clearTimeout(secretTapTimer);
+  openSecretShop(false);
+}
 function toggleAuto(){
   autoPlay = !autoPlay;
   const b = $("btn-auto");
@@ -1953,6 +2305,9 @@ function toggleAuto(){
   }
 }
 document.addEventListener("click", e=>{
+  if(!e.target.closest(".audio-control")) $("audio-panel").classList.add("hidden");
+  const button = e.target.closest("button");
+  if(button && !button.classList.contains("quiz-option")) playSfx("click");
   const cc = e.target.closest("[data-concept]");
   if(cc){ openInsightByTitle(cc.dataset.concept); return; }
   const vw = e.target.closest(".vw");
@@ -1962,21 +2317,63 @@ document.addEventListener("click", e=>{
 });
 $("storyText").addEventListener("click", storyClick);
 $("btn-start").onclick = replay;
+$("hat-secret").onclick = tapSecretEntrance;
+document.querySelectorAll("#modal-secret [data-buy]").forEach(item=>{
+  item.onclick = ()=>{
+    const scene = $("secret-scene");
+    item.classList.remove("bought");
+    void item.offsetWidth;
+    item.classList.add("bought");
+    if(item.dataset.takeover === "true"){
+      clearTimeout(secretTakeoverTimer);
+      scene.classList.remove("takeover");
+      void scene.offsetWidth;
+      scene.classList.add("takeover");
+      secretTakeoverTimer = setTimeout(()=>scene.classList.remove("takeover"), 1800);
+    }
+    const flash = document.createElement("div");
+    flash.className = "buy-flash";
+    flash.textContent = item.dataset.takeover === "true" ? "SHOP ACQUIRED!" : "PURCHASED!";
+    scene.appendChild(flash);
+    setTimeout(()=>flash.remove(), 950);
+    playSfx(item.dataset.takeover === "true" ? "perfect" : "reward");
+    const money = document.createElement("span");
+    money.className = "purchase-money";
+    money.textContent = item.dataset.takeover === "true" ? "¥100,000,000" : "¥∞";
+    money.title = item.dataset.buy+" PURCHASED";
+    $("purchase-trail").appendChild(money);
+  };
+});
 document.querySelectorAll("#title-lang .px-btn, #lang-seg button").forEach(b=>{
   b.onclick = ()=>setLang(b.dataset.lang);
 });
 $("btn-auto").onclick = toggleAuto;
-$("btn-music").onclick = toggleBgm;
+$("btn-music").onclick = ()=>$("audio-panel").classList.toggle("hidden");
+$("btn-bgm-toggle").onclick = toggleBgm;
+$("music-volume").oninput = e=>{
+  bgmVolume = Number(e.target.value)/100;
+  $("music-value").textContent = e.target.value;
+  if(bgmEl) bgmEl.volume = bgmVolume;
+};
+$("sfx-volume").oninput = e=>{
+  sfxVolume = Number(e.target.value)/100;
+  $("sfx-value").textContent = e.target.value;
+};
 $("mv-help").onclick = toggleCnHelp;
 $("btn-back").onclick = doBack;
 $("btn-map").onclick = openMap;
 $("btn-vocab").onclick = openReview;
 $("btn-continue").onclick = doContinue;
-$("ins-learn-btn").onclick = ()=>{ $("ins-learn").classList.remove("hidden"); $("ins-learn-btn").classList.add("hidden"); };
+$("ins-learn-btn").onclick = ()=>{ $("ins-learn").classList.remove("hidden"); $("ins-learn-btn").classList.add("used"); $("ins-continue").classList.add("cyan"); };
 $("ins-continue").onclick = ()=>{ hide("insightCard"); if(insightFromSummary){ insightFromSummary = false; phase = "summary"; } else { doContinue(); } };
+$("secret-finish").onclick = ()=>{
+  if(secretFromQuiz){ secretFromQuiz = false; finishQuiz(); }
+  else hide("modal-secret");
+};
 $("btn-replay").onclick = replay;
 $("btn-explore").onclick = exploreAnother;
 $("btn-review").onclick = openReview;
+$("btn-quiz").onclick = ()=>openQuiz(false);
 document.querySelectorAll("[data-close]").forEach(el=>{
   el.onclick = ()=>closeModal(el.dataset.close);
 });
