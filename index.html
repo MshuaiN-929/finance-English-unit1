@@ -76,28 +76,47 @@ body{
   background:
     linear-gradient(rgba(20,21,43,.88), rgba(20,21,43,.94)),
     url('assets/scene_shop.png') center/cover;
-  image-rendering:pixelated;
+  image-rendering:pixelated; overflow-y:auto;
 }
-.title-wrap{display:flex; flex-direction:column; align-items:center; gap:18px; text-align:center; padding:30px;}
-.title-logo{font-family:var(--font-px); font-size:30px; line-height:1.35; color:var(--yellow);
-  text-shadow:4px 4px 0 #0b0c1a, 0 0 18px rgba(255,209,102,.35); letter-spacing:1px;}
-.title-logo .sub{display:block; font-size:11px; color:var(--cyan); margin-top:10px; text-shadow:2px 2px 0 #0b0c1a;}
-.title-logo .sub b{font:inherit; color:inherit; font-weight:normal; cursor:default;}
-.title-card{display:flex; gap:22px; align-items:center; background:var(--panel); border:3px solid var(--line);
-  box-shadow:0 0 0 3px var(--line2), 0 10px 0 rgba(0,0,0,.25); padding:18px 22px; max-width:680px; text-align:left;}
-.title-card img{width:170px; height:170px; image-rendering:pixelated; border:3px solid var(--line); box-shadow:0 0 0 2px var(--line2);}
-.title-portrait{position:relative; flex:0 0 auto; width:170px; height:170px;}
+.title-wrap{display:flex; flex-direction:column; align-items:center; gap:10px; width:100%; text-align:center; padding:20px 28px 52px; box-sizing:border-box;}
+.title-course{font-family:var(--font-px); font-size:11px; line-height:1.4; color:var(--cyan); letter-spacing:1px;}
+.title-course span{font-family:var(--font-cn); font-size:17px; letter-spacing:0;}
+.title-logo{font-family:var(--font-px); font-size:30px; line-height:1.35; color:var(--yellow); text-shadow:4px 4px 0 #0b0c1a,0 0 18px rgba(255,209,102,.35); letter-spacing:1px;}
+.title-logo .title-cn{display:block; margin-top:3px; font-family:var(--font-cn); font-size:25px; color:var(--cyan); letter-spacing:1px; text-shadow:2px 2px 0 #0b0c1a;}
+.title-logo .title-project{display:block; margin-top:2px; font-family:var(--font-px); font-size:11px; color:var(--pink); text-shadow:2px 2px 0 #0b0c1a;}
+.title-logo .title-project em{font-family:var(--font-cn); font-size:18px; font-style:normal; letter-spacing:0;}
+.title-card{display:flex; gap:28px; align-items:center; width:min(930px,calc(100vw - 64px)); box-sizing:border-box; background:var(--panel); border:3px solid var(--line); box-shadow:0 0 0 3px var(--line2),0 10px 0 rgba(0,0,0,.25); padding:20px 26px; text-align:left;}
+.title-card img{width:220px; height:220px; image-rendering:pixelated; border:3px solid var(--line); box-shadow:0 0 0 2px var(--line2);}
+.title-portrait{position:relative; flex:0 0 auto; width:220px; height:220px;}
 .title-portrait>img{display:block; box-sizing:border-box;}
 .hat-secret{position:absolute; z-index:2; left:21%; top:15%; width:58%; height:29%; padding:0; border:0; background:transparent; opacity:0; cursor:default;}
 .hat-secret:focus{outline:none;}
-.title-info{font-family:var(--font-term); font-size:22px; line-height:1.5; color:var(--ink);}
-.title-info h2{font-family:var(--font-px); font-size:13px; color:var(--pink); margin-bottom:10px; line-height:1.6;}
-.title-info .row{display:flex; gap:8px; align-items:baseline;}
-.title-info .row b{color:var(--yellow); font-weight:normal;}
-.title-intro{margin-top:10px; color:var(--dim); font-size:21px; font-style:italic;}
+.title-info{flex:1; min-width:0; color:var(--ink);}
+.title-upper-grid{display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:12px; align-items:stretch;}
+.title-panel{min-width:0; display:flex; flex-direction:column;}
+.initial-list{display:grid; gap:8px; padding:11px 11px 10px; height:100%; box-sizing:border-box; border-bottom:2px solid var(--line2);}
+.initial-row{display:grid; grid-template-columns:auto 1fr; align-items:center; gap:11px; font-family:var(--font-term); font-size:17px; font-weight:700; line-height:1.35; color:var(--ink);}
+.initial-label{font-family:var(--font-px); font-size:9px; font-weight:700; color:var(--cyan);}
+.initial-value{color:var(--yellow); font-weight:700;}
+.title-section-head{padding:8px 12px; font-family:var(--font-px); font-size:11px; line-height:1.35; color:var(--pink); border:2px solid var(--line2); background:rgba(31,32,69,.72);}
+.title-section-head span{font-family:var(--font-cn); font-size:17px;}
+.objective-list{display:grid; gap:7px; padding:9px 4px 11px; border-bottom:2px solid var(--line2); height:100%; box-sizing:border-box;}
+.objective-row{display:flex; align-items:center; gap:10px; font-family:var(--font-cn); font-size:16px; line-height:1.35; color:var(--ink);}
+.objective-num{flex:none; padding:5px 7px 4px; font-family:var(--font-px); font-size:9px; color:var(--cyan); border:2px solid var(--cyan); box-shadow:2px 2px 0 #17334e;}
+.objective-row strong{color:var(--yellow); font-weight:normal;}
+.how-head{margin-top:9px; padding:7px 11px; text-align:center; font-family:var(--font-px); font-size:9px; color:var(--cyan); border:2px solid var(--line2); background:rgba(31,32,69,.72);}
+.how-head span{font-family:var(--font-cn); font-size:16px;}
+.how-copy{padding:8px 12px 0; font-family:var(--font-cn); font-size:15px; line-height:1.55; color:var(--dim);}
+.how-copy .vw{font-family:var(--font-cn); color:var(--yellow);}
 .start-btn{animation:blinkBtn 1.4s steps(2) infinite;}
 @keyframes blinkBtn{0%,100%{box-shadow:0 0 0 3px var(--line2), inset 0 -5px 0 rgba(0,0,0,.28), 0 0 0 4px transparent;}50%{box-shadow:0 0 0 3px var(--line2), inset 0 -5px 0 rgba(0,0,0,.28), 0 0 0 4px rgba(255,209,102,.85);}}
-.title-hint{font-family:var(--font-px); font-size:9px; color:var(--faint); letter-spacing:1px;}
+.title-actions{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-top:6px;}
+.lang-pick .px-btn,.title-actions .start-btn{width:180px; min-width:180px; box-sizing:border-box;}
+.start-btn{display:flex; align-items:center; justify-content:center; min-height:51px; font-size:13px; font-weight:normal;}
+.title-credit{position:absolute; left:24px; right:24px; bottom:12px; text-align:center; font-family:var(--font-px); font-size:9px; color:var(--faint); letter-spacing:.4px; opacity:.78; white-space:nowrap; transition:opacity .15s,color .15s;}
+.title-credit .person{font-family:var(--font-cn); font-size:14px;}
+.title-credit:hover{opacity:1; color:var(--dim);}
+.title-hint{margin:0; font-family:var(--font-px); font-size:9px; color:var(--faint); letter-spacing:1px;}
 
 /* ============ GAME SCREEN ============ */
 #view-game{flex:1; display:flex; flex-direction:column; min-height:0;}
@@ -199,6 +218,8 @@ body{
   font-family:var(--font-term); font-size:23px; line-height:1.35; color:var(--ink);
   min-height:96px; cursor:pointer; position:relative;
 }
+.dialog-skip{align-self:flex-end; margin:-2px 2px 7px 0; padding:6px 9px; font-family:var(--font-px); font-size:7px; color:var(--cyan); background:rgba(14,39,51,.9); border:2px solid var(--cyan); box-shadow:2px 2px 0 #17334e; cursor:pointer;}
+.dialog-skip:hover{filter:brightness(1.25); transform:scale(1.03);}
 #storyText .caret{color:var(--yellow); animation:blink .9s steps(2) infinite;}
 @keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
 .cont-hint{position:absolute; right:4px; bottom:0; font-family:var(--font-px); font-size:9px; color:var(--cyan); letter-spacing:1px; animation:blink 1.1s steps(2) infinite;}
@@ -389,6 +410,12 @@ body{
 #modal-secret.required .modal-x{display:none;}
 .quiz-stage{text-align:center; font-family:var(--font-px); font-size:8px; color:var(--faint); letter-spacing:1px; margin-bottom:15px;}
 .quiz-stage b{color:var(--yellow); font-weight:normal;}
+.quiz-challenge{min-height:410px; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px 7%; text-align:center; box-sizing:border-box;}
+.quiz-challenge-card{width:100%; box-sizing:border-box; padding:38px 24px; background:var(--panel2); border:3px solid var(--line); box-shadow:0 0 0 3px var(--line2),0 0 24px rgba(255,209,102,.16);}
+.quiz-challenge-title{font-family:var(--font-px); font-size:16px; line-height:1.7; color:var(--yellow); text-shadow:2px 2px 0 #0b0c1a;}
+.quiz-challenge-en{margin-top:22px; font-family:var(--font-term); font-size:24px; line-height:1.45; color:var(--ink);}
+.quiz-challenge-cn{margin-top:18px; font-family:var(--font-cn); font-size:17px; line-height:1.65; color:var(--dim);}
+.quiz-challenge .px-btn{margin-top:24px; min-width:220px;}
 .quiz-reward{text-align:center; position:relative; padding:2px 10px 8px;}
 .reward-particles{position:absolute; inset:50px 8% 96px; overflow:hidden; pointer-events:none; z-index:2;}
 .reward-particle{position:absolute; left:var(--x); top:var(--y); width:var(--s); height:var(--s); background:var(--c); box-shadow:0 0 8px var(--c),0 0 16px var(--c); animation:rewardSpark var(--d) steps(4) infinite; animation-delay:var(--delay); transform:rotate(45deg);}
@@ -397,8 +424,8 @@ body{
 .quiz-reward-title{font-family:var(--font-px); font-size:16px; color:var(--yellow); line-height:1.7; text-shadow:2px 2px 0 #0b0c1a,0 0 12px rgba(255,209,102,.65);}
 .quiz-reward-sub{font-family:var(--font-term); font-size:20px; color:var(--dim); margin:2px 0 4px;}
 .quiz-reward-img{display:block; width:min(310px,72vw); height:290px; object-fit:contain; margin:-6px auto -12px; image-rendering:pixelated; filter:drop-shadow(0 0 16px rgba(76,201,240,.35));}
-.quiz-reward.crown .quiz-reward-img{width:min(360px,78vw); height:315px; filter:drop-shadow(0 0 20px rgba(255,209,102,.55));}
-.quiz-stars{font-family:var(--font-px); font-size:28px; color:var(--yellow); letter-spacing:8px; text-shadow:0 0 10px rgba(255,209,102,.85); margin:2px 0 10px;}
+.quiz-reward.crown .quiz-reward-img{width:min(310px,72vw); height:260px; margin:-8px auto -15px; filter:drop-shadow(0 0 20px rgba(255,209,102,.55));}
+.quiz-stars{font-family:var(--font-px); font-size:26px; color:var(--yellow); letter-spacing:8px; text-shadow:0 0 10px rgba(255,209,102,.85); margin:0 0 7px;}
 .quiz-rank{display:inline-block; position:relative; min-width:270px; font-family:var(--font-px); font-size:14px; color:#fff4ae;
   background:linear-gradient(180deg,#4a286d 0%,#241b4e 48%,#171735 100%); border:4px solid var(--line);
   box-shadow:0 0 0 3px #8a4dff,0 0 0 6px #d89cff, inset 0 0 0 3px rgba(255,209,102,.42), inset 0 -8px 0 rgba(0,0,0,.24), 0 0 26px rgba(138,77,255,.9), 0 0 40px rgba(255,209,102,.28);
@@ -409,14 +436,17 @@ body{
 .quiz-achievement{width:100%; box-sizing:border-box; margin:17px 0 5px; padding:10px 16px; font-family:var(--font-term); font-size:18px; color:var(--ink); line-height:1.4; background:rgba(76,201,240,.08); border:2px solid var(--cyan); box-shadow:0 0 14px rgba(76,201,240,.18);}
 .quiz-achievement .cn{display:block; margin-top:5px; font-family:var(--font-cn); font-size:14px; color:var(--dim);}
 .quiz-review-box{background:var(--panel2); border:2px solid var(--line); box-shadow:0 0 0 2px var(--line2); padding:14px; margin:18px 0 8px; font-family:var(--font-term); font-size:19px; color:var(--ink); line-height:1.45;}
-.secret-ending{margin:18px 0 4px; padding:14px 16px; text-align:left; background:#2a1834; border:2px solid var(--pink); box-shadow:0 0 0 2px #6f2d59,0 0 16px rgba(255,93,143,.25);}
+.secret-ending{margin:16px 0 4px; padding:13px 16px; text-align:left; background:#2a1834; border:2px solid var(--pink); box-shadow:0 0 0 2px #6f2d59,0 0 16px rgba(255,93,143,.25);}
 .secret-ending .se-head{font-family:var(--font-px); font-size:9px; color:var(--pink); letter-spacing:1px; margin-bottom:8px;}
+.secret-ending .se-achievement{margin-bottom:9px; padding-bottom:8px; border-bottom:2px solid rgba(76,201,240,.38); font-family:var(--font-term); font-size:18px; color:var(--ink); line-height:1.35;}
+.secret-ending .se-achievement span{display:block; margin-top:3px; font-family:var(--font-cn); font-size:14px; color:var(--dim);}
 .secret-ending .se-body{font-family:var(--font-term); font-size:19px; color:var(--ink); line-height:1.45;}
 .secret-ending .se-cn{font-family:var(--font-cn); font-size:14px; color:var(--dim); line-height:1.6; margin-top:6px;}
-.secret-ending .se-money{font-family:var(--font-px); font-size:10px; color:var(--yellow); text-align:center; margin-top:10px; letter-spacing:1px; text-shadow:0 0 10px rgba(255,209,102,.7);}
-.secret-ending .se-money strong{display:flex; align-items:center; justify-content:center; width:min(235px,62%); height:72px; margin:7px auto 2px; padding:4px 11px; line-height:1; font-weight:900; color:#fff2a3; background:linear-gradient(180deg,#4b3211,#21182e); border:3px solid #ffd166; box-shadow:0 0 0 2px #9a5d18,inset 0 0 0 2px rgba(255,242,163,.22),0 0 17px rgba(255,209,102,.65); text-shadow:3px 3px 0 #8c5416,0 0 10px #ffd166; animation:secretMoneyGlow 1.25s steps(2) infinite;}
+.secret-ending .se-money{display:flex; align-items:center; justify-content:center; gap:16px; margin-top:10px; padding:8px 12px; font-family:var(--font-px); font-size:9px; color:var(--yellow); text-align:center; letter-spacing:1px; background:linear-gradient(90deg,rgba(75,50,17,.45),rgba(33,24,46,.76),rgba(75,50,17,.45)); border:2px solid #9a6d25; text-shadow:0 0 10px rgba(255,209,102,.7);}
+.secret-ending .se-money strong{display:flex; align-items:center; justify-content:center; margin:0; line-height:1; font-weight:900; color:#fff2a3; text-shadow:2px 2px 0 #8c5416,0 0 10px #ffd166; animation:secretMoneyGlow 1.25s steps(2) infinite;}
 .yen-mark{font-family:var(--font-px); font-size:34px;}
-.infinity-mark{display:inline-block; margin-left:6px; font-family:"Arial Black",Impact,sans-serif; font-size:46px; font-weight:900; line-height:1; vertical-align:middle; letter-spacing:-.08em;}
+.infinity-mark{display:inline-block; margin-left:5px; font-family:"Arial Black",Impact,sans-serif; font-size:46px; font-weight:900; line-height:1; vertical-align:middle; letter-spacing:-.08em;}
+.secret-ending .yen-mark{font-size:25px;}.secret-ending .infinity-mark{font-size:34px;}
 @keyframes secretMoneyGlow{50%{filter:brightness(1.45); transform:scale(1.06);}}
 #modal-secret .modal-box{width:min(980px,96vw); max-height:92vh; padding:20px 24px; overflow-x:hidden;}
 #modal-secret .modal-box>h3{white-space:nowrap; font-size:11px; padding-right:48px;}
@@ -427,7 +457,10 @@ body{
 .secret-scene{position:relative; height:340px; margin:12px 0 16px; overflow:hidden; background:linear-gradient(rgba(18,20,42,.08),rgba(18,20,42,.18)),url('assets/scene_reward.png') center/cover; border:4px solid var(--line); box-shadow:0 0 0 3px #8c641e,inset 0 0 28px rgba(255,209,102,.18); image-rendering:pixelated; transition:filter .35s,box-shadow .35s;}
 .secret-scene::after{content:"SECRET STOCKROOM"; position:absolute; left:14px; top:13px; padding:7px 10px; font-family:var(--font-px); font-size:8px; color:#241f12; background:var(--yellow); border:2px solid #8c641e; box-shadow:3px 3px 0 rgba(0,0,0,.35);}
 .secret-scene.takeover{filter:saturate(1.3) brightness(1.15); box-shadow:0 0 0 4px #ffd166,inset 0 0 45px rgba(255,209,102,.45),0 0 34px rgba(255,209,102,.65);}
-.secret-scene.takeover::before{content:"★ THIS SHOP IS YOURS · 整间店都是你的 ★"; position:absolute; z-index:5; left:50%; top:50%; transform:translate(-50%,-50%); width:78%; padding:16px 12px; font-family:var(--font-px); font-size:12px; line-height:1.8; color:#fff2a3; background:rgba(32,18,55,.92); border:4px solid var(--yellow); box-shadow:0 0 0 4px #9a5d18,0 0 34px #ffd166; animation:takeoverIn .45s steps(5);}
+.takeover-banner{display:none; position:absolute; z-index:7; left:50%; top:50%; transform:translate(-50%,-50%); width:78%; padding:14px 12px; color:#fff2a3; background:rgba(32,18,55,.92); border:4px solid var(--yellow); box-shadow:0 0 0 4px #9a5d18,0 0 34px #ffd166; text-align:center; animation:takeoverIn .45s steps(5);}
+.secret-scene.takeover .takeover-banner{display:block;}
+.takeover-en{display:block; font-family:var(--font-px); font-size:12px; line-height:1.7;}
+.takeover-cn{display:block; margin-top:4px; font-family:var(--font-cn); font-size:20px; line-height:1.35; color:#f1d8a5;}
 @keyframes takeoverIn{from{transform:translate(-50%,-50%) scale(.3); opacity:0;}to{transform:translate(-50%,-50%) scale(1); opacity:1;}}
 .scene-material{position:absolute; z-index:3; width:64px; height:88px; padding:0; cursor:pointer; color:#fff4c1; background:transparent; border:0; box-shadow:none; font-family:var(--font-px); font-size:6px; line-height:1; image-rendering:pixelated; transform:translateX(-50%); transform-origin:50% 88%; transition:filter .14s;}
 .scene-material img{display:block; width:64px; height:64px; object-fit:contain; margin:0 auto -1px; image-rendering:pixelated; filter:brightness(.92) saturate(.94) contrast(1.05) drop-shadow(0 5px 4px rgba(0,0,0,.52)); pointer-events:none;}
@@ -462,7 +495,7 @@ body{
 @keyframes moneyStamp{from{opacity:0;transform:translateY(12px) scale(.4)}to{opacity:1;transform:none}}
 .pixel-arrow{display:inline-block; margin-left:10px; font-family:var(--font-px); font-size:17px; line-height:.8; color:currentColor; text-shadow:2px 2px 0 rgba(0,0,0,.28); vertical-align:-1px;}
 @media(max-width:700px){#modal-secret .modal-box>h3{white-space:normal;font-size:9px;}.secret-scene{height:300px}.secret-items{grid-template-columns:1fr}.scene-material{width:58px;height:78px}.scene-material img{width:58px;height:58px}}
-@media(max-width:560px){.secret-ending .se-money strong{width:min(210px,70%);height:66px;padding:4px 8px}.yen-mark{font-size:30px}.infinity-mark{font-size:42px}.secret-shop .yen-mark{font-size:40px}.secret-shop .infinity-mark{font-size:58px}.ins-actions{grid-template-columns:1fr 1fr;}.ins-actions .px-btn{padding:10px 8px; font-size:9px;}.secret-scene{height:280px}.scene-material{width:50px;height:70px;font-size:5px}.scene-material img{width:50px;height:50px}.secret-item{font-size:16px}}
+@media(max-width:560px){.secret-ending .se-money{gap:9px;padding:7px 6px}.yen-mark{font-size:23px}.infinity-mark{font-size:31px}.secret-shop .yen-mark{font-size:40px}.secret-shop .infinity-mark{font-size:58px}.ins-actions{grid-template-columns:1fr 1fr;}.ins-actions .px-btn{padding:10px 8px; font-size:9px;}.secret-scene{height:280px}.scene-material{width:50px;height:70px;font-size:5px}.scene-material img{width:50px;height:50px}.secret-item{font-size:16px}}
 
 /* story map */
 #mapNodes{display:flex; flex-direction:column; gap:0; padding:4px 0 6px;}
@@ -502,7 +535,9 @@ body{
 
 /* ============ V0.2: LANGUAGE, SPEAKERS, VOCAB TIERS ============ */
 /* title language picker */
- .lang-pick{display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}  .lang-pick .px-btn{font-family:var(--font-cn);}
+.lang-pick{display:flex; gap:18px; flex-wrap:wrap; justify-content:center; margin-top:0;}
+.lang-pick .px-btn{min-height:51px; font-family:var(--font-px); font-size:12px; font-weight:normal;}
+.lang-pick .px-btn[data-lang="dual"]{font-family:var(--font-cn); font-size:16px; font-weight:normal;}
 .lang-pick .px-btn{min-width:132px;}
 .lang-pick .px-btn.on{background:var(--cyan); color:#0e2733; box-shadow:0 0 0 3px #2b7f9e, inset 0 -5px 0 rgba(0,0,0,.28);}
 /* topbar segmented language selector */
@@ -569,7 +604,8 @@ body{
   #charBox{width:120px; bottom:268px; left:10px;}
   #dialog{left:10px; right:10px; bottom:calc(10px + env(safe-area-inset-bottom));}
   #storyText{font-size:20px;}
-  .title-card{flex-direction:column; text-align:center;}
+  .title-card{flex-direction:column; width:min(680px,calc(100vw - 34px)); text-align:left;}
+  .title-upper-grid{grid-template-columns:1fr;}
   .sum-grid{grid-template-columns:1fr;}
   .wrap-grid{grid-template-columns:1fr;}
 
@@ -592,6 +628,8 @@ body{
   .title-logo{font-size:18px;}
   .title-card img{width:140px; height:140px;}
   .title-portrait{width:140px; height:140px;}
+  .lang-pick .px-btn,.title-actions .start-btn{width:132px; min-width:132px;}
+  .title-logo{font-size:18px;}.title-logo .title-cn{font-size:20px}.title-credit{font-size:6px;white-space:normal;line-height:1.6}.objective-row{font-size:15px}.how-copy{font-size:14px}
   .sum-wrap{padding:18px 14px;}
   .sum-actions .px-btn{min-width:100%;}
 }
@@ -604,23 +642,40 @@ body{
 <!-- ================= TITLE VIEW ================= -->
 <section id="view-title">
   <div class="title-wrap">
-    <div class="title-logo">MILK TEA WORKER<span class="sub">UNIT 1 · WHAT IS ECONOMICS? · INTERACTIVE DAY · <b>V0.2</b></span></div>
+    <div class="title-course">FINANCE ENGLISH · <span>财经英语</span></div>
+    <div class="title-logo">UNIT 1 · WHAT IS ECONOMICS?<span class="title-cn">第一单元 · 什么是经济学？</span><span class="title-project">MILK TEA WORKER · <em>奶茶店员互动模拟</em></span></div>
     <div class="title-card">
       <div class="title-portrait"><img src="assets/char_normal.png" alt="Milk tea shop worker"><button class="hat-secret" id="hat-secret" type="button" aria-label="Worker hat"></button></div>
       <div class="title-info">
-        <h2>MILK TEA SHOP WORKER</h2>
-        <div class="row"><span>Age:</span><b>21</b></div>
-        <div class="row"><span>Job:</span><b>Part-time Milk Tea Shop Worker</b></div>
-        <div class="row"><span>Starting Cash:</span><b>¥350</b></div>
-        <p class="title-intro">You are a college student working part-time at a milk tea shop. Today looks normal — at least for now.</p>
+        <div class="title-upper-grid">
+          <div class="title-panel initial-panel">
+            <div class="title-section-head">INITIAL INFO</div>
+            <div class="initial-list">
+              <div class="initial-row"><span class="initial-label">AGE</span><span class="initial-value">21</span></div>
+              <div class="initial-row"><span class="initial-label">JOB</span><span class="initial-value">Part-time Milk Tea Shop Worker</span></div>
+              <div class="initial-row"><span class="initial-label">STARTING CASH</span><span class="initial-value">¥350</span></div>
+            </div>
+          </div>
+          <div class="title-panel objectives-panel">
+            <div class="title-section-head">LEARNING OBJECTIVES</div>
+            <div class="objective-list">
+              <div class="objective-row"><span class="objective-num">01</span><span>理解<strong>稀缺、取舍与机会成本</strong></span></div>
+              <div class="objective-row"><span class="objective-num">02</span><span>掌握<strong>财经英语核心词汇</strong></span></div>
+              <div class="objective-row"><span class="objective-num">03</span><span>在经营选择中应用经济概念</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="how-head">HOW TO PLAY · <span>操作说明</span></div>
+        <div class="how-copy">点击推进对话，做出经营选择，并在当天结束后完成词汇测试。<br><span class="vw" data-term="opportunity cost">词汇</span>可点击查看释义；首次通关后解锁快速游玩。</div>
       </div>
     </div>
+    <div class="title-hint">5 EVENTS · 4 STATS · A SECRET ENDING IS HIDDEN</div>
     <div class="lang-pick" id="title-lang">
       <button class="px-btn" data-lang="en" type="button">English</button>
       <button class="px-btn" data-lang="dual" type="button">中英对照</button>
     </div>
-    <button class="px-btn primary start-btn" id="btn-start">START DAY</button>
-    <div class="title-hint">5 EVENTS · 4 STATS · A SECRET ENDING IS HIDDEN</div>
+    <div class="title-actions"><button class="px-btn primary start-btn" id="btn-start" type="button">START DAY</button></div>
+    <div class="title-credit">COURSE DESIGN · <span class="person">周茜</span> · CTBU&nbsp;&nbsp;|&nbsp;&nbsp;PROGRAM DESIGN · <span class="person">牟帅凝</span> · CTBU · HRM</div>
   </div>
 </section>
 
@@ -689,6 +744,7 @@ body{
       <div id="dialog">
         <div id="speaker">YOU</div>
         <div id="storyText"></div>
+        <button class="dialog-skip hidden" id="btn-skip" type="button">SKIP TO CHOICE ▶▶</button>
         <div id="deltas"></div>
         <div id="choices"></div>
         <div id="resultArea"></div>
@@ -804,6 +860,7 @@ body{
       <div class="shop-cn">店长正式认可了你的经营能力，把新品定价权和无限经营资金都交给了你。</div>
       <div class="shop-money"><span class="yen-mark">¥</span><span class="infinity-mark">∞</span></div>
       <div class="secret-scene" id="secret-scene">
+        <div class="takeover-banner"><span class="takeover-en">★ THIS SHOP IS YOURS ★</span><span class="takeover-cn">整间店都是你的</span></div>
         <button class="scene-material mat-milk" type="button" data-buy="MILK"><img src="assets/reward_items/item_milk.png" alt="Milk"><span>MILK</span></button>
         <button class="scene-material mat-tea" type="button" data-buy="TEA"><img src="assets/reward_items/item_tea.png" alt="Tea"><span>TEA</span></button>
         <button class="scene-material mat-pearls" type="button" data-buy="PEARLS"><img src="assets/reward_items/item_pearls.png" alt="Pearls"><span>PEARLS</span></button>
@@ -1314,6 +1371,9 @@ const $ = id => document.getElementById(id);
 function show(id){ $(id).classList.remove("hidden"); }
 function hide(id){ $(id).classList.add("hidden"); }
 function escapeHtml(s){ return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+const COMPLETE_KEY = "milkTeaWorker.completed.v2";
+function hasCompletedGame(){ try{ return localStorage.getItem(COMPLETE_KEY) === "1"; }catch(e){ return false; } }
+function rememberCompletion(){ try{ localStorage.setItem(COMPLETE_KEY,"1"); }catch(e){} }
 function clampStat(k,v){
   if(k==="money") return Math.max(0, Math.min(999, Math.round(v)));
   return Math.max(0, Math.min(100, Math.round(v)));
@@ -1455,7 +1515,7 @@ function applyEffects(effects){
 /* ---------- typewriter ---------- */
 let lineIndex = 0, linesDone = null, lineWaiting = false, advanceTimer = null;
 let curLines = [], curContainer = null;
-let autoPlay = false;
+let autoPlay = false, quickMode = false;
 function stopTyping(){
   if(typeTimer){ clearInterval(typeTimer); typeTimer = null; }
   typing = false;
@@ -1501,6 +1561,7 @@ function typeInto(el, item){
       else { el.insertAdjacentHTML("beforeend", '<span class="cont-hint">▼ CLICK</span>'); }
     } else {
       el.innerHTML = escapeHtml(text.slice(0,pos)) + '<span class="caret">▌</span>';
+      if(pos % 3 === 0 && text.charAt(pos-1) !== " ") playTypeTick(pos);
     }
   }, TYPE_MS);
 }
@@ -1565,6 +1626,7 @@ function renderEventInner(id){
   const ev = getEventDef(id);
   setHeader(ev); setScene(ev.scene); setExpr(ev.expr);
   phase = "story";
+  $("btn-skip").classList.toggle("hidden", !quickMode);
   hide("btn-continue");
   $("deltas").innerHTML = ""; $("resultArea").innerHTML = ""; $("choices").innerHTML = "";
   setSpeakerTag("me");
@@ -1591,6 +1653,7 @@ function mutateChoices(ev){
 }
 function renderChoices(ev){
   phase = "choice";
+  hide("btn-skip");
   const c = $("choices"); c.innerHTML = "";
   mutateChoices(ev).forEach((ch,i)=>{
     const b = document.createElement("button");
@@ -1609,6 +1672,7 @@ function choose(i){
   const ch = ev && list[i];
   if(!ch || phase !== "choice") return;
   phase = "choosing";
+  hide("btn-skip");
   lastChoice = ch;
   document.querySelectorAll(".choice").forEach(b=>{ b.disabled = true; });
 
@@ -1622,6 +1686,7 @@ function choose(i){
     $("choices").innerHTML = "";
     setSpeakerTag("result");
     phase = "result";
+    $("btn-skip").classList.toggle("hidden", !quickMode);
     playLines(choiceResultLines(ch, ev), $("storyText"), ()=>finishResult(ev));
   }, 480);
 }
@@ -1812,6 +1877,24 @@ function playSfx(kind){
     });
   }catch(e){}
 }
+let lastTypeTick = 0;
+function playTypeTick(step){
+  try{
+    if(sfxVolume <= 0 || performance.now()-lastTypeTick < 34) return;
+    lastTypeTick = performance.now();
+    sfxCtx = sfxCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if(sfxCtx.state === "suspended") return;
+    const now = sfxCtx.currentTime;
+    const osc = sfxCtx.createOscillator(), gain = sfxCtx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(step % 2 ? 760 : 880, now);
+    gain.gain.setValueAtTime(.0001, now);
+    gain.gain.exponentialRampToValueAtTime(.006 * Math.max(.001,sfxVolume), now+.003);
+    gain.gain.exponentialRampToValueAtTime(.0001, now+.022);
+    osc.connect(gain); gain.connect(sfxCtx.destination);
+    osc.start(now); osc.stop(now+.026);
+  }catch(e){}
+}
 
 let quizTerms = [], quizIndex = 0, quizScore = 0, quizMissed = [], quizRequired = false, quizSelected = null;
 function shuffled(list){
@@ -1829,8 +1912,17 @@ function openQuiz(required){
   quizTerms = shuffled(pool).slice(0, Math.min(5, pool.length));
   quizIndex = 0; quizScore = 0; quizMissed = []; quizSelected = null;
   $("modal-quiz").classList.toggle("required", quizRequired);
-  renderQuiz();
+  renderQuizIntro();
   show("modal-quiz");
+}
+function renderQuizIntro(){
+  $("quiz-title").textContent = "VOCABULARY QUIZ";
+  $("quiz-content").innerHTML = '<div class="quiz-stage">SHIFT COMPLETE　→　<b>VOCAB QUIZ</b>　→　LEARNING REWARD　→　DAY SUMMARY</div>'+
+    '<div class="quiz-challenge"><div class="quiz-challenge-card"><div class="quiz-challenge-title">PERFECT SCORE CHALLENGE</div>'+
+    '<div class="quiz-challenge-en">Answer all 5 questions correctly<br>to unlock a hidden ending.<br><small>If you miss a question, you can retry from the final results page.</small></div>'+
+    '<div class="quiz-challenge-cn">5 道题全部答对，即可解锁隐藏结局。<br>答错也没关系，可在最终总结页重新挑战。</div>'+
+    '<button class="px-btn primary" id="quiz-begin" type="button">START QUIZ</button></div></div>';
+  $("quiz-begin").onclick = renderQuiz;
 }
 function renderQuiz(){
   const box = $("quiz-content");
@@ -1900,8 +1992,8 @@ function renderQuizReward(){
   else { rank="REVIEW RECOMMENDED"; image=""; stars=""; cls="review"; }
   const missed = quizMissed.length ? '<div class="quiz-review-box">REVIEW THESE WORDS<br><b>'+quizMissed.map(escapeHtml).join(" · ")+'</b></div>' : "";
   const secret = perfect && S.insightsSeen.length >= 3;
-  const achievement = perfect ? '<div class="quiz-achievement">You earned the manager\'s trust and the authority to price the shop\'s next product.<span class="cn">你获得了店长的认可，并拥有了下一款新品的定价权。</span></div>' : '';
-  const secretHtml = secret ? '<div class="secret-ending"><div class="se-head">SECRET ENDING UNLOCKED · THE PRICING TABLE</div><div class="se-body">At closing, the manager slides next week\'s menu across the counter. “You understand customers, costs, and trade-offs. Help me price the new drink.” Your idea sells out.</div>'+
+  const achievement = perfect && !secret ? '<div class="quiz-achievement">You earned the manager\'s trust and the authority to price the shop\'s next product.<span class="cn">你获得了店长的认可，并拥有了下一款新品的定价权。</span></div>' : '';
+  const secretHtml = secret ? '<div class="secret-ending"><div class="se-head">SECRET ENDING UNLOCKED · THE PRICING TABLE</div><div class="se-achievement">You earned the manager\'s trust and the authority to price the shop\'s next product.<span>你获得了店长的认可，并拥有了下一款新品的定价权。</span></div><div class="se-body">At closing, the manager slides next week\'s menu across the counter. “You understand customers, costs, and trade-offs. Help me price the new drink.” Your idea sells out.</div>'+
     '<div class="se-cn">打烊时，店长把下周的菜单推到你面前：“你懂顾客、成本和取舍。来帮我给新品定价吧。”你的方案在下一周一售而空。</div>'+
     '<div class="se-money">FUTURE BUSINESS FUND<strong><span class="yen-mark">¥</span><span class="infinity-mark">∞</span></strong></div></div>' : "";
   const particles = image ? '<div class="reward-particles" aria-hidden="true">'+[
@@ -1917,6 +2009,7 @@ function renderQuizReward(){
   $("quiz-summary").onclick = secret ? ()=>openSecretShop(true) : finishQuiz;
 }
 function finishQuiz(){
+  if(quizRequired) rememberCompletion();
   hide("modal-secret");
   $("modal-secret").classList.remove("required");
   hide("modal-quiz");
@@ -2165,6 +2258,7 @@ function renderSummary(){
 
 /* ---------- replay / start ---------- */
 function replay(){
+  quickMode = hasCompletedGame();
   S = freshState();
   history = [];
   curEvent = null; pendingInsight = null; lastChoice = null;
@@ -2173,9 +2267,61 @@ function replay(){
   renderHUD(); renderSidebar();
   hide("insightCard"); hide("view-summary"); hide("modal-vocab"); hide("modal-map"); hide("modal-review"); hide("modal-quiz"); hide("modal-secret");
   hide("view-title"); show("view-game");
+  $("btn-skip").classList.toggle("hidden", !quickMode);
   syncLangUI();
   bgmStart();
+  playSfx("click");
   goEvent("e1");
+}
+
+function showChoicePrompt(ev){
+  const lines = eventLines(ev);
+  const item = lines[lines.length - 1];
+  if(!item){ $("storyText").innerHTML = ""; return; }
+  const en = typeof item === "string" ? item : (item.en || item.cn || "");
+  const cn = typeof item === "object" ? (item.cn || "") : "";
+  if(typeof item === "object" && item.s) setSpeakerTag(item.s, item.avatar || "", item.tag || "");
+  const main = lang === "cn" ? (cn || en) : en;
+  $("storyText").innerHTML = renderRich(main) + (lang === "dual" && cn ? '<div class="cn-line">'+renderRich(cn)+'</div>' : "");
+}
+
+function quickJumpToChoice(id){
+  while(id !== "summary"){
+    const ev = getEventDef(id);
+    if(!ev) return;
+    curEvent = id;
+    history.push({eventId:id,state:cloneS()});
+    if(!ev.buffer){
+      stopTyping(); clearTimeout(advanceTimer); lineWaiting = false;
+      setHeader(ev); setScene(ev.scene); setExpr(ev.expr); setSpeakerTag("me");
+      hide("btn-continue");
+      $("deltas").innerHTML = ""; $("resultArea").innerHTML = ""; $("choices").innerHTML = "";
+      showChoicePrompt(ev);
+      renderChoices(ev);
+      return;
+    }
+    id = getNext(id);
+  }
+  buildSummary();
+}
+function quickSkip(){
+  if(!quickMode) return;
+  if(phase === "choice" || phase === "choosing"){
+    toast("MAKE A CHOICE TO CONTINUE");
+    return;
+  }
+  const ev = getEventDef(curEvent);
+  if(!ev) return;
+  stopTyping(); clearTimeout(advanceTimer); lineWaiting = false;
+  hide("insightCard"); hide("btn-continue");
+  if(ev.insight && !S.insightsSeen.includes(ev.insight.title)) S.insightsSeen.push(ev.insight.title);
+  pendingInsight = null;
+  if(phase === "story" && !ev.buffer){
+    showChoicePrompt(ev);
+    renderChoices(ev);
+    return;
+  }
+  quickJumpToChoice(getNext(curEvent));
 }
 
 /* ---------- background music ---------- */
@@ -2231,7 +2377,7 @@ function syncLangUI(){
   app.classList.remove("mode-cn","mode-en","mode-dual");
   app.classList.add("mode-"+lang);
   const L = (en, cn)=> lang === "cn" ? cn : en;
-  $("btn-start").textContent = L("START DAY","开始新的一天");
+  $("btn-start").textContent = "START DAY";
   $("btn-continue").textContent = L(pendingInsight ? "INSIGHT →" : "CONTINUE", pendingInsight ? "洞察 →" : "继续");
   $("btn-back").textContent = L("BACK","返回");
   $("btn-map").textContent = L("STORY MAP","剧情地图");
@@ -2348,6 +2494,7 @@ document.querySelectorAll("#title-lang .px-btn, #lang-seg button").forEach(b=>{
   b.onclick = ()=>setLang(b.dataset.lang);
 });
 $("btn-auto").onclick = toggleAuto;
+$("btn-skip").onclick = quickSkip;
 $("btn-music").onclick = ()=>$("audio-panel").classList.toggle("hidden");
 $("btn-bgm-toggle").onclick = toggleBgm;
 $("music-volume").oninput = e=>{
